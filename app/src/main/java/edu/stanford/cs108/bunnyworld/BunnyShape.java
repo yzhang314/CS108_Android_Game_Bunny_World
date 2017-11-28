@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Created by gongzibo on 11/19/17.
  */
-
+// this is an example
 public class BunnyShape {
     // map linking the string to the page that is going to be drawed
     static Map<String, BunnyPage> map;
