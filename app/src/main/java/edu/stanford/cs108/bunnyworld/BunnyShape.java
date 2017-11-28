@@ -13,8 +13,8 @@ public class BunnyShape {
     // map linking the string to the page that is going to be drawed
     static Map<String, BunnyPage> map;
 
-    final int RECTANGLE = 0; 
-    final int IMAGE = 1; 
+    final int RECTANGLE = 0;
+    final int IMAGE = 1;
     final int TEXT = 2;
 
     private String name;
