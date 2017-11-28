@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/example"
+            android:title="OnClick">
+                <menu>
+                    <item android:title="GoTo" />
+                    <item android:title="PlaySound" />
+                    <item android:title="Show" />
+                </menu>/>
+        </item>
+        <item android:title="Item1" />
+        <item android:title="Item2" />
+    </menu>
