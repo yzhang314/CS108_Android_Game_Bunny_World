@@ -19,6 +19,8 @@ import java.util.Random;
  * Created by yuwenzhang on 11/27/17.
  */
 
+// this is just an example
+
 
 public class EditorView extends View {
     List<BunnyShape> shapeList;
