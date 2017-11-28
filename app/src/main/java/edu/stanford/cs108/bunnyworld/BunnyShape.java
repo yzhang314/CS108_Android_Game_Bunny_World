@@ -51,12 +51,27 @@ public class BunnyShape {
     }
 
     public void draw(Canvas canvas) {
+        this.canvas = canvas;
         switch(type) {
-            case 0: break;
+            case 0: drawRectangle();
+                break;
+            case 1: drawImage();
+                break;
+            case 2: drawText();
         }
 
-        this.canvas = canvas;
+    }
+    public void drawRectangle() {
         canvas.drawRect(left, top, right, bottom, shapePaint);
+
+    }
+
+    public void drawImage() {
+
+    }
+
+    public void drawText() {
+        
     }
 
     public String getSelectedScript() {
