@@ -57,6 +57,7 @@ public class EditorView extends View {
 
     public void drawText(BunnyShape shape) {
         String textString = shape.getTextString();
+        String current;
         //canvas.drawText("textString",);
 
     }
