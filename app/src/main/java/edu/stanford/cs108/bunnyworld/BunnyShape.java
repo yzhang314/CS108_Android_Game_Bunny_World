@@ -13,16 +13,24 @@ public class BunnyShape {
     // map linking the string to the page that is going to be drawed
     static Map<String, BunnyPage> map;
 
+    final int RECTANGLE = 0; 
+    final int IMAGE = 1; 
+    final int TEXT = 2;
+
     private String name;
+    private String storedInfo;
     private Paint shapePaint;
     private float left, right, bottom, top;
     boolean moveable;
     boolean isInsideInventory;
     String selectScript;
     Canvas canvas;
+    int type;
 
-    BunnyShape(String name, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+    BunnyShape(String name, String storedInfo, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
         this.name = name;
+        this.storedInfo = storedInfo;
+        this.type = type;
         this.left = left;
         this.right = right;
         this.top = top;
@@ -43,6 +51,9 @@ public class BunnyShape {
     }
 
     public void draw(Canvas canvas) {
+        switch(type) {
+            case 0: break;
+        }
 
         this.canvas = canvas;
         canvas.drawRect(left, top, right, bottom, shapePaint);
