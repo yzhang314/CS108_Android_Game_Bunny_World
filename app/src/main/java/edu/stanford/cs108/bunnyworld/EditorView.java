@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextPaint;
+import android.text.StaticLayout;
+import android.text.Layout;
 
 
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class EditorView extends View {
         shapeList = new ArrayList<>();
         shapeList.add(new BunnyShape("test", 1, 100, 400, 100, 400, "aaa", false));
 
-        BunnyShape testText = new BunnyShape("test1", 2, 500, 1000, 500, 1000, "bbb", false);
+        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
         testText.setTextString("lalallalall");
         shapeList.add(testText);
 
@@ -68,6 +70,7 @@ public class EditorView extends View {
 
     public void drawText(BunnyShape shape) {
         RectF boundaryRectangle = new RectF(shape.getLeft(),shape.getTop(),shape.getRight(),shape.getBottom());
+
         TextPaint paint;
         paint = new TextPaint();
         Random random = new Random();
@@ -75,10 +78,28 @@ public class EditorView extends View {
         paint.setColor(ranColor);
         paint.setTextSize(50);
 
+        Paint shapePaint;
+        shapePaint = new Paint();
+        Random random1 = new Random();
+        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
+        shapePaint.setColor(ranColor1);
+        shapePaint.setStyle(Paint.Style.FILL);
+
+        canvas.drawRect(boundaryRectangle, shapePaint);
+
+        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int)boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+
+        canvas.save();
+        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+        sl.draw(canvas);
+        canvas.restore();
+        /*
+
         String textString = shape.getTextString();
         //float centerX = (shape.getRight() + shape.getLeft()) / 2;
         float centerY = (shape.getTop() + shape.getBottom()) / 2;
         canvas.drawText(textString,shape.getLeft(),centerY, paint);
+        */
 
     }
 }
