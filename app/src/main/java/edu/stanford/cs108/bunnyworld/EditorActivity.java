@@ -28,7 +28,12 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
-    protected void addShape () {
+    protected void addShape (BunnyShape shape) {
+        switch(shape.getType()) {
+            case 0: break;
+
+
+        }
 
     }
 }

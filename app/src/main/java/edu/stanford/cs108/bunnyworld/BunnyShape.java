@@ -13,23 +13,122 @@ public class BunnyShape {
     // map linking the string to the page that is going to be drawed
     static Map<String, BunnyPage> map;
 
-    final int RECTANGLE = 0; 
-    final int IMAGE = 1; 
+    final int RECTANGLE = 0;
+    final int IMAGE = 1;
     final int TEXT = 2;
 
     private String name;
-    private String storedInfo;
+    private String textString = "";
+
+    public String getTextString() {
+        return textString;
+    }
+
+    public void setTextString(String textString) {
+        this.textString = textString;
+    }
+
+    public String getImageString() {
+        return imageString;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
+
+    private String imageString = "";
     private Paint shapePaint;
     private float left, right, bottom, top;
     boolean moveable;
     boolean isInsideInventory;
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Paint getShapePaint() {
+        return shapePaint;
+    }
+
+    public void setShapePaint(Paint shapePaint) {
+        this.shapePaint = shapePaint;
+    }
+
+    public float getLeft() {
+        return left;
+    }
+
+    public void setLeft(float left) {
+        this.left = left;
+    }
+
+    public float getRight() {
+        return right;
+    }
+
+    public void setRight(float right) {
+        this.right = right;
+    }
+
+    public float getBottom() {
+        return bottom;
+    }
+
+    public void setBottom(float bottom) {
+        this.bottom = bottom;
+    }
+
+    public float getTop() {
+        return top;
+    }
+
+    public void setTop(float top) {
+        this.top = top;
+    }
+
+    public boolean isMoveable() {
+        return moveable;
+    }
+
+    public void setMoveable(boolean moveable) {
+        this.moveable = moveable;
+    }
+
+    public boolean isInsideInventory() {
+        return isInsideInventory;
+    }
+
+    public void setInsideInventory(boolean insideInventory) {
+        isInsideInventory = insideInventory;
+    }
+
+    public String getSelectScript() {
+        return selectScript;
+    }
+
+    public void setSelectScript(String selectScript) {
+        this.selectScript = selectScript;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     String selectScript;
     Canvas canvas;
     int type;
 
-    BunnyShape(String name, String storedInfo, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
         this.name = name;
-        this.storedInfo = storedInfo;
         this.type = type;
         this.left = left;
         this.right = right;
@@ -50,29 +149,16 @@ public class BunnyShape {
         return name;
     }
 
+    public int getType() {
+        return type;
+    }
+
     public void draw(Canvas canvas) {
         this.canvas = canvas;
-        switch(type) {
-            case 0: drawRectangle();
-                break;
-            case 1: drawImage();
-                break;
-            case 2: drawText();
-        }
-
-    }
-    public void drawRectangle() {
         canvas.drawRect(left, top, right, bottom, shapePaint);
 
     }
 
-    public void drawImage() {
-
-    }
-
-    public void drawText() {
-        
-    }
 
     public String getSelectedScript() {
         return selectScript;

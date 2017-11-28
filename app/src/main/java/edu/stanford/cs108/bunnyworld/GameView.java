@@ -44,11 +44,11 @@ public class GameView extends View {
     //just for test
     private void loadPages() {
         currentPage = new BunnyPage("start");
-        currentPage.addShape(new BunnyShape("test", 10, 50, 10, 50, "aaa", false));
-        currentPage.addShape(new BunnyShape("test2", 100, 200, 100, 200, "", true));
+        currentPage.addShape(new BunnyShape("test", 0, 10, 50, 10, 50, "aaa", false));
+        currentPage.addShape(new BunnyShape("test2", 0, 100, 200, 100, 200, "", true));
         pageMap.put("start", currentPage);
         BunnyPage nextPage = new BunnyPage("next");
-        nextPage.addShape(new BunnyShape("test3", 20, 500, 40, 100, "", true));
+        nextPage.addShape(new BunnyShape("test3", 0, 20, 500, 40, 100, "", true));
         pageMap.put("next", nextPage);
     }
 
