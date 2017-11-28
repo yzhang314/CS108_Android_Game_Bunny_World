@@ -21,7 +21,6 @@ import java.util.Random;
  * Created by yuwenzhang on 11/27/17.
  */
 
-
 public class EditorView extends View {
     List<BunnyShape> shapeList;
     Canvas canvas;
