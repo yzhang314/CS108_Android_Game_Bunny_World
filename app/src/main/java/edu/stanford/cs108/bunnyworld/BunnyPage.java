@@ -9,6 +9,11 @@ import java.util.*;
 
 public class BunnyPage {
     private String name;
+
+    public List<BunnyShape> getShapes() {
+        return shapes;
+    }
+
     private List<BunnyShape> shapes;
 
     BunnyPage(String name) {

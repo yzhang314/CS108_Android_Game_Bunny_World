@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
     <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item android:id="@+id/OnClick"
-            android:title="OnClick">
+            android:title="On Click">
                 <menu>
                     <item android:title="GoTo" />
                     <item android:title="PlaySound" />
@@ -9,18 +9,18 @@
                 </menu>/>
         </item>
     <item android:id="@+id/OnEnter"
-        android:title="OnEnter">
+        android:title="On Enter">
         <menu>
-            <item android:title="GoTo" />
+            <item android:title="Go To" />
             <item android:title="PlaySound" />
             <item android:title="Show" />
         </menu>/>
     </item>
     <item android:id="@+id/OnDrop"
-        android:title="OnDrop">
+        android:title="On Drop">
         <menu>
-            <item android:title="GoTo" />
-            <item android:title="PlaySound" />
+            <item android:title="Go To" />
+            <item android:title="Play Sound" />
             <item android:title="Show" />
         </menu>/>
     </item>

@@ -50,7 +50,7 @@ public class EditorView extends View {
 
 
 
-       this.canvas = canvas;
+        this.canvas = canvas;
 
 
         for (BunnyShape shape: shapeList) {
@@ -84,8 +84,12 @@ public class EditorView extends View {
 
     }
 
+    public void deletePage() {
 
-    //to test some shapes
+    }
+
+
+    //to test some shapes lalaa
     public void init() {
         page1.addShape(new BunnyShape("test", 1, 100, 400, 100, 400, "aaa", false));
         BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
@@ -137,3 +141,4 @@ public class EditorView extends View {
 
     }
 }
+
