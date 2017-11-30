@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:id="@+id/OnClick"
-            android:title="On Click">
-                <menu>
-                    <item android:title="GoTo" />
-                    <item android:title="PlaySound" />
-                    <item android:title="Show" />
-                </menu>/>
-        </item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/OnClick"
+        android:title="OnClick">
+        <menu>
+            <item android:id="@+id/onClickGoTo"
+                android:title="GoTo" />
+            <item android:title="PlaySound"
+                android:id="@+id/onClickPlaySound"/>
+            <item android:id="@+id/onClickShow"
+                android:title="Show" />
+        </menu>/>
+    </item>
     <item android:id="@+id/OnEnter"
         android:title="On Enter">
         <menu>
-            <item android:title="Go To" />
-            <item android:title="PlaySound" />
-            <item android:title="Show" />
+            <item android:id="@+id/onEnterGoTo"
+                android:title="GoTo" />
+            <item android:title="PlaySound"
+                android:id="@+id/onEnterPlaySound"/>
+            <item android:id="@+id/onEnterShow"
+                android:title="Show" />
         </menu>/>
     </item>
     <item android:id="@+id/OnDrop"
         android:title="On Drop">
         <menu>
-            <item android:title="Go To" />
-            <item android:title="Play Sound" />
-            <item android:title="Show" />
+            <menu>
+                <item android:id="@+id/onDropGoTo"
+                    android:title="GoTo" />
+                <item android:title="PlaySound"
+                    android:id="@+id/onDropPlaySound"/>
+                <item android:id="@+id/onDropShow"
+                    android:title="Show" />
+            </menu>/>
         </menu>/>
     </item>
-    </menu>
+</menu>
+
