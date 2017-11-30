@@ -105,10 +105,10 @@ public class EditorView extends View {
 
     //to test some shapes lalaa
     public void init() {
-        page1.addShape(new BunnyShape("prototypeCarrot", 1, 100, 400, 100, 400, "aaa", false));
-        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
-        testText.setTextString("lalallalall");
-        page1.addShape(testText);
+//        page1.addShape(new BunnyShape("prototypeCarrot", 1, 100, 400, 100, 400, "aaa", false));
+//        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
+//        testText.setTextString("lalallalall");
+//        page1.addShape(testText);
         pageMap.put("page1", page1);
         this.shapeList = page1.getShapes();
     }
@@ -159,6 +159,7 @@ public class EditorView extends View {
     private static final int inventoryTop = 430;
     private BitmapDrawable carrotDrawable, duckDrawable;
     private Bitmap carrotBitMap, resizedDuck;
+    protected Paint myPaint;
 
     public void loadTheDrawables() {
 
@@ -169,6 +170,10 @@ public class EditorView extends View {
         this.resizedDuck = Bitmap.createScaledBitmap(duckMap, 200, 200, true);
         resourceMap.put("prototypeCarrot", R.drawable.carrot);
         resourceMap.put("prototypeDuck", R.drawable.duck);
+        myPaint = new Paint();
+        myPaint.setColor(Color.rgb(140,21,21));
+        myPaint.setStyle(Paint.Style.STROKE);
+        myPaint.setStrokeWidth(5.0f);
     }
 
     public void initInventory() {
@@ -213,6 +218,15 @@ public class EditorView extends View {
                 BunnyShape prototypeDuck = new BunnyShape("prototypeDuck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
                 selectedShape = prototypeDuck;
             }
+        } else {
+            selectedShape = currentPage.selectShape(downX, downY);
+            if (selectedShape == null) return;
+            RectF select = new RectF(selectedShape.getLeft(), selectedShape.getTop(), selectedShape.getRight(),selectedShape.getBottom());
+            invalidate();
+            canvas.drawRect(0.0f, 100.0f, 100.0f, 100.0f, myPaint);
+
+
+
         }
 
     }
