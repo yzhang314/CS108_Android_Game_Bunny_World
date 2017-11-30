@@ -14,7 +14,9 @@ import android.text.Layout;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -23,11 +25,20 @@ import java.util.Random;
 
 
 public class EditorView extends View {
-    List<BunnyShape> shapeList;
+    List<BunnyShape> shapeList = new ArrayList<>();
     Canvas canvas;
+    Inventory inventory;
+    Map<String, BunnyPage> pageMap = new HashMap<>();;
+    BunnyPage page1;
+    BunnyPage currentPage;
+    int pageIndex = 1;
 
     public EditorView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        loadInialPage();
+
+        init();
     }
 
     @Override
@@ -38,13 +49,9 @@ public class EditorView extends View {
         current.draw(canvas);
         */
 
-        this.canvas = canvas;
-        shapeList = new ArrayList<>();
-        shapeList.add(new BunnyShape("test", 1, 100, 400, 100, 400, "aaa", false));
 
-        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
-        testText.setTextString("lalallalall");
-        shapeList.add(testText);
+
+       this.canvas = canvas;
 
 
         for (BunnyShape shape: shapeList) {
@@ -58,8 +65,35 @@ public class EditorView extends View {
         }
 
 
+    }
+
+    private void loadInialPage() {
+        page1 = new BunnyPage("page1");
+        currentPage = page1;
+        pageIndex++;
+    }
 
 
+    public void createNewPage() {
+
+        BunnyPage newPage = new BunnyPage("page" + pageIndex);
+        pageMap.put("page" + pageIndex, newPage);
+        currentPage = newPage;
+        this.shapeList = currentPage.getShapes();
+        pageIndex++;
+        invalidate();
+
+    }
+
+
+    //to test some shapes
+    public void init() {
+        page1.addShape(new BunnyShape("test", 1, 100, 400, 100, 400, "aaa", false));
+        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
+        testText.setTextString("lalallalall");
+        page1.addShape(testText);
+        pageMap.put("page1", page1);
+        this.shapeList = page1.getShapes();
     }
 
     public void drawImage(BunnyShape shape) {
