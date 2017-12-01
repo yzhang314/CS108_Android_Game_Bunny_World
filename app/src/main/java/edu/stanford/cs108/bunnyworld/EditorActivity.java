@@ -29,14 +29,16 @@ public class EditorActivity extends AppCompatActivity {
     BunnyShape selected;
     BunnyPage currentPage;
     Map<String, BunnyPage> pageMap = new HashMap<>();
+    EditorView editorView;
 
-
+    View view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        editorView = (EditorView) findViewById(R.id.editorView);
         editorView.loadInialPage();
+        this.currentPage = editorView.currentPage;
     }
 
     @Override
@@ -45,33 +47,41 @@ public class EditorActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
-    View view;
+
 
     public void onCreateNewPage(View view) {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         popupWindow1(view);
         this.view = view;
         this.currentPage = editorView.currentPage;
     }
 
     public void changePage(View view) {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         this.pageMap = editorView.pageMap;
         popupWindow3(view);
         this.currentPage = editorView.currentPage;
     }
 
     public void deletePage(View view) {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         this.pageMap = editorView.pageMap;
         popupWindow4(view);
         this.currentPage = editorView.currentPage;
 
     }
 
+    public void clearCurrentPage(View view) {
+       // EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        pageMap.remove(currentPage.getName());
+        currentPage.removeAllShapes();
+        pageMap.put(currentPage.getName(),currentPage);
+        editorView.openPage(currentPage.getName());
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        //EditorView editorView = (EditorView) findViewById(R.id.editorView);
 
         currentPage = editorView.currentPage;
         selected = currentPage.selectedShape;
@@ -440,7 +450,7 @@ public class EditorActivity extends AppCompatActivity {
 
                     String currentName = currentcheckedBotton.getText().toString();
 
-                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+                    //EditorView editorView = (EditorView) findViewById(R.id.editorView);
                     editorView.openPage(currentName);
 
 
@@ -463,22 +473,32 @@ public class EditorActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.popup_window3,null);
             int i = 0;
+            final RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+
             for (String s: pageMap.keySet()) {
                 RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
 
                 switch(i) {
-                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first); break;
-                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second); break;
-                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); break;
-                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth); break;
-                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth); break;
-                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth); break;
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first);
+                        break;
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second);
+                        break;
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third);
+                        break;
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth);
+                        break;
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth);
+                        break;
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth);
+                        break;
                     default:
                 }
 
                 testButton.setText(s);
                 i++;
+
             }
+
 
             final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
             // display the popup in the center
@@ -501,7 +521,7 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+
                     int currentCheck = group.getCheckedRadioButtonId();
 
                     RadioButton currentcheckedBotton = (RadioButton) layout.findViewById(currentCheck);
@@ -517,7 +537,7 @@ public class EditorActivity extends AppCompatActivity {
                         return;
                     }
 
-                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+                    //EditorView editorView = (EditorView) findViewById(R.id.editorView);
 
 
                     for(String s: pageMap.keySet()) {
