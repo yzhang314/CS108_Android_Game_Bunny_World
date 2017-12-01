@@ -174,32 +174,55 @@ public class EditorView extends View {
 
     private static int[] positionArray = new int[]{0, 200, 400, 600, 800};
     private static final int inventoryTop = 430;
-    private BitmapDrawable carrotDrawable, duckDrawable;
-    private Bitmap carrotBitMap, resizedDuck;
-    protected Paint myPaint;
+    private BitmapDrawable carrotDrawable, duckDrawable, carrot2Drawble, deathDrawble, fireDrawble;
+    private Bitmap resizedCarrot, resizedDuck, resizedCarrot2, resizedDeath, resizedFire;
+
 
     public void loadTheDrawables() {
 
         this.carrotDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.carrot);
         this.duckDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.duck);
-        this.carrotBitMap = carrotDrawable.getBitmap();
+        this.carrot2Drawble = (BitmapDrawable) getResources().getDrawable(R.drawable.carrot2);
+        this.deathDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.death);
+        this.fireDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.fire);
+
+        Bitmap carrotBitMap = carrotDrawable.getBitmap();
+        this.resizedCarrot =  Bitmap.createScaledBitmap(carrotBitMap, 200, 200, true);
+
         Bitmap duckMap = duckDrawable.getBitmap();
         this.resizedDuck = Bitmap.createScaledBitmap(duckMap, 200, 200, true);
-        resourceMap.put("prototypeCarrot", R.drawable.carrot);
-        resourceMap.put("prototypeDuck", R.drawable.duck);
-        myPaint = new Paint();
-        myPaint.setColor(Color.rgb(140,21,21));
-        myPaint.setStyle(Paint.Style.STROKE);
-        myPaint.setStrokeWidth(5.0f);
+
+        Bitmap carrot2Map = carrot2Drawble.getBitmap();
+        this.resizedCarrot2 = Bitmap.createScaledBitmap(carrot2Map, 200, 200, true);
+
+        Bitmap deathMap = deathDrawble.getBitmap();
+        this.resizedDeath = Bitmap.createScaledBitmap(deathMap, 200, 200, true);
+
+        Bitmap fireMap = fireDrawble.getBitmap();
+        this.resizedFire = Bitmap.createScaledBitmap(fireMap, 200, 200, true);
+
+
+        resourceMap.put("carrot", R.drawable.carrot);
+        resourceMap.put("duck", R.drawable.duck);
+        resourceMap.put("carrot2", R.drawable.carrot2);
+        resourceMap.put("death", R.drawable.death);
+        resourceMap.put("fire", R.drawable.fire);
+
     }
 
     public void initInventory() {
         inventory = new Inventory(0, 1500, 430, 630);
         inventory.draw(canvas);
 
-        canvas.drawBitmap(carrotBitMap, positionArray[0], inventoryTop, null);
+        canvas.drawBitmap(resizedCarrot, positionArray[0], inventoryTop, null);
 
-        canvas.drawBitmap(resizedDuck, positionArray[1], inventoryTop, null);
+        canvas.drawBitmap(resizedDuck, positionArray[1] + 30, inventoryTop, null);
+
+        canvas.drawBitmap(resizedCarrot2, positionArray[2] + 60, inventoryTop, null);
+
+        canvas.drawBitmap(resizedDeath, positionArray[3] + 90, inventoryTop, null);
+
+        canvas.drawBitmap(resizedFire, positionArray[4] + 120, inventoryTop, null);
     }
 
     @Override
@@ -235,11 +258,21 @@ public class EditorView extends View {
         float downY = event.getY();
         if(inventory.isInsideInventory(downX, downY)) {
                     if (downX <= 200) {
-                        BunnyShape prototypeCarrot = new BunnyShape("prototypeCarrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
+                        BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
                         selectedShape = prototypeCarrot;
-                    } else if (downX > 200 && downX <= 400) {
-                        BunnyShape prototypeDuck = new BunnyShape("prototypeDuck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                    } else if (downX > 230 && downX <= 430) {
+                        BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
                         selectedShape = prototypeDuck;
+                    } else if (downX > 460 && downX <= 660) {
+                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        selectedShape = prototypeCarrot2;
+                    } else if (downX > 690 && downX <= 890) {
+                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        selectedShape = prototypeDeath;
+                    } else if (downX > 910 && downX <= 1100) {
+                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        selectedShape = prototypeFire;
+
                     }
         } else  {
             selectedShape = currentPage.selectShape(downX, downY);
