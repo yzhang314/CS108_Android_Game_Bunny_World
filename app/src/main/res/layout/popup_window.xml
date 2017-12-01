@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/mystic">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Choose the page to go to"
+        />
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_margin="30dp"-->
+    <!--android:textSize="22dp"-->
+
+    <EditText
+        android:id="@+id/page_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please Enter Here"
+        android:inputType="number"
+        />
+
+</LinearLayout>
