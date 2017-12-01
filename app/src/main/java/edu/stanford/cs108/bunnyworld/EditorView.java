@@ -91,27 +91,30 @@ public class EditorView extends View {
             }
 
 
-
-
         initInventory();
-
 
     }
 
     private void loadInialPage() {
         page1 = new BunnyPage("page1");
         currentPage = page1;
-        pageIndex++;
         pageMap.put("page1", page1);
     }
 
 
-    public void createNewPage() {
-        BunnyPage newPage = new BunnyPage("page" + pageIndex);
-        pageMap.put("page" + pageIndex, newPage);
+    public void createNewPage(String pageName) {
+        BunnyPage newPage = new BunnyPage(pageName);
+        pageMap.put(pageName, newPage);
         currentPage = newPage;
-        pageIndex++;
         invalidate();
+
+    }
+
+    public void openPage(String pageName) {
+        if (pageMap.containsKey(pageName)) {
+            currentPage = pageMap.get(pageName);
+            invalidate();
+        }
 
     }
 

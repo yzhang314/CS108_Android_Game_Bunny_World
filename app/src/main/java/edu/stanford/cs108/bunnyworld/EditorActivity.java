@@ -1,8 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EditorActivity extends AppCompatActivity {
     BunnyShape selected;
@@ -40,21 +37,14 @@ public class EditorActivity extends AppCompatActivity {
     View view;
 
     public void onCreateNewPage(View view) {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
-        editorView.createNewPage();
+        popupWindow1(view);
         this.view = view;
-        //initiatePopupWindow(view);
-//        currentPage = editorView.currentPage;
-//        selected = editorView.selectedShape;
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         EditorView editorView = (EditorView) findViewById(R.id.editorView);
-//        editorView.createNewPage();
-//        initiatePopupWindow(view);
+
         currentPage = editorView.currentPage;
         selected = currentPage.selectedShape;
         // Handle item selection
@@ -65,9 +55,10 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     selected.setSelectScript("GoTo");
-                    initiatePopupWindow(view);
 
-                    //Log.i(selected.getName(), selected.getSelectScript());
+                    popupWindow2(view);
+
+                    Log.i(selected.getName(), selected.getSelectScript());
                 }
 
                 return true;
@@ -100,21 +91,9 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    public void getPageToGo(View view) {
-
-
-        EditText pageToGoEntered = (EditText) findViewById(R.id.page_text);
-        String pageString = pageToGoEntered.getText().toString();
-
-
-        Log.i("lalala", pageString);
-    }
-
 
     public void setString() {
-        EditorView editorView = (EditorView) findViewById(R.id.editorView);
-        currentPage = editorView.currentPage;
-        selected = currentPage.selectedShape;
+
 
     }
 
@@ -134,37 +113,93 @@ public class EditorActivity extends AppCompatActivity {
         }
 
     }
-
-    private void initiatePopupWindow(View v) {
+    private void popupWindow1(View v) {
         try {
-            //We need to get the instance of the LayoutInflater, use the context of this activity
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
             //Inflate the view from a predefined XML layout
-            final View layout = inflater.inflate(R.layout.popup_window,
-                    null);
-            // create a 300px width and 470px height PopupWindow
-            final PopupWindow pw = new PopupWindow(layout, 400, 400, true);
 
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
             // display the popup in the center
-
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
-            Toast.makeText(getApplicationContext(), ((EditText) findViewById(R.id.page_text)).toString(), Toast.LENGTH_LONG).show();
-            Button btn = (Button) findViewById(R.id.enter_button);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-                public void onClick(View v) {
-                    //EditText name = (EditText) findViewById(R.id.page_text);
-                    Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+
+            Button enterBtn = (Button) layout.findViewById(R.id.createPageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.createPageCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
                 }
             });
 
 
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    EditText editText = (EditText) layout.findViewById(R.id.pageName_text);
+                    String newPageName = editText.getText().toString();
+                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+                    editorView.createNewPage(newPageName);
 
-            layout.setOnTouchListener(new View.OnTouchListener() {
-                @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-                public boolean onTouch(View view, MotionEvent event) {
+                    editText.setText("");
                     pw.dismiss();
-                    return true;
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void popupWindow2(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window2,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.goToPageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.goToPageCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    EditText editText = (EditText) layout.findViewById(R.id.page_text);
+                    String goToPage = editText.getText().toString();
+                    selected.setSelectScript(selected.getSelectScript() + goToPage);
+                    editText.setText("");
+                    Log.i(selected.getName(), selected.getSelectScript());
+                    //This is used to change page which can be used during game
+                    /*
+                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+                    editorView.openPage(goToPage);
+                    */
+                    pw.dismiss();
+
+
                 }
             });
 
