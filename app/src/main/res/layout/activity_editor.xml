@@ -26,6 +26,11 @@
                 android:layout_height="wrap_content"
                 android:text = "Change Page"
                 android:onClick="changePage"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Delete Page"
+                android:onClick="deletePage"/>
 
         </LinearLayout>
 
