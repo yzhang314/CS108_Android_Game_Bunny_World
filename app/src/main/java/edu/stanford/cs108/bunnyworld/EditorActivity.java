@@ -1,9 +1,11 @@
 package edu.stanford.cs108.bunnyworld;
 
 import android.content.Context;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,16 +18,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditorActivity extends AppCompatActivity {
     BunnyShape selected;
     BunnyPage currentPage;
+    Map<String, BunnyPage> pageMap = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        editorView.loadInialPage();
     }
 
     @Override
@@ -37,8 +48,25 @@ public class EditorActivity extends AppCompatActivity {
     View view;
 
     public void onCreateNewPage(View view) {
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
         popupWindow1(view);
         this.view = view;
+        this.currentPage = editorView.currentPage;
+    }
+
+    public void changePage(View view) {
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        this.pageMap = editorView.pageMap;
+        popupWindow3(view);
+        this.currentPage = editorView.currentPage;
+    }
+
+    public void deletePage(View view) {
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        this.pageMap = editorView.pageMap;
+        popupWindow4(view);
+        this.currentPage = editorView.currentPage;
+
     }
 
     @Override
@@ -142,11 +170,10 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    EditText editText = (EditText) layout.findViewById(R.id.pageName_text);
+                    EditText editText = (EditText) layout.findViewById(R.id.createPageName_text);
                     String newPageName = editText.getText().toString();
                     EditorView editorView = (EditorView) findViewById(R.id.editorView);
                     editorView.createNewPage(newPageName);
-
                     editText.setText("");
                     pw.dismiss();
 
@@ -187,7 +214,7 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    EditText editText = (EditText) layout.findViewById(R.id.page_text);
+                    EditText editText = (EditText) layout.findViewById(R.id.goToPage_text);
                     String goToPage = editText.getText().toString();
                     selected.setSelectScript(selected.getSelectScript() + goToPage);
                     editText.setText("");
@@ -207,5 +234,166 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+    private void popupWindow3(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window3,null);
+            int i = 0;
+            for (String s: pageMap.keySet()) {
+                RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
+
+                switch(i) {
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first); break;
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second); break;
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); break;
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth); break;
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth); break;
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth); break;
+                    default:
+                }
+
+                testButton.setText(s);
+                i++;
+            }
+
+            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changePageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.changePageCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+                    int currentCheck = group.getCheckedRadioButtonId();
+
+                    RadioButton currentcheckedBotton = (RadioButton) layout.findViewById(currentCheck);
+
+                    String currentName = currentcheckedBotton.getText().toString();
+
+                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+                    editorView.openPage(currentName);
+
+
+
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void popupWindow4(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window3,null);
+            int i = 0;
+            for (String s: pageMap.keySet()) {
+                RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
+
+                switch(i) {
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first); break;
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second); break;
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); break;
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth); break;
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth); break;
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth); break;
+                    default:
+                }
+
+                testButton.setText(s);
+                i++;
+            }
+
+            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changePageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.changePageCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+                    int currentCheck = group.getCheckedRadioButtonId();
+
+                    RadioButton currentcheckedBotton = (RadioButton) layout.findViewById(currentCheck);
+
+                    String currentName = currentcheckedBotton.getText().toString();
+
+
+                    if (pageMap.size() == 1) {
+                        return;
+                    }
+
+                    if (currentName == "Page1") {
+                        return;
+                    }
+
+                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
+
+
+                    for(String s: pageMap.keySet()) {
+                        if (s.equals(currentName)) {
+                            editorView.pageMap.remove(s);
+                            break;
+                        }
+
+                    }
+
+                    if (currentName.equals(currentPage.getName())) {
+                        editorView.openPage("Page1");
+
+                    }
+
+
+
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
