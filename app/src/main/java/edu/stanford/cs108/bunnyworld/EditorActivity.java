@@ -1,9 +1,11 @@
 package edu.stanford.cs108.bunnyworld;
 
 import android.content.Context;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -221,24 +225,36 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+
     private void popupWindow3(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.popup_window3,null);
+            int i = 0;
+            for (String s: pageMap.keySet()) {
+                RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
 
+                switch(i) {
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first); break;
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second); break;
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); break;
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth); break;
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth); break;
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth); break;
+                    default:
+                }
 
-            //We need to get the instance of the LayoutInflater, use the context of this activity
+                testButton.setText(s);
+                i++;
+            }
 
-            //Inflate the view from a predefined XML layout
-
-            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
 
-            Button enterBtn = (Button) layout.findViewById(R.id.openPageEnter_button);
-            Button cancelBtn = (Button) layout.findViewById(R.id.openPageCancel_button);
-            Button showPagesBtn = (Button) layout.findViewById(R.id.showCurrent_button);
+            Button enterBtn = (Button) layout.findViewById(R.id.changePageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.changePageCancel_button);
 
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -253,32 +269,23 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    EditText editText = (EditText) layout.findViewById(R.id.openPageName_text);
-                    String openPage = editText.getText().toString();
+                    RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+                    int currentCheck = group.getCheckedRadioButtonId();
+
+                    RadioButton currentcheckedBotton = (RadioButton) layout.findViewById(currentCheck);
+
+                    String currentName = currentcheckedBotton.getText().toString();
 
                     EditorView editorView = (EditorView) findViewById(R.id.editorView);
-                    editorView.openPage(openPage);
+                    editorView.openPage("Page1");
+
+
 
                     pw.dismiss();
 
                 }
             });
 
-            showPagesBtn.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    TextView showPageInfo = layout.findViewById(R.id.showPages_text);
-                    String result = "";
-                    for (String s: pageMap.keySet()) {
-                        result = result + s + " ";
-                    }
-                    showPageInfo.setText(result);
-
-
-                }
-            });
 
 
 
@@ -286,6 +293,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
 
 

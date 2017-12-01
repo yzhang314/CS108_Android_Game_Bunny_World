@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF"
-    >
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,33 +12,52 @@
         android:padding="5pt"
         android:textColor="#000000"
         />
-
-
-    <!--android:layout_centerInParent="true"-->
-    <!--android:layout_margin="30dp"-->
-    <!--android:textSize="22dp"-->
-
-
-    <EditText
-        android:id="@+id/openPageName_text"
-        android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/pageRadioGroup"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Page+number"
-        />
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"
+            />
+        <RadioButton
+            android:id="@+id/second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"/>
+        <RadioButton
+            android:id="@+id/third"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"/>
+        <RadioButton
+            android:id="@+id/fourth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"/>
+        <RadioButton
+            android:id="@+id/fifth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"/>
+        <RadioButton
+            android:id="@+id/sixth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty"/>
+
+    </RadioGroup>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/showCurrent_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SHOW PAGES Names"
-            android:textColor="@color/colorAccent"
-            />
 
         <Button
-            android:id="@+id/openPageEnter_button"
+            android:id="@+id/changePageEnter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ENTER"
@@ -47,7 +65,7 @@
             />
 
         <Button
-            android:id="@+id/openPageCancel_button"
+            android:id="@+id/changePageCancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CANCEL"
@@ -56,12 +74,5 @@
         />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/showPages_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        />
 
 </LinearLayout>
