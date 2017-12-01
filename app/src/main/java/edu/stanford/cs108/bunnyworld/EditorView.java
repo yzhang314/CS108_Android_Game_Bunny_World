@@ -107,7 +107,6 @@ public class EditorView extends View {
 
 
     public void createNewPage() {
-
         BunnyPage newPage = new BunnyPage("page" + pageIndex);
         pageMap.put("page" + pageIndex, newPage);
         currentPage = newPage;
