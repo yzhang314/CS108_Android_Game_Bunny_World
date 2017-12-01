@@ -1,6 +1,8 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditorActivity extends AppCompatActivity {
     BunnyShape selected;
@@ -33,11 +37,13 @@ public class EditorActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+    View view;
 
     public void onCreateNewPage(View view) {
         EditorView editorView = (EditorView) findViewById(R.id.editorView);
         editorView.createNewPage();
-        initiatePopupWindow(view);
+        this.view = view;
+        //initiatePopupWindow(view);
 //        currentPage = editorView.currentPage;
 //        selected = editorView.selectedShape;
 
@@ -59,7 +65,9 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     selected.setSelectScript("GoTo");
-                    Log.i(selected.getName(), selected.getSelectScript());
+                    initiatePopupWindow(view);
+
+                    //Log.i(selected.getName(), selected.getSelectScript());
                 }
 
                 return true;
@@ -90,6 +98,16 @@ public class EditorActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void getPageToGo(View view) {
+
+
+        EditText pageToGoEntered = (EditText) findViewById(R.id.page_text);
+        String pageString = pageToGoEntered.getText().toString();
+
+
+        Log.i("lalala", pageString);
     }
 
 
@@ -125,11 +143,25 @@ public class EditorActivity extends AppCompatActivity {
             final View layout = inflater.inflate(R.layout.popup_window,
                     null);
             // create a 300px width and 470px height PopupWindow
-            final PopupWindow pw = new PopupWindow(layout, 300, 470, true);
+            final PopupWindow pw = new PopupWindow(layout, 400, 400, true);
+
             // display the popup in the center
+
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+            Toast.makeText(getApplicationContext(), ((EditText) findViewById(R.id.page_text)).toString(), Toast.LENGTH_LONG).show();
+            Button btn = (Button) findViewById(R.id.enter_button);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+                public void onClick(View v) {
+                    //EditText name = (EditText) findViewById(R.id.page_text);
+                    Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG).show();
+                }
+            });
+
+
+
             layout.setOnTouchListener(new View.OnTouchListener() {
-                @Override
+                @TargetApi(Build.VERSION_CODES.GINGERBREAD)
                 public boolean onTouch(View view, MotionEvent event) {
                     pw.dismiss();
                     return true;
