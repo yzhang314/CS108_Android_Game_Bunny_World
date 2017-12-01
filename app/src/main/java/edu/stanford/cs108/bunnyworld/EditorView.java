@@ -31,7 +31,6 @@ public class EditorView extends View {
     Canvas canvas;
     Inventory inventory;
     Map<String, BunnyPage> pageMap = new HashMap<>();
-    ;
     BunnyPage page1;
     BunnyPage currentPage;
     int pageIndex = 1;
@@ -95,10 +94,10 @@ public class EditorView extends View {
 
     }
 
-    private void loadInialPage() {
-        page1 = new BunnyPage("page1");
+    public void loadInialPage() {
+        page1 = new BunnyPage("Page1");
         currentPage = page1;
-        pageMap.put("page1", page1);
+        pageMap.put("Page1", page1);
     }
 
 
