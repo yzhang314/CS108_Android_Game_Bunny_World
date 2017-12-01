@@ -73,23 +73,7 @@ public class EditorView extends View {
                 canvas.drawRect(boundaryRectangle, selectPaint);
 
             }
-            /*
-            Paint outlinePaint;
-            outlinePaint = new Paint();
-            if (shape == currentPage.selectedShape) {
 
-                outlinePaint.setColor(Color.BLACK);
-                outlinePaint.setStyle(Paint.Style.STROKE);
-
-                RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
-                canvas.drawRect(boundaryRectangle, outlinePaint);
-
-
-            } else {
-                outlinePaint.setColor(Color.WHITE);
-                outlinePaint.setStyle(Paint.Style.STROKE);
-            }
-            */
                 int type = shape.getType();
                 switch (type) {
                     case 0:
@@ -258,8 +242,8 @@ public class EditorView extends View {
                     }
         } else  {
             selectedShape = currentPage.selectShape(downX, downY);
+            currentPage.selectedShape = selectedShape;
             judge = true;
-
             invalidate();
         }
 
@@ -267,6 +251,27 @@ public class EditorView extends View {
 
 
     private void actionMove(MotionEvent event) {
+        float upX = event.getX();
+        float upY = event.getY();
+
+        if(judge == true) {
+            if (selectedShape != null) {
+
+                selectedShape.setLeft(upX - 100);
+                selectedShape.setTop(upY - 100);
+                selectedShape.setBottom(selectedShape.getTop() + 200);
+                selectedShape.setRight(selectedShape.getLeft() + 200);
+
+                currentPage.addShape(selectedShape);
+                currentPage.selectedShape = selectedShape;
+                invalidate();
+            }
+
+        } else {
+            return;
+        }
+
+
     }
 
 
@@ -275,29 +280,23 @@ public class EditorView extends View {
         float upX = event.getX();
         float upY = event.getY();
 
-        if (judge == true) {
-            if (selectedShape == null) {
-                currentPage.selectedShape = null;
-                return;
+        if (judge == false) {
+            if (selectedShape != null) {
+
+                selectedShape.setLeft(upX - 100);
+                selectedShape.setTop(upY - 100);
+                selectedShape.setBottom(selectedShape.getTop() + 200);
+                selectedShape.setRight(selectedShape.getLeft() + 200);
+
+                currentPage.addShape(selectedShape);
+                currentPage.selectedShape = selectedShape;
+                invalidate();
             }
 
-
-            currentPage.selectedShape = selectedShape;
+        } else {
             return;
         }
 
-
-        if (selectedShape != null) {
-
-            selectedShape.setLeft(upX - 100);
-            selectedShape.setTop(upY - 100);
-            selectedShape.setBottom(selectedShape.getTop() + 200);
-            selectedShape.setRight(selectedShape.getLeft() + 200);
-
-            currentPage.addShape(selectedShape);
-            currentPage.selectedShape = selectedShape;
-            invalidate();
-        }
     }
 
 
