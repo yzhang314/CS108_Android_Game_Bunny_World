@@ -58,18 +58,38 @@ public class EditorView extends View {
         this.canvas = canvas;
 
         shapeList = currentPage.getShapes();
+        Paint selectPaint = new Paint();
 
 
         for (BunnyShape shape : shapeList) {
+
             if (shape == currentPage.selectedShape) {
-                Paint shapePaint;
-                shapePaint = new Paint();
-                shapePaint.setColor(Color.BLACK);
-                shapePaint.setStyle(Paint.Style.FILL);
+
+                selectPaint.setColor(Color.BLUE);
+                selectPaint.setStyle(Paint.Style.STROKE);
+                selectPaint.setStrokeWidth(15.0f);
+
                 RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
-                canvas.drawRect(boundaryRectangle, shapePaint);
+                canvas.drawRect(boundaryRectangle, selectPaint);
+
+            }
+            /*
+            Paint outlinePaint;
+            outlinePaint = new Paint();
+            if (shape == currentPage.selectedShape) {
+
+                outlinePaint.setColor(Color.BLACK);
+                outlinePaint.setStyle(Paint.Style.STROKE);
+
+                RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+                canvas.drawRect(boundaryRectangle, outlinePaint);
+
 
             } else {
+                outlinePaint.setColor(Color.WHITE);
+                outlinePaint.setStyle(Paint.Style.STROKE);
+            }
+            */
                 int type = shape.getType();
                 switch (type) {
                     case 0:
@@ -86,7 +106,8 @@ public class EditorView extends View {
                 }
             }
 
-        }
+
+
 
         initInventory();
 
