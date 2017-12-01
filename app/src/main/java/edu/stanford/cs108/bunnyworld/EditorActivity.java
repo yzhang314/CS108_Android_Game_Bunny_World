@@ -16,6 +16,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 public class EditorActivity extends AppCompatActivity {
+    BunnyShape selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,12 @@ public class EditorActivity extends AppCompatActivity {
         //popUpWindow(view);
         initiatePopupWindow(view);
 
+
+    }
+
+    public void setString() {
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        selected = editorView.selectedShape;
 
     }
 
