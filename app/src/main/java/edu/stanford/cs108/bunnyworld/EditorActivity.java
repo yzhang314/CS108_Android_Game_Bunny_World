@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.View;
 
 public class EditorActivity extends AppCompatActivity {
+    BunnyShape selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,12 @@ public class EditorActivity extends AppCompatActivity {
     public void onCreateNewPage(View view) {
         EditorView editorView = (EditorView) findViewById(R.id.editorView);
         editorView.createNewPage();
+
+    }
+
+    public void setString() {
+        EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        selected = editorView.selectedShape;
 
     }
 

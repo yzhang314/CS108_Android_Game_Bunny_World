@@ -9,6 +9,7 @@ import java.util.*;
 
 public class BunnyPage {
     private String name;
+    public BunnyShape selectedShape;
 
     public List<BunnyShape> getShapes() {
         return shapes;
@@ -51,7 +52,10 @@ public class BunnyPage {
     public BunnyShape getShape(String shapeName) {
         for(int i = shapes.size() - 1; i >= 0; i--) {
             BunnyShape shape = shapes.get(i);
-            if(shape.getName().equals(shapeName)) return shape;
+            if(shape.getName().equals(shapeName)) {
+                selectedShape = shape;
+                return shape;
+            }
         }
         return null;
     }

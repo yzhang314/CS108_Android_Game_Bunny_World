@@ -42,7 +42,7 @@ public class EditorView extends View {
 
         loadInialPage();
 
-        init();
+       // init();
         loadTheDrawables();
     }
 
@@ -57,22 +57,35 @@ public class EditorView extends View {
 
         this.canvas = canvas;
 
+        shapeList = currentPage.getShapes();
+
 
         for (BunnyShape shape : shapeList) {
-            int type = shape.getType();
-            switch (type) {
-                case 0:
-                    shape.draw(canvas);
-                    break;
-                case 1:
-                    drawImage(shape);
-                    break;
-                case 2:
-                    drawText(shape);
-                    break;
-                default:
-                    ;
+            if (shape == currentPage.selectedShape) {
+                Paint shapePaint;
+                shapePaint = new Paint();
+                shapePaint.setColor(Color.BLACK);
+                shapePaint.setStyle(Paint.Style.FILL);
+                RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+                canvas.drawRect(boundaryRectangle, shapePaint);
+
+            } else {
+                int type = shape.getType();
+                switch (type) {
+                    case 0:
+                        shape.draw(canvas);
+                        break;
+                    case 1:
+                        drawImage(shape);
+                        break;
+                    case 2:
+                        drawText(shape);
+                        break;
+                    default:
+                        ;
+                }
             }
+
         }
 
         initInventory();
@@ -84,6 +97,7 @@ public class EditorView extends View {
         page1 = new BunnyPage("page1");
         currentPage = page1;
         pageIndex++;
+        pageMap.put("page1", page1);
     }
 
 
@@ -92,7 +106,6 @@ public class EditorView extends View {
         BunnyPage newPage = new BunnyPage("page" + pageIndex);
         pageMap.put("page" + pageIndex, newPage);
         currentPage = newPage;
-        this.shapeList = currentPage.getShapes();
         pageIndex++;
         invalidate();
 
@@ -109,8 +122,6 @@ public class EditorView extends View {
 //        BunnyShape testText = new BunnyShape("test1", 2, 400, 700, 400, 700, "bbb", false);
 //        testText.setTextString("lalallalall");
 //        page1.addShape(testText);
-        pageMap.put("page1", page1);
-        this.shapeList = page1.getShapes();
     }
 
     public void drawImage(BunnyShape shape) {
@@ -193,6 +204,7 @@ public class EditorView extends View {
                 actionDown(event);
                 break;
             }
+
             case MotionEvent.ACTION_MOVE: {
                 actionMove(event);
                 break;
@@ -201,32 +213,33 @@ public class EditorView extends View {
                 actionUp(event);
                 break;
             }
+
         }
+
         return true;
 
     }
 
+     boolean judge;
+
     private void actionDown(MotionEvent event) {
+        judge = false;
         selectedShape = null;
         float downX = event.getX();
         float downY = event.getY();
         if(inventory.isInsideInventory(downX, downY)) {
-            if (downX <= 200) {
-                BunnyShape prototypeCarrot = new BunnyShape("prototypeCarrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
-                selectedShape = prototypeCarrot;
-            } else if (downX > 200 && downX <= 400) {
-                BunnyShape prototypeDuck = new BunnyShape("prototypeDuck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-                selectedShape = prototypeDuck;
-            }
-        } else {
+                    if (downX <= 200) {
+                        BunnyShape prototypeCarrot = new BunnyShape("prototypeCarrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
+                        selectedShape = prototypeCarrot;
+                    } else if (downX > 200 && downX <= 400) {
+                        BunnyShape prototypeDuck = new BunnyShape("prototypeDuck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        selectedShape = prototypeDuck;
+                    }
+        } else  {
             selectedShape = currentPage.selectShape(downX, downY);
-            if (selectedShape == null) return;
-            RectF select = new RectF(selectedShape.getLeft(), selectedShape.getTop(), selectedShape.getRight(),selectedShape.getBottom());
+            judge = true;
+
             invalidate();
-            canvas.drawRect(0.0f, 100.0f, 100.0f, 100.0f, myPaint);
-
-
-
         }
 
     }
@@ -235,18 +248,37 @@ public class EditorView extends View {
     private void actionMove(MotionEvent event) {
     }
 
+
+
     private void actionUp(MotionEvent event) {
         float upX = event.getX();
         float upY = event.getY();
+
+        if (judge == true) {
+            if (selectedShape == null) {
+                currentPage.selectedShape = null;
+                return;
+            }
+
+
+            currentPage.selectedShape = selectedShape;
+            return;
+        }
+
+
         if (selectedShape != null) {
+
             selectedShape.setLeft(upX - 100);
             selectedShape.setTop(upY - 100);
             selectedShape.setBottom(selectedShape.getTop() + 200);
             selectedShape.setRight(selectedShape.getLeft() + 200);
+
             currentPage.addShape(selectedShape);
+            currentPage.selectedShape = selectedShape;
             invalidate();
         }
     }
+
 
 
 }
