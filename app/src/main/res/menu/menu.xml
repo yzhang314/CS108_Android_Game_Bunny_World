@@ -24,7 +24,6 @@
     </item>
     <item android:id="@+id/OnDrop"
         android:title="On Drop">
-        <menu>
             <menu>
                 <item android:id="@+id/onDropGoTo"
                     android:title="GoTo" />
@@ -33,7 +32,6 @@
                 <item android:id="@+id/onDropShow"
                     android:title="Show" />
             </menu>/>
-        </menu>/>
     </item>
 </menu>
 

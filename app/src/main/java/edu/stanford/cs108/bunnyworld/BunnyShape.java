@@ -179,24 +179,27 @@ public class BunnyShape {
         return (x >= left && x <= right && y >= top && y <= bottom);
     }
 
-    private void onClick (String onClickScript) {
-        // parse the string to movement and destination the example shows a way to parse the string by ":"
-        String[] movement = onClickScript.split(":");
-        switch(movement[0]) {
-            case "goto" :
-                goTo(movement[1], canvas);
-                break;
-            case "play" :
-                break;
-            case "show" :
-                break;
-            default:
-                break;
-        }
+    // The variables are temporarily made public in order to test them
+    public String onClick = "";
+    public String onEnter = "";
+    public String onDrop = "";
+
+    /*
+    This is the method to parse the longer string to the field of the shap class
+     */
+    public void loadToDB () {
+        String reaction = this.getSelectScript();
+        String[] onClickString = reaction.split("onClick");
+        String[] onClickEvent =onClickString[1].split("|");
+        this.onClick = onClickEvent[0];
+        String[] onEnterString = reaction.split("onEnter");
+        String[] onEnterEvent = onEnterString[1].split("|");
+        this.onEnter = onEnterEvent[0];
+        String[] onDropString = reaction.split("onDrop");
+        String[] onDropEvent = onDropString[1].split("|");
+        this.onDrop = onDropEvent[0];
+
     }
 
-    private void goTo(String gotoString, Canvas canvas) {
-        BunnyPage curtPage = map.get(gotoString);
-        curtPage.draw(canvas);
-    }
+
 }
