@@ -12,11 +12,23 @@
             android:id="@+id/editorView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text = "Create Page"
-            android:onClick="onCreateNewPage"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Create Page"
+                android:onClick="onCreateNewPage"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Show Current Page"/>
+
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 
