@@ -59,15 +59,15 @@ public class EditorActivity extends AppCompatActivity {
     public void changePage(View view) {
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         this.pageMap = editorView.pageMap;
-        popupWindow3(view);
         this.currentPage = editorView.currentPage;
+        popupWindow3(view);
     }
 
     public void deletePage(View view) {
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         this.pageMap = editorView.pageMap;
-        popupWindow4(view);
         this.currentPage = editorView.currentPage;
+        popupWindow4(view);
 
     }
 
@@ -405,16 +405,42 @@ public class EditorActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.popup_window3,null);
             int i = 0;
+            final RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
             for (String s: pageMap.keySet()) {
                 RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
 
                 switch(i) {
-                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first); break;
-                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second); break;
-                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); break;
-                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth); break;
-                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth); break;
-                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth); break;
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.first);
+                        }
+
+                        break;
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.second);
+                        }
+
+                        break;
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third); {
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.third);
+                        }
+                        break;
+                    }
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.fourth);
+                        }
+                        break;
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.fifth);
+                        }break;
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.sixth);
+                        }break;
                     default:
                 }
 
@@ -443,7 +469,6 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
                     int currentCheck = group.getCheckedRadioButtonId();
 
                     RadioButton currentcheckedBotton = (RadioButton) layout.findViewById(currentCheck);
@@ -480,16 +505,34 @@ public class EditorActivity extends AppCompatActivity {
 
                 switch(i) {
                     case 0: testButton = (RadioButton) layout.findViewById(R.id.first);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.first);
+                        }
                         break;
                     case 1: testButton = (RadioButton) layout.findViewById(R.id.second);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.second);
+                        }
                         break;
                     case 2: testButton = (RadioButton) layout.findViewById(R.id.third);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.third);
+                        }
                         break;
                     case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.fourth);
+                        }
                         break;
                     case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.fifth);
+                        }
                         break;
                     case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth);
+                        if (s.equals(currentPage.getName())) {
+                            group.check(R.id.sixth);
+                        }
                         break;
                     default:
                 }

@@ -41,6 +41,10 @@ public class BunnyPage {
         shapes.remove(shape);
     }
 
+    public void removeAllShapes() {
+        shapes = new ArrayList<>();
+    }
+
     public BunnyShape selectShape(float x, float y) {
         for(int i = shapes.size() - 1; i >= 0; i--) {
             BunnyShape shape = shapes.get(i);
