@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.media.MediaPlayer;
 import android.view.View;
 
 /**
@@ -22,34 +23,58 @@ import android.view.*;
 
 public class GameView extends View {
     private DbHandler dbHandler;
+    private MediaPlayer mp;
     float downX, downY;
+    float preX, preY;
     boolean isSelected;
     boolean isDragging;
+    boolean ondrop;
 
     BunnyPage currentPage;
     BunnyShape selectedShape;
+    BunnyShape ondropShape;
+    BunnyShape preOndropShape;
     Map<String, BunnyPage> pageMap;
     Inventory inventory;
+
+    Map<String, Integer> resMap;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         isSelected = false;
         isDragging = false;
+        ondrop = false;
         dbHandler = new DbHandler();
         pageMap = new HashMap<>();
+        resMap = new HashMap<>();
         loadPages();
-        inventory = new Inventory(100, 800, 300, 500);
+        loadRes();
+        inventory = new Inventory(0, 1500, 430, 630);
+        onEnterActions();
     }
 
     //just for test
     private void loadPages() {
-        currentPage = new BunnyPage("start");
-        currentPage.addShape(new BunnyShape("test", 0, 10, 50, 10, 50, "aaa", false));
-        currentPage.addShape(new BunnyShape("test2", 0, 100, 200, 100, 200, "", true));
-        pageMap.put("start", currentPage);
+        BunnyPage startPage = new BunnyPage("start");
+        startPage.addShape(new BunnyShape("test", 0, 10, 50, 10, 50, "onClick goto next", false, true));
+        BunnyShape temp = new BunnyShape("gonext", 0, 10, 50, 200, 250, "onDrop test3 play hooray,onDrop test3 hide test3", true, true);
+        startPage.addShape(temp);
+        startPage.addShape(new BunnyShape("test2", 0, 100, 200, 100, 200, "onEnter play evillaugh", true, true));
+        pageMap.put("start", startPage);
         BunnyPage nextPage = new BunnyPage("next");
-        nextPage.addShape(new BunnyShape("test3", 0, 20, 500, 40, 100, "", true));
+        nextPage.addShape(new BunnyShape("test3", 0, 20, 500, 40, 100, "", true, true));
+        nextPage.addShape(new BunnyShape("goback", 0, 110, 150, 200, 250, "onEnter play munch,onClick goto start", false, true));
         pageMap.put("next", nextPage);
+        currentPage = pageMap.get("start");
+    }
+
+    private void loadRes() {
+        resMap.put("carrotcarrotcarrot", R.raw.carrotcarrotcarrot);
+        resMap.put("evillaugh", R.raw.evillaugh);
+        resMap.put("hooray", R.raw.hooray);
+        resMap.put("munch", R.raw.munch);
+        resMap.put("munching", R.raw.munching);
+        resMap.put("woof", R.raw.woof);
     }
 
     @Override
@@ -80,9 +105,22 @@ public class GameView extends View {
         return true;
     }
 
+    private void onEnterActions() {
+        List<BunnyShape> shapes = currentPage.getShapes();
+        for(BunnyShape shape : shapes) {
+            for(String script : shape.getSelectScript().split(",")) {
+                if(script.split(" ")[0].equals("onEnter")) {
+                    doAction(script.substring(script.indexOf(" ") + 1));
+                }
+            }
+        }
+    }
+
     private void actionDown(MotionEvent event) {
         downX = event.getX();
         downY = event.getY();
+        preX = downX;
+        preY = downY;
         if(inventory.isInsideInventory(downX, downY)) {
             selectedShape = inventory.selectShape(downX, downY);
         }
@@ -103,43 +141,139 @@ public class GameView extends View {
     private void actionMove(MotionEvent event) {
         isDragging = true;
         if(isSelected && selectedShape.moveable) {
-            selectedShape.move(event.getX() - downX, event.getY() - downY);
-            downX = event.getX();
-            downY = event.getY();
+            selectedShape.move(event.getX() - preX, event.getY() - preY);
+            ondropShape = currentPage.selectShape(event.getX(), event.getY());
+            if(preOndropShape != null) {
+                preOndropShape.setIsOnDrop(false);
+            }
+            if(ondropShape != null) {
+                ondrop = checkOnDrop(selectedShape, ondropShape);
+                ondropShape.setIsOnDrop(true);
+                ondropShape.setIsOnDropValid(ondrop);
+            }
+            else {
+                ondrop = false;
+            }
+            preX = event.getX();
+            preY = event.getY();
+            preOndropShape = ondropShape;
             invalidate();
         }
+    }
+
+    private boolean checkOnDrop(BunnyShape selectedShape, BunnyShape targetShape) {
+        String selectScript = selectedShape.getSelectScript();
+        if(!selectScript.equals("")) {
+            for(String script : selectScript.split(",")) {
+                if(script.split(" ")[0].equals("onDrop") && targetShape.getName().equals(script.split(" ")[1])) return true;
+            }
+        }
+        return false;
     }
 
     private void actionUp(MotionEvent event) {
         float upX = event.getX();
         float upY = event.getY();
-        if(selectedShape != null) currentPage.addShape(selectedShape);
         if(isSelected) {
             if(inventory.isInsideInventory(upX, upY)) {
-                inventory.addShape(selectedShape);
-                selectedShape.isInsideInventory = true;
+                if(selectedShape.isMoveable()) {
+                    inventory.addShape(selectedShape);
+                    selectedShape.isInsideInventory = true;
+                }
+                else {
+                    currentPage.addShape(selectedShape);
+                }
             }
             else {
+                //on drop
                 if(isDragging && selectedShape.moveable) {
-                    //BunnyShape targetShape = currentPage.selectShape(upX, upY);
-                    String placeScript = selectedShape.getPlaceScript();
-                    if (!placeScript.equals("")) {
-                        handleScript(placeScript);
+                    if(ondropShape != null) {
+                        if (ondrop) {
+                            String selectedScript = selectedShape.getSelectedScript();
+                            for (String script : selectedScript.split(",")) {
+                                if (script.split(" ")[0].equals("onDrop") && script.split(" ")[1].equals(ondropShape.getName())) {
+                                    doAction(script.substring(script.indexOf(" ", script.indexOf(" ") + 1) + 1));
+                                }
+                            }
+                            selectedShape.setInsideInventory(false);
+                            currentPage.addShape(selectedShape);
+                        }
+                        else {
+                            if(selectedShape.isInsideInventory) {
+                                inventory.addShape(selectedShape);
+                            }
+                            else currentPage.addShape(selectedShape);
+                            selectedShape.move(downX - upX, downY - upY);
+                        }
+                    }
+                    else {
+                        currentPage.addShape(selectedShape);
+                        selectedShape.setInsideInventory(false);
                     }
                 }
+                //on click
                 else if(!isDragging) {
-                    String selectScript = selectedShape.getSelectedScript();
-                    if(!selectScript.equals("")) {
+                    currentPage.addShape(selectedShape);
+                    String selectedScript = selectedShape.getSelectedScript();
+                    if(!selectedScript.equals("")) {
                         //use CONSTANT VARIABLE later
-                        handleScript(selectScript);
+                        for(String script : selectedScript.split(",")) {
+                            if(script.split(" ")[0].equals("onClick")) {
+                                doAction(script.substring(script.indexOf(" ") + 1));
+                            }
+                        }
                     }
                 }
-                selectedShape.isInsideInventory = false;
+                else {
+                    currentPage.addShape(selectedShape);
+                }
+                //selectedShape.isInsideInventory = false;
             }
             invalidate();
-            isDragging = false;
-            isSelected = false;
-            selectedShape = null;
+        }
+        isDragging = false;
+        isSelected = false;
+        ondrop = false;
+        selectedShape = null;
+        ondropShape = null;
+        if(preOndropShape != null) preOndropShape.setIsOnDrop(false);
+    }
+
+    private void doAction(String script) {
+        System.out.println(script);
+        String[] scriptArray = script.split(" ");
+        if(scriptArray.length != 2) return;
+        String action = scriptArray[0];
+        String target = scriptArray[1];
+        BunnyShape shape;
+        switch (action) {
+            case "goto":
+                if (pageMap.containsKey(target)) {
+                    currentPage = pageMap.get(target);
+                    onEnterActions();
+                    invalidate();
+                }
+                break;
+            case "play":
+                if (resMap.containsKey(target)) {
+                    mp=MediaPlayer.create(getContext(), resMap.get(target));
+                    mp.start();
+                }
+                break;
+            case "hide":
+                shape = currentPage.getShape(target);
+                if (shape != null) {
+                    shape.setVisiable(false);
+                    invalidate();
+                }
+                break;
+            case "show":
+                shape = currentPage.getShape(target);
+                if (shape != null) {
+                    shape.setVisiable(false);
+                    invalidate();
+                }
+                break;
         }
     }
 

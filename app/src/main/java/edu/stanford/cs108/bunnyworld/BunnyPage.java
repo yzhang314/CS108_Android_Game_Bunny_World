@@ -48,7 +48,7 @@ public class BunnyPage {
     public BunnyShape selectShape(float x, float y) {
         for(int i = shapes.size() - 1; i >= 0; i--) {
             BunnyShape shape = shapes.get(i);
-            if(shape.isInside(x, y)) return shape;
+            if(shape.isVisiable() && shape.isInside(x, y)) return shape;
         }
         return null;
     }

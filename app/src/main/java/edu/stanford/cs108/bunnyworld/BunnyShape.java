@@ -38,9 +38,15 @@ public class BunnyShape {
 
     private String imageString = "";
     private Paint shapePaint;
+    private Paint onDropPaintTrue;
+    private Paint onDropPaintFalse;
     private float left, right, bottom, top;
     boolean moveable;
+    boolean visiable;
     boolean isInsideInventory;
+
+    boolean isOnDrop;
+    boolean isOnDropValid;
 
 
     public void setName(String name) {
@@ -95,6 +101,10 @@ public class BunnyShape {
         this.moveable = moveable;
     }
 
+    public boolean isVisiable() { return visiable; }
+
+    public void setVisiable(boolean visiable) { this.visiable = visiable; }
+
     public boolean isInsideInventory() {
         return isInsideInventory;
     }
@@ -110,6 +120,14 @@ public class BunnyShape {
     public void setSelectScript(String selectScript) {
         this.selectScript = selectScript;
     }
+
+    public void setIsOnDrop(boolean isOnDrop) { this.isOnDrop = isOnDrop; }
+
+    public boolean getIsOnDrop() { return isOnDrop; }
+
+    public void setIsOnDropValid(boolean isOnDropValid) { this.isOnDropValid = isOnDropValid; }
+
+    public boolean getIsOnDropValid() {return isOnDropValid; }
 
     public Canvas getCanvas() {
         return canvas;
@@ -127,7 +145,7 @@ public class BunnyShape {
     Canvas canvas;
     int type;
 
-    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable, boolean visiable) {
         this.name = name;
         this.type = type;
         this.left = left;
@@ -136,6 +154,7 @@ public class BunnyShape {
         this.bottom = bottom;
         this.selectScript = selectScript;
         this.moveable = moveable;
+        this.visiable = visiable;
         this.isInsideInventory = false;
 
         shapePaint = new Paint();
@@ -143,6 +162,15 @@ public class BunnyShape {
         int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
         shapePaint.setColor(ranColor);
         shapePaint.setStyle(Paint.Style.FILL);
+
+        onDropPaintTrue = new Paint();
+        onDropPaintTrue.setColor(Color.GREEN);
+        onDropPaintTrue.setStyle(Paint.Style.STROKE);
+        onDropPaintTrue.setStrokeWidth(15.0f);
+        onDropPaintFalse = new Paint();
+        onDropPaintFalse.setColor(Color.RED);
+        onDropPaintFalse.setStyle(Paint.Style.STROKE);
+        onDropPaintFalse.setStrokeWidth(15.0f);
     }
 
     public String getName() {
@@ -155,8 +183,17 @@ public class BunnyShape {
 
     public void draw(Canvas canvas) {
         this.canvas = canvas;
-        canvas.drawRect(left, top, right, bottom, shapePaint);
-
+        if(visiable) {
+            canvas.drawRect(left, top, right, bottom, shapePaint);
+            if(isOnDrop) {
+                if(isOnDropValid) {
+                    canvas.drawRect(left, top, right, bottom, onDropPaintTrue);
+                }
+                else {
+                    canvas.drawRect(left, top, right, bottom, onDropPaintFalse);
+                }
+            }
+        }
     }
 
 

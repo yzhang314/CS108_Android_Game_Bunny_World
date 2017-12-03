@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void goGame(View view) {
         Intent intent = new Intent(this, GameActivity.class);
-        System.out.print("gggooo");
         startActivity(intent);
     }
 }

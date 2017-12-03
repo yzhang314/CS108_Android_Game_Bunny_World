@@ -258,19 +258,19 @@ public class EditorView extends View {
         float downY = event.getY();
         if(inventory.isInsideInventory(downX, downY)) {
                     if (downX <= 200) {
-                        BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
+                        BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true, true);
                         selectedShape = prototypeCarrot;
                     } else if (downX > 230 && downX <= 430) {
-                        BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeDuck;
                     } else if (downX > 460 && downX <= 660) {
-                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeCarrot2;
                     } else if (downX > 690 && downX <= 890) {
-                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeDeath;
                     } else if (downX > 910 && downX <= 1100) {
-                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeFire;
 
                     }
