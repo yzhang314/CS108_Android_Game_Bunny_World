@@ -2,6 +2,8 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.graphics.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -188,24 +190,36 @@ public class BunnyShape {
     }
 
     // The variables are temporarily made public in order to test them
-    public String onClick = "";
-    public String onEnter = "";
-    public String onDrop = "";
+    public List<String> onClick = new ArrayList<>();
+    public List<String> onEnter = new ArrayList<>();
+    public List<String> onDrop = new ArrayList<>();
 
     /*
     This is the method to parse the longer string to the field of the shap class
      */
     public void loadToDB () {
         String reaction = this.getSelectScript();
-        String[] onClickString = reaction.split("onClick");
-        String[] onClickEvent =onClickString[1].split("|");
-        this.onClick = onClickEvent[0];
-        String[] onEnterString = reaction.split("onEnter");
-        String[] onEnterEvent = onEnterString[1].split("|");
-        this.onEnter = onEnterEvent[0];
-        String[] onDropString = reaction.split("onDrop");
-        String[] onDropEvent = onDropString[1].split("|");
-        this.onDrop = onDropEvent[0];
+//        String[] onClickString = reaction.split("onClick");
+//        String[] onClickEvent =onClickString[1].split("|");
+//        this.onClick = onClickEvent[0];
+//        String[] onEnterString = reaction.split("onEnter");
+//        String[] onEnterEvent = onEnterString[1].split("|");
+//        this.onEnter = onEnterEvent[0];
+//        String[] onDropString = reaction.split("onDrop");
+//        String[] onDropEvent = onDropString[1].split("|");
+//        this.onDrop = onDropEvent[0];
+        String[] allAction = reaction.split("|");
+        for (String s : allAction) {
+            if (s.indexOf("onClick") >= 0) {
+                this.onClick.add(s.substring(7));
+            } else if (s.indexOf("onEnter") >= 0) {
+                this.onEnter.add(s.substring(7));
+            } else if (s.indexOf("onDrop") >= 0) {
+                this.onDrop.add(s.substring(6));
+            }
+        }
+
+
 
     }
 
