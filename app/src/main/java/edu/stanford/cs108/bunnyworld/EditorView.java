@@ -30,6 +30,7 @@ public class EditorView extends View {
     Map<String, Integer> resourceMap = new HashMap<>();
     Canvas canvas;
     Inventory inventory;
+    Inventory inventoryNextPage;
     Map<String, BunnyPage> pageMap = new HashMap<>();
     BunnyPage page1;
     BunnyPage currentPage;
@@ -86,6 +87,13 @@ public class EditorView extends View {
 
 
         initInventory();
+        Paint p = new Paint();
+        Random random1 = new Random();
+        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
+        p.setColor(ranColor1);
+        p.setStyle(Paint.Style.FILL);
+        canvas.drawRect(1150, 430.0f, 1200f, 490.0f, p);
+        canvas.drawRect(1150, 500.0f, 1200f, 550.0f, p);
 
     }
 
@@ -205,19 +213,45 @@ public class EditorView extends View {
 
     }
 
+    int inventoryControl = 1;
     public void initInventory() {
+
+
         inventory = new Inventory(0, 1500, 430, 630);
-        inventory.draw(canvas);
+        inventoryNextPage = new Inventory(0, 1500, 430, 630);
 
-        canvas.drawBitmap(resizedCarrot, positionArray[0], inventoryTop, null);
 
-        canvas.drawBitmap(resizedDuck, positionArray[1] + 30, inventoryTop, null);
+        switch (inventoryControl) {
+            case 1: inventory.draw(canvas);
+                canvas.drawBitmap(resizedCarrot, positionArray[0], inventoryTop, null);
 
-        canvas.drawBitmap(resizedCarrot2, positionArray[2] + 60, inventoryTop, null);
+                canvas.drawBitmap(resizedDuck, positionArray[1] + 30, inventoryTop, null);
 
-        canvas.drawBitmap(resizedDeath, positionArray[3] + 90, inventoryTop, null);
+                canvas.drawBitmap(resizedCarrot2, positionArray[2] + 60, inventoryTop, null);
 
-        canvas.drawBitmap(resizedFire, positionArray[4] + 120, inventoryTop, null);
+                canvas.drawBitmap(resizedDeath, positionArray[3] + 90, inventoryTop, null);
+
+                canvas.drawBitmap(resizedFire, positionArray[4] + 120, inventoryTop, null);
+                break;
+            case 2: inventoryNextPage.draw(canvas);
+                canvas.drawBitmap(resizedCarrot, positionArray[4] + 120, inventoryTop, null);
+
+                canvas.drawBitmap(resizedDuck, positionArray[3] + 90, inventoryTop, null);
+
+                canvas.drawBitmap(resizedCarrot2, positionArray[2] + 60, inventoryTop, null);
+
+                canvas.drawBitmap(resizedDeath, positionArray[1] + 30, inventoryTop, null);
+
+                canvas.drawBitmap(resizedFire, positionArray[0], inventoryTop, null);
+                break;
+        }
+
+
+
+
+
+
+
     }
 
     @Override
@@ -267,7 +301,12 @@ public class EditorView extends View {
                     } else if (downX > 910 && downX <= 1100) {
                         BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
                         selectedShape = prototypeFire;
-
+                    } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
+                        inventoryControl = 1;
+                        invalidate();
+                    } else if (downX >= 1150 && downX <= 1200 && downY >= 500 && downY <= 550) {
+                        inventoryControl = 2;
+                        invalidate();
                     }
         } else  {
             selectedShape = currentPage.selectShape(downX, downY);
