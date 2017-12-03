@@ -699,6 +699,7 @@ public class EditorActivity extends AppCompatActivity {
             final Switch movableSwitch = (Switch) layout.findViewById(R.id.movable_switch);
             final Switch hiddenSwitch = (Switch) layout.findViewById(R.id.hidden_switch);
 
+
             movableSwitch.setChecked(selected.isMoveable());
             hiddenSwitch.setChecked(selected.isHidden());
 
@@ -727,14 +728,19 @@ public class EditorActivity extends AppCompatActivity {
                     if (selected != null) {
                         selected.setMoveable(movableSwitch.isChecked());
                         selected.setHidden(hiddenSwitch.isChecked());
-/*
+
                         if (hiddenSwitch.isChecked()) {
                             editorView.drawHidden(selected);
 
                         } else {
                             editorView.eraseHidden(selected);
                         }
-*/
+
+                        selected = currentPage.selectedShape;
+
+                        selected.setMoveable(movableSwitch.isChecked());
+                        selected.setHidden(hiddenSwitch.isChecked());
+
                     }
 
 
