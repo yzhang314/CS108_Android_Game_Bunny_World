@@ -364,10 +364,18 @@ public class EditorView extends View {
         if(judge == true) {
             if (selectedShape != null) {
 
-                selectedShape.setLeft(upX - 100);
-                selectedShape.setTop(upY - 100);
-                selectedShape.setBottom(selectedShape.getTop() + 200);
-                selectedShape.setRight(selectedShape.getLeft() + 200);
+                if (selectedShape.hasBeenDrawn) {
+                    selectedShape.setLeft(upX - selectedShape.getWidth() / 2);
+                    selectedShape.setTop(upY - selectedShape.getHeight() / 2);
+                    selectedShape.setBottom(selectedShape.getTop() + selectedShape.getHeight());
+                    selectedShape.setRight(selectedShape.getLeft() + selectedShape.getWidth());
+                } else {
+                    selectedShape.setLeft(upX - 100);
+                    selectedShape.setTop(upY - 100);
+                    selectedShape.setBottom(selectedShape.getTop() + 200);
+                    selectedShape.setRight(selectedShape.getLeft() + 200);
+                    selectedShape.hasBeenDrawn = true;
+                }
 
                 currentPage.addShape(selectedShape);
                 currentPage.selectedShape = selectedShape;
@@ -390,10 +398,18 @@ public class EditorView extends View {
         if (judge == false) {
             if (selectedShape != null) {
 
-                selectedShape.setLeft(upX - 100);
-                selectedShape.setTop(upY - 100);
-                selectedShape.setBottom(selectedShape.getTop() + 200);
-                selectedShape.setRight(selectedShape.getLeft() + 200);
+                if (selectedShape.hasBeenDrawn) {
+                    selectedShape.setLeft(upX - selectedShape.getWidth() / 2);
+                    selectedShape.setTop(upY - selectedShape.getHeight() / 2);
+                    selectedShape.setBottom(selectedShape.getTop() + selectedShape.getHeight());
+                    selectedShape.setRight(selectedShape.getLeft() + selectedShape.getWidth());
+                } else {
+                    selectedShape.setLeft(upX - 100);
+                    selectedShape.setTop(upY - 100);
+                    selectedShape.setBottom(selectedShape.getTop() + 200);
+                    selectedShape.setRight(selectedShape.getLeft() + 200);
+                    selectedShape.hasBeenDrawn = true;
+                }
 
                 currentPage.addShape(selectedShape);
                 currentPage.selectedShape = selectedShape;

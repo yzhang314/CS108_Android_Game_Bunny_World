@@ -31,6 +31,7 @@ public class BunnyShape {
 
     boolean hidden;
     boolean moveable;
+    public boolean hasBeenDrawn = false;
 
     BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
         this.name = name;
@@ -221,6 +222,14 @@ public class BunnyShape {
 
 
 
+    }
+
+    public float getHeight() {
+        return this.bottom - this.top;
+    }
+
+    public float getWidth() {
+        return this.right - this.left;
     }
 
 
