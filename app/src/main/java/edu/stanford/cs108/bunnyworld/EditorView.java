@@ -328,7 +328,9 @@ public class EditorView extends View {
 
     }
 
-    private BunnyShape backUp;
+    Map<BunnyShape, BunnyShape> backupMap = new HashMap<>();
+
+    private BunnyShape original, hidden;
 
     public void drawHidden(BunnyShape current) {
         Paint shapePaint;
@@ -339,12 +341,13 @@ public class EditorView extends View {
         shapePaint.setStyle(Paint.Style.FILL);
 
         if (current != null) {
-            backUp = current;
+            original = current;
             currentPage.removeShape(current);
-            BunnyShape newShape = new BunnyShape("test", 0, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
-            currentPage.addShape(newShape);
-            selectedShape = newShape;
+            hidden = new BunnyShape("test", 0, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+            currentPage.addShape(hidden);
+            selectedShape = hidden;
             currentPage.selectedShape = selectedShape;
+            backupMap.put(hidden, original);
 
 
         }
@@ -353,10 +356,14 @@ public class EditorView extends View {
     }
 
     public void eraseHidden(BunnyShape current) {
+        hidden = current;
+        original = backupMap.get(current);
+
         currentPage.removeShape(current);
-        selectedShape = backUp;
+
+        selectedShape = original;
         currentPage.selectedShape = selectedShape;
-        currentPage.addShape(backUp);
+        currentPage.addShape(original);
         invalidate();
 
     }
