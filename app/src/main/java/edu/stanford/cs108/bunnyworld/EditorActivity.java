@@ -137,7 +137,8 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onClickGoTo");
+
+                    selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
                     //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
