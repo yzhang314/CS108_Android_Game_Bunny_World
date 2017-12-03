@@ -19,6 +19,35 @@ public class BunnyShape {
 
     private String name;
     private String textString = "";
+    private String imageString = "";
+    private Paint shapePaint;
+    private float left, right, bottom, top;
+    boolean isInsideInventory;
+    String selectScript;
+    Canvas canvas;
+    int type;
+
+    boolean hidden;
+    boolean moveable;
+
+    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+        this.name = name;
+        this.type = type;
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
+        this.selectScript = selectScript;
+        this.moveable = moveable;
+        this.isInsideInventory = false;
+        this.hidden = false;
+
+        shapePaint = new Paint();
+        Random random = new Random();
+        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
+        shapePaint.setColor(ranColor);
+        shapePaint.setStyle(Paint.Style.FILL);
+    }
 
     public String getTextString() {
         return textString;
@@ -35,12 +64,6 @@ public class BunnyShape {
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
-
-    private String imageString = "";
-    private Paint shapePaint;
-    private float left, right, bottom, top;
-    boolean moveable;
-    boolean isInsideInventory;
 
 
     public void setName(String name) {
@@ -122,28 +145,14 @@ public class BunnyShape {
     public void setType(int type) {
         this.type = type;
     }
-
-    String selectScript;
-    Canvas canvas;
-    int type;
-
-    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
-        this.name = name;
-        this.type = type;
-        this.left = left;
-        this.right = right;
-        this.top = top;
-        this.bottom = bottom;
-        this.selectScript = selectScript;
-        this.moveable = moveable;
-        this.isInsideInventory = false;
-
-        shapePaint = new Paint();
-        Random random = new Random();
-        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
-        shapePaint.setColor(ranColor);
-        shapePaint.setStyle(Paint.Style.FILL);
+    public boolean isHidden() {
+        return hidden;
     }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
 
     public String getName() {
         return name;
@@ -158,7 +167,6 @@ public class BunnyShape {
         canvas.drawRect(left, top, right, bottom, shapePaint);
 
     }
-
 
     public String getSelectedScript() {
         return selectScript;

@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter the sound to play:"
+        android:text="The script of the selected shape:"
         android:textSize="22dp"
         android:padding="5pt"
         android:textColor="#000000"
@@ -23,31 +23,34 @@
     <!--android:textSize="22dp"-->
 
     <EditText
-        android:id="@+id/show_text"
+        android:id="@+id/showCurrentScript_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="what to show?"
+        android:text = ""
         />
+
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:id="@+id/showEnter_button"
+            android:id="@+id/changeScript_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ENTER"
+            android:text="CHANGE"
             android:textColor="@color/colorAccent"
             android:layout_gravity="right"/>
 
         <Button
-            android:id="@+id/showCancel_button"
+            android:id="@+id/changeScriptCancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CANCEL"
             android:textColor="@color/colorAccent"
             android:layout_gravity="right"/>
         />
+
 
     </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -39,20 +40,15 @@ public class EditorActivity extends AppCompatActivity {
         editorView = (EditorView) findViewById(R.id.editorView);
         editorView.loadInialPage();
         this.currentPage = editorView.currentPage;
+        this.view = editorView;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
 
 
     public void onCreateNewPage(View view) {
+        //this.view = view;
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         popupWindow1(view);
-        this.view = view;
         this.currentPage = editorView.currentPage;
     }
 
@@ -79,6 +75,49 @@ public class EditorActivity extends AppCompatActivity {
         editorView.openPage(currentPage.getName());
     }
 
+    public void getScript() {
+        popupWindow5(view);
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem movable = menu.findItem(R.id.movableSwitch);
+        MenuItem hidden = menu.findItem(R.id.hiddenSwitch);
+        if (selected != null) {
+            if(selected.isMoveable()) {
+                movable.setChecked(true);
+            } else {
+                movable.setChecked(false);
+            }
+
+            if (selected.isHidden()) {
+                hidden.setChecked(true);
+            } else {
+                hidden.setChecked(false);
+            }
+        } else {
+            movable.setChecked(false);
+            hidden.setChecked(false);
+
+        }
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+        /*
+        MenuItem item = menu.findItem(R.id.movableSwitch);
+        item.setActionView(R.layout.movable_switch_layout);
+        */
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
@@ -88,11 +127,18 @@ public class EditorActivity extends AppCompatActivity {
         // Handle item selection
 
         switch (item.getItemId()) {
+
+            case R.id.showScript:
+                getScript();
+                return true;
+
             case R.id.onClickGoTo:
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onClickGoTo");
+                    //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -103,7 +149,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onClickPlaySound");
+                    //currentPage.addShape(selected);
                     popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -113,8 +161,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onClickShow");
-                    popupWindowShow(view);
+                    //currentPage.addShape(selected);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
                 return true;
@@ -122,7 +171,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onEnterGoTo");
+                    //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -132,7 +183,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onEnterPlaySound");
+                    currentPage.addShape(selected);
                     popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -142,8 +195,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onEnterShow");
-                    popupWindowShow(view);
+                    //currentPage.addShape(selected);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
@@ -152,7 +206,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onDropGoTo");
+                    //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -162,7 +218,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onDropPlaySound");
+                    //currentPage.addShape(selected);
                     popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
@@ -172,8 +230,9 @@ public class EditorActivity extends AppCompatActivity {
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
+                    //currentPage.removeShape(selected);
                     selected.setSelectScript(selected.getSelectedScript() + "onDropShow");
-                    popupWindowShow(view);
+                    //currentPage.addShape(selected);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
@@ -205,6 +264,7 @@ public class EditorActivity extends AppCompatActivity {
         }
 
     }
+    //This is for create a new Page
     private void popupWindow1(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -248,7 +308,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    // This is for go to another page (create script for on click, on enter and on drop)
     private void popupWindow2(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -349,57 +409,8 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    private void popupWindowShow(View v) {
-        try {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.popup_windowshow,null);
 
-            //We need to get the instance of the LayoutInflater, use the context of this activity
-
-            //Inflate the view from a predefined XML layout
-
-            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
-            // display the popup in the center
-            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
-
-            Button enterBtn = (Button) layout.findViewById(R.id.showEnter_button);
-            Button cancelBtn = (Button) layout.findViewById(R.id.showCancel_button);
-
-            cancelBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    pw.dismiss();
-                }
-            });
-
-
-            enterBtn.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    EditText editText = (EditText) layout.findViewById(R.id.show_text);
-                    String showString = editText.getText().toString();
-                    selected.setSelectScript(selected.getSelectScript() + showString + "|");
-                    editText.setText("");
-                    Log.i(selected.getName(), selected.getSelectScript());
-                    //This is used to change page which can be used during game
-                    /*
-                    EditorView editorView = (EditorView) findViewById(R.id.editorView);
-                    editorView.openPage(goToPage);
-                    */
-                    pw.dismiss();
-
-
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    // This is for changing the page
     private void popupWindow3(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -492,46 +503,46 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    //This is for deleting page
     private void popupWindow4(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final View layout = inflater.inflate(R.layout.popup_window3,null);
+            final View layout = inflater.inflate(R.layout.popup_window4,null);
             int i = 0;
-            final RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup);
+            final RadioGroup group = (RadioGroup) layout.findViewById(R.id.pageRadioGroup1);
 
             for (String s: pageMap.keySet()) {
-                RadioButton testButton = (RadioButton) layout.findViewById(R.id.first);
+                RadioButton testButton = (RadioButton) layout.findViewById(R.id.first1);
 
                 switch(i) {
-                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first);
+                    case 0: testButton = (RadioButton) layout.findViewById(R.id.first1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.first);
+                            group.check(R.id.first1);
                         }
                         break;
-                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second);
+                    case 1: testButton = (RadioButton) layout.findViewById(R.id.second1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.second);
+                            group.check(R.id.second1);
                         }
                         break;
-                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third);
+                    case 2: testButton = (RadioButton) layout.findViewById(R.id.third1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.third);
+                            group.check(R.id.third1);
                         }
                         break;
-                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth);
+                    case 3: testButton = (RadioButton) layout.findViewById(R.id.fourth1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.fourth);
+                            group.check(R.id.fourth1);
                         }
                         break;
-                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth);
+                    case 4: testButton = (RadioButton) layout.findViewById(R.id.fifth1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.fifth);
+                            group.check(R.id.fifth1);
                         }
                         break;
-                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth);
+                    case 5: testButton = (RadioButton) layout.findViewById(R.id.sixth1);
                         if (s.equals(currentPage.getName())) {
-                            group.check(R.id.sixth);
+                            group.check(R.id.sixth1);
                         }
                         break;
                     default:
@@ -548,8 +559,8 @@ public class EditorActivity extends AppCompatActivity {
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
 
-            Button enterBtn = (Button) layout.findViewById(R.id.changePageEnter_button);
-            Button cancelBtn = (Button) layout.findViewById(R.id.changePageCancel_button);
+            Button enterBtn = (Button) layout.findViewById(R.id.deletePageEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.deletePageCancel_button);
 
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -603,6 +614,63 @@ public class EditorActivity extends AppCompatActivity {
                 }
             });
 
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //This is for showing and changing script of the selcted shape
+    private void popupWindow5(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window5,null);
+            final EditText showScript = (EditText) layout.findViewById(R.id.showCurrentScript_text);
+
+            if (selected != null) {
+                String script = selected.getSelectedScript();
+
+                showScript.setText(script);
+            }
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changeScript_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.changeScriptCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (selected != null) {
+                        String updatedScript = showScript.getText().toString();
+                        String selectedName = selected.getName();
+                        //currentPage.removeShape(selected);
+                        selected.setSelectScript(updatedScript);
+                        //currentPage.addShape(selected);
+
+                        Log.i(selected.getName(),selected.getSelectScript());
+                    }
+
+                    pw.dismiss();
+
+                }
+            });
 
 
 
