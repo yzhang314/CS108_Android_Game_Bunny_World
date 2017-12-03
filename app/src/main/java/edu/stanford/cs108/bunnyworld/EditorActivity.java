@@ -142,6 +142,18 @@ public class EditorActivity extends AppCompatActivity {
 
                 return true;
 
+            case R.id.changeText:
+                if (selected.type == 2) {
+                    popupWindowChangeText(view);
+                }
+                return true;
+
+            case R.id.resize:
+                if (selected != null) {
+                    popupWindowResize(view);
+                }
+                return true;
+
             case R.id.onClickGoTo:
                 if (selected == null) {
                     Log.i("null", "null");
@@ -632,6 +644,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     //This is for showing and changing script of the selcted shape
     private void popupWindow5(View v) {
         try {
@@ -746,6 +759,123 @@ public class EditorActivity extends AppCompatActivity {
 
 
                     pw.dismiss();
+
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //This is for change the text of a shape of text
+    private void popupWindowChangeText(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_changetext,null);
+            final EditText showScript = (EditText) layout.findViewById(R.id.showtext_changetext);
+
+            if (selected != null && selected.type == 2) {
+                String script = selected.getTextString();
+
+                showScript.setText(script);
+            }
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changeScript_changetext_btn);
+            Button cancelBtn = (Button) layout.findViewById(R.id.changeScriptCancel_changetext_btn);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (selected != null) {
+                        String updatedScript = showScript.getText().toString();
+                        String selectedName = selected.getName();
+                        //currentPage.removeShape(selected);
+                        selected.setTextString(updatedScript);
+                        //currentPage.addShape(selected);
+
+                        Log.i(selected.getName(),selected.getTextString());
+                    }
+
+                    pw.dismiss();
+                    view.invalidate();
+
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // this is the function to pop up a window and change the size of the current shape
+    private void popupWindowResize(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_resize,null);
+            final EditText heightEditText = (EditText) layout.findViewById(R.id.new_height);
+            final EditText widthEditText = (EditText) layout.findViewById(R.id.new_width);
+
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            if (selected != null) {
+                widthEditText.setText(selected.getRight() - selected.getLeft() + "");
+                heightEditText.setText(selected.getBottom() - selected.getTop() + "");
+
+            }
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.change_resize_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.cancel_resize_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (selected != null) {
+                        Float newheight = Float.parseFloat(heightEditText.getText().toString());
+                        Float newwidth = Float.parseFloat(widthEditText.getText().toString());
+                        selected.setRight(selected.getLeft() + newwidth);
+                        selected.setBottom(selected.getTop() + newheight);
+                    }
+
+                    pw.dismiss();
+                    view.invalidate();
 
                 }
             });
