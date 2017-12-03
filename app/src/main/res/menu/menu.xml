@@ -53,18 +53,6 @@
 
     <item android:id="@+id/setProperty"
         android:title="Set Property">
-        <menu>
-
-            <item
-                android:id="@+id/movableSwitch"
-                android:checkable="true"
-                android:title="movable" />
-
-            <item
-                android:id="@+id/hiddenSwitch"
-                android:checkable="true"
-                android:title="hidden" />
-            </menu>>
     </item>
 
 

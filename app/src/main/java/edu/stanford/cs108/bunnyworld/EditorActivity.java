@@ -79,7 +79,7 @@ public class EditorActivity extends AppCompatActivity {
         popupWindow5(view);
     }
 
-
+/*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem movable = menu.findItem(R.id.movableSwitch);
@@ -104,6 +104,7 @@ public class EditorActivity extends AppCompatActivity {
 
         return true;
     }
+    */
 
 
     @Override
@@ -130,6 +131,15 @@ public class EditorActivity extends AppCompatActivity {
 
             case R.id.showScript:
                 getScript();
+                return true;
+
+            case R.id.setProperty:
+                if(selected == null) {
+
+                } else {
+                    popupWindow6(view);
+                }
+
                 return true;
 
             case R.id.onClickGoTo:
@@ -678,6 +688,56 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    //This is for changing the property of current shape
+    private void popupWindow6(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window6,null);
+
+            final Switch movableSwitch = (Switch) layout.findViewById(R.id.movable_switch);
+            final Switch hiddenSwitch = (Switch) layout.findViewById(R.id.hidden_switch);
+
+                movableSwitch.setChecked(selected.isMoveable());
+                hiddenSwitch.setChecked(selected.isHidden());
+
+            final PopupWindow pw = new PopupWindow(layout, 600, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changeProperty_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.cancelProperty_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    pw.dismiss();
+
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    selected.setMoveable(movableSwitch.isChecked());
+                    selected.setHidden(hiddenSwitch.isChecked());
+
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
