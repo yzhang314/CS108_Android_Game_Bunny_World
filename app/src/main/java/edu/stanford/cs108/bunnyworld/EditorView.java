@@ -47,11 +47,6 @@ public class EditorView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        /*
-        BunnyPage current = new BunnyPage("lalala");
-        super.onDraw(canvas);
-        current.draw(canvas);
-        */
 
 
         this.canvas = canvas;
@@ -330,6 +325,39 @@ public class EditorView extends View {
         } else {
             return;
         }
+
+    }
+
+    private BunnyShape backUp;
+
+    public void drawHidden(BunnyShape current) {
+        Paint shapePaint;
+        shapePaint = new Paint();
+        Random random1 = new Random();
+        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
+        shapePaint.setColor(ranColor1);
+        shapePaint.setStyle(Paint.Style.FILL);
+
+        if (current != null) {
+            backUp = current;
+            currentPage.removeShape(current);
+            BunnyShape newShape = new BunnyShape("test", 0, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+            currentPage.addShape(newShape);
+            selectedShape = newShape;
+            currentPage.selectedShape = selectedShape;
+
+
+        }
+
+        invalidate();
+    }
+
+    public void eraseHidden(BunnyShape current) {
+        currentPage.removeShape(current);
+        selectedShape = backUp;
+        currentPage.selectedShape = selectedShape;
+        currentPage.addShape(backUp);
+        invalidate();
 
     }
 
