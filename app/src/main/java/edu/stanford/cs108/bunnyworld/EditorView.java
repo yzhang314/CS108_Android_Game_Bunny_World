@@ -78,7 +78,7 @@ public class EditorView extends View {
                         drawImage(shape);
                         break;
                     case 2:
-                        drawText(shape);
+                        mydrawText(shape);
                         break;
                     default:
                         ;
@@ -150,7 +150,7 @@ public class EditorView extends View {
         canvas.drawBitmap(testPicture, null, boundaryRectangle, null);
     }
 
-    public void drawText(BunnyShape shape) {
+    public void mydrawText(BunnyShape shape) {
         RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
 
         TextPaint paint;
@@ -162,26 +162,25 @@ public class EditorView extends View {
 
         Paint shapePaint;
         shapePaint = new Paint();
-        Random random1 = new Random();
-        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
-        shapePaint.setColor(ranColor1);
+//        Random random1 = new Random();
+//        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
+        int color = 0xff000000;
+        shapePaint.setColor(color);
         shapePaint.setStyle(Paint.Style.FILL);
 
-        canvas.drawRect(boundaryRectangle, shapePaint);
+        //canvas.drawRect(boundaryRectangle, shapePaint);
 
-        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
-
-        canvas.save();
-        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
-        sl.draw(canvas);
-        canvas.restore();
-        /*
+//        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+//
+//        canvas.save();
+//        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+//        sl.draw(canvas);
+//        canvas.restore();
 
         String textString = shape.getTextString();
-        //float centerX = (shape.getRight() + shape.getLeft()) / 2;
+        float centerX = (shape.getRight() + shape.getLeft()) / 2;
         float centerY = (shape.getTop() + shape.getBottom()) / 2;
-        canvas.drawText(textString,shape.getLeft(),centerY, paint);
-        */
+        canvas.drawText(textString,shape.getLeft(), (shape.getTop() + shape.getBottom())/2 , paint);
 
     }
 
@@ -335,8 +334,10 @@ public class EditorView extends View {
                         BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
                         selectedShape = prototypeDeath;
                     } else if (downX <= 200) {
-                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-                        selectedShape = prototypeFire;
+//                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+//                        selectedShape = prototypeFire;
+                        BunnyShape textShape = new BunnyShape("text", 2, 0, 200, inventoryTop,inventoryTop + 200, "", true);
+                        selectedShape = textShape;
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
                         inventoryControl = 1;
                         invalidate();
