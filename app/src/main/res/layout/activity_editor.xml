@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="edu.stanford.cs108.bunnyworld.EditorActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <edu.stanford.cs108.bunnyworld.EditorView
             android:id="@+id/editorView"
             android:layout_width="match_parent"
@@ -39,9 +42,9 @@
 
         </LinearLayout>
 
-
-
     </RelativeLayout>
+
+
 
 
 </LinearLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resize the Current Shape"
+        android:textSize="22dp"
+        android:padding="5pt"
+        android:textColor="#000000"
+        />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="2"
+        >
+
+        <TextView
+            android:text="Height:"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_columnSpan="1"
+            />
+        <EditText
+            android:id="@+id/new_height"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:layout_columnSpan="2"
+            />
+
+        <TextView
+            android:text="Width:"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:layout_columnSpan="1"
+            />
+        <EditText
+            android:id="@+id/new_width"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:layout_columnSpan="2"
+            />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/change_resize_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHANGE"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="right"/>
+
+        <Button
+            android:id="@+id/cancel_resize_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

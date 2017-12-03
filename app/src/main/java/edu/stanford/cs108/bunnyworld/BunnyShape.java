@@ -2,6 +2,8 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.graphics.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,6 +21,42 @@ public class BunnyShape {
 
     private String name;
     private String textString = "";
+    private String imageString = "";
+    private Paint shapePaint;
+    private Paint onDropPaintTrue;
+    private Paint onDropPaintFalse;
+    private float left, right, bottom, top;
+    boolean isInsideInventory;
+    String selectScript;
+    Canvas canvas;
+    int type;
+
+    boolean moveable;
+    boolean visiable;
+
+    boolean isOnDrop;
+    boolean isOnDropValid;
+
+    boolean hidden;
+
+    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+        this.name = name;
+        this.type = type;
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
+        this.selectScript = selectScript;
+        this.moveable = moveable;
+        this.isInsideInventory = false;
+        this.hidden = false;
+
+        shapePaint = new Paint();
+        Random random = new Random();
+        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
+        shapePaint.setColor(ranColor);
+        shapePaint.setStyle(Paint.Style.FILL);
+    }
 
     public String getTextString() {
         return textString;
@@ -35,19 +73,6 @@ public class BunnyShape {
     public void setImageString(String imageString) {
         this.imageString = imageString;
     }
-
-    private String imageString = "";
-    private Paint shapePaint;
-    private Paint onDropPaintTrue;
-    private Paint onDropPaintFalse;
-    private float left, right, bottom, top;
-    boolean moveable;
-    boolean visiable;
-    boolean isInsideInventory;
-
-    boolean isOnDrop;
-    boolean isOnDropValid;
-
 
     public void setName(String name) {
         this.name = name;
@@ -140,10 +165,9 @@ public class BunnyShape {
     public void setType(int type) {
         this.type = type;
     }
-
-    String selectScript;
-    Canvas canvas;
-    int type;
+    public boolean isHidden() {
+        return hidden;
+    }
 
     BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable, boolean visiable) {
         this.name = name;
@@ -173,6 +197,11 @@ public class BunnyShape {
         onDropPaintFalse.setStrokeWidth(15.0f);
     }
 
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -196,7 +225,6 @@ public class BunnyShape {
         }
     }
 
-
     public String getSelectedScript() {
         return selectScript;
     }
@@ -217,24 +245,36 @@ public class BunnyShape {
     }
 
     // The variables are temporarily made public in order to test them
-    public String onClick = "";
-    public String onEnter = "";
-    public String onDrop = "";
+    public List<String> onClick = new ArrayList<>();
+    public List<String> onEnter = new ArrayList<>();
+    public List<String> onDrop = new ArrayList<>();
 
     /*
     This is the method to parse the longer string to the field of the shap class
      */
     public void loadToDB () {
         String reaction = this.getSelectScript();
-        String[] onClickString = reaction.split("onClick");
-        String[] onClickEvent =onClickString[1].split("|");
-        this.onClick = onClickEvent[0];
-        String[] onEnterString = reaction.split("onEnter");
-        String[] onEnterEvent = onEnterString[1].split("|");
-        this.onEnter = onEnterEvent[0];
-        String[] onDropString = reaction.split("onDrop");
-        String[] onDropEvent = onDropString[1].split("|");
-        this.onDrop = onDropEvent[0];
+//        String[] onClickString = reaction.split("onClick");
+//        String[] onClickEvent =onClickString[1].split("|");
+//        this.onClick = onClickEvent[0];
+//        String[] onEnterString = reaction.split("onEnter");
+//        String[] onEnterEvent = onEnterString[1].split("|");
+//        this.onEnter = onEnterEvent[0];
+//        String[] onDropString = reaction.split("onDrop");
+//        String[] onDropEvent = onDropString[1].split("|");
+//        this.onDrop = onDropEvent[0];
+        String[] allAction = reaction.split("|");
+        for (String s : allAction) {
+            if (s.indexOf("onClick") >= 0) {
+                this.onClick.add(s.substring(7));
+            } else if (s.indexOf("onEnter") >= 0) {
+                this.onEnter.add(s.substring(7));
+            } else if (s.indexOf("onDrop") >= 0) {
+                this.onDrop.add(s.substring(6));
+            }
+        }
+
+
 
     }
 
