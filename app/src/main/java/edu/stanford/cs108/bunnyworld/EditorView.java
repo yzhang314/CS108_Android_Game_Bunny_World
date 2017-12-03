@@ -134,10 +134,22 @@ public class EditorView extends View {
     }
 
     public void drawImage(BunnyShape shape) {
-        RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
-        BitmapDrawable test = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getName()));
-        Bitmap testPicture = test.getBitmap();
-        canvas.drawBitmap(testPicture, null, boundaryRectangle, null);
+        if (backupMap.containsKey(shape)) {
+            RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+            BitmapDrawable bd = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getName()));
+            Bitmap bm = bd.getBitmap();
+            Paint paint = new Paint();
+            paint.setAlpha(60);
+            canvas.drawBitmap(bm, null, boundaryRectangle, paint);
+
+        } else {
+            RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+            BitmapDrawable test = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getName()));
+            Bitmap testPicture = test.getBitmap();
+            canvas.drawBitmap(testPicture, null, boundaryRectangle, null);
+
+        }
+
     }
 
     public void drawText(BunnyShape shape) {
@@ -331,6 +343,19 @@ public class EditorView extends View {
                 selectedShape.setRight(selectedShape.getLeft() + 200);
 
                 currentPage.addShape(selectedShape);
+/*
+                for (BunnyShape shapes: backupMap.keySet()) {
+                    if (shapes == selectedShape) {
+                        backupMap.put(selectedShape, backupMap.get(shapes));
+                    }
+
+                    if(backupMap.get(shapes) == selectedShape) {
+                        backupMap.put(shapes, selectedShape);
+                    }
+                }
+                */
+
+
                 currentPage.selectedShape = selectedShape;
                 invalidate();
             }
@@ -382,7 +407,7 @@ public class EditorView extends View {
         if (current != null) {
             original = current;
             currentPage.removeShape(current);
-            hidden = new BunnyShape("test", 0, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+            hidden = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
             currentPage.addShape(hidden);
             selectedShape = hidden;
             currentPage.selectedShape = selectedShape;
@@ -396,13 +421,17 @@ public class EditorView extends View {
 
     public void eraseHidden(BunnyShape current) {
         hidden = current;
-        original = backupMap.get(current);
-
         currentPage.removeShape(current);
+        original = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
 
+        backupMap.put(hidden, original);
+
+        currentPage.addShape(original);
         selectedShape = original;
         currentPage.selectedShape = selectedShape;
-        currentPage.addShape(original);
+
+
+
         invalidate();
 
     }
