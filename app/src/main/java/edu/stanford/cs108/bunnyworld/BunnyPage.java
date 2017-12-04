@@ -11,6 +11,7 @@ public class BunnyPage {
     private String name;
     public BunnyShape selectedShape;
 
+    // This is the getter function to return the shapeList
     public List<BunnyShape> getShapes() {
         return shapes;
     }
@@ -62,5 +63,10 @@ public class BunnyPage {
             }
         }
         return null;
+    }
+
+    // This is the getter function for the selected shape
+    public BunnyShape getSelectedShape() {
+        return selectedShape;
     }
 }
