@@ -3,6 +3,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.content.Context;
@@ -331,31 +332,68 @@ public class EditorView extends View {
                         inventoryControl = 2;
                         invalidate();
                     }
+                    if (selectedShape != null) {
+                        currentPage.addShape(selectedShape);
+                        currentPage.selectedShape = selectedShape;
+                    }
                     break;
                 case 2 :
-                    if (downX > 910 && downX <= 1100) {
-                        BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
-                        selectedShape = prototypeCarrot;
-                    } else if (downX > 690 && downX <= 890) {
-                        BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-                        selectedShape = prototypeDuck;
-                    } else if (downX > 460 && downX <= 660) {
-                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-                        selectedShape = prototypeCarrot2;
+//                    if (downX > 910 && downX <= 1100) {
+//                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
+//                        selectedShape = prototypeCarrot2;
+//                    } else if (downX > 690 && downX <= 890) {
+//                        BunnyShape prototypeDuck2 = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+//                        selectedShape = prototypeDuck2;
+//                    } else if (downX > 460 && downX <= 660) {
+//                        BunnyShape prototypeCarrot22 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+//                        selectedShape = prototypeCarrot22;
+//                    } else if (downX > 230 && downX <= 430) {
+//                        BunnyShape prototypeDeath2 = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+//                        selectedShape = prototypeDeath2;
+//                    } else if (downX <= 200) {
+////                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+////                        selectedShape = prototypeFire;
+//                        BunnyShape textShape = new BunnyShape("text", 2, 0, 200, inventoryTop,inventoryTop + 200, "", true);
+//                        selectedShape = textShape;
+//                    } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
+//                        inventoryControl = 1;
+//                        invalidate();
+//                    } else if (downX >= 1150 && downX <= 1200 && downY >= 500 && downY <= 550) {
+//                        inventoryControl = 2;
+//                        invalidate();
+//                    }
+//                    if (selectedShape != null) {
+//                        currentPage.addShape(selectedShape);
+//                        currentPage.selectedShape = selectedShape;
+//                    }
+//                    break;
+                    if (downX <= 200) {
+
+                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypeFire;
                     } else if (downX > 230 && downX <= 430) {
-                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
+
+                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeDeath;
-                    } else if (downX <= 200) {
-//                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-//                        selectedShape = prototypeFire;
-                        BunnyShape textShape = new BunnyShape("text", 2, 0, 200, inventoryTop,inventoryTop + 200, "", true);
-                        selectedShape = textShape;
+                    } else if (downX > 460 && downX <= 660) {
+                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypeCarrot2;
+                    } else if (downX > 690 && downX <= 890) {
+                        BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypeDuck;
+                    } else if (downX > 910 && downX <= 1100) {
+                        BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true, true);
+                        selectedShape = prototypeCarrot;
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
                         inventoryControl = 1;
                         invalidate();
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 500 && downY <= 550) {
                         inventoryControl = 2;
                         invalidate();
+                    }
+                    if (selectedShape != null) {
+                        currentPage.addShape(selectedShape);
+                        currentPage.selectedShape = selectedShape;
                     }
                     break;
             }
@@ -381,7 +419,10 @@ public class EditorView extends View {
                 selectedShape.setBottom(selectedShape.getTop() + 200);
                 selectedShape.setRight(selectedShape.getLeft() + 200);
 
-                currentPage.addShape(selectedShape);
+                //currentPage.addShape(selectedShape);
+//                for (BunnyShape curtShape : currentPage.getShapes()) {
+//                    Log.i(curtShape.getName(), curtShape.getSelectScript());
+//                }
 /*
                 for (BunnyShape shapes: backupMap.keySet()) {
                     if (shapes == selectedShape) {
@@ -395,7 +436,7 @@ public class EditorView extends View {
                 */
 
 
-                currentPage.selectedShape = selectedShape;
+                //currentPage.selectedShape = selectedShape;
                 invalidate();
             }
 
@@ -420,8 +461,8 @@ public class EditorView extends View {
                 selectedShape.setBottom(selectedShape.getTop() + 200);
                 selectedShape.setRight(selectedShape.getLeft() + 200);
 
-                currentPage.addShape(selectedShape);
-                currentPage.selectedShape = selectedShape;
+                //currentPage.addShape(selectedShape);
+                //currentPage.selectedShape = selectedShape;
                 invalidate();
             }
 

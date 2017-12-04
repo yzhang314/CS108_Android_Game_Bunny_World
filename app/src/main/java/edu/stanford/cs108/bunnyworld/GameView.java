@@ -176,7 +176,7 @@ public class GameView extends View {
         float upY = event.getY();
         if(isSelected) {
             if(inventory.isInsideInventory(upX, upY)) {
-                if(selectedShape.isMoveable()) {
+                if(selectedShape.getMoveable()) {
                     inventory.addShape(selectedShape);
                     selectedShape.isInsideInventory = true;
                 }

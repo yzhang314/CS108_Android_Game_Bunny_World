@@ -99,7 +99,7 @@ public class BunnyShape {
         this.top = top;
     }
 
-    public boolean isMoveable() {
+    public boolean getMoveable() {
         return moveable;
     }
 

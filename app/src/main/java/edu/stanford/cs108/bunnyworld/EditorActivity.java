@@ -713,7 +713,7 @@ public class EditorActivity extends AppCompatActivity {
             final Switch hiddenSwitch = (Switch) layout.findViewById(R.id.hidden_switch);
 
 
-            movableSwitch.setChecked(selected.isMoveable());
+            movableSwitch.setChecked(selected.getMoveable());
             hiddenSwitch.setChecked(selected.isHidden());
 
             final PopupWindow pw = new PopupWindow(layout, 600, 350, true);
