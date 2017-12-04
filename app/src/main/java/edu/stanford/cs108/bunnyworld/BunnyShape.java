@@ -15,6 +15,7 @@ public class BunnyShape {
     // map linking the string to the page that is going to be drawed
     static Map<String, BunnyPage> map;
 
+    // static final constant indicating the type of the shape
     final int RECTANGLE = 0;
     final int IMAGE = 1;
     final int TEXT = 2;
@@ -30,33 +31,13 @@ public class BunnyShape {
     String selectScript;
     Canvas canvas;
     int type;
-
     boolean moveable;
     boolean visiable;
-
     boolean isOnDrop;
     boolean isOnDropValid;
-
     boolean hidden;
 
-    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
-        this.name = name;
-        this.type = type;
-        this.left = left;
-        this.right = right;
-        this.top = top;
-        this.bottom = bottom;
-        this.selectScript = selectScript;
-        this.moveable = moveable;
-        this.isInsideInventory = false;
-        this.hidden = false;
 
-        shapePaint = new Paint();
-        Random random = new Random();
-        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
-        shapePaint.setColor(ranColor);
-        shapePaint.setStyle(Paint.Style.FILL);
-    }
 
     public String getTextString() {
         return textString;
@@ -165,8 +146,29 @@ public class BunnyShape {
     public void setType(int type) {
         this.type = type;
     }
+
     public boolean isHidden() {
         return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getSelectedScript() {
+        return selectScript;
+    }
+
+    public String getPlaceScript() {
+        return "";
     }
 
     BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable, boolean visiable) {
@@ -197,17 +199,25 @@ public class BunnyShape {
         onDropPaintFalse.setStrokeWidth(15.0f);
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
 
 
-    public String getName() {
-        return name;
-    }
+    BunnyShape(String name, int type, float left, float right, float top, float bottom, String selectScript, boolean moveable) {
+        this.name = name;
+        this.type = type;
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
+        this.selectScript = selectScript;
+        this.moveable = moveable;
+        this.isInsideInventory = false;
+        this.hidden = false;
 
-    public int getType() {
-        return type;
+        shapePaint = new Paint();
+        Random random = new Random();
+        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
+        shapePaint.setColor(ranColor);
+        shapePaint.setStyle(Paint.Style.FILL);
     }
 
     public void draw(Canvas canvas) {
@@ -223,14 +233,6 @@ public class BunnyShape {
                 }
             }
         }
-    }
-
-    public String getSelectedScript() {
-        return selectScript;
-    }
-
-    public String getPlaceScript() {
-        return "";
     }
 
     public void move(float x, float y) {
