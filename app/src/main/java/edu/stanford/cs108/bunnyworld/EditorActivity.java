@@ -48,6 +48,7 @@ public class EditorActivity extends AppCompatActivity {
         editorView = (EditorView) findViewById(R.id.editorView);
         editorView.loadInialPage();
         this.currentPage = editorView.currentPage;
+        pageMap.put(currentPage.getName(), currentPage);
         this.view = editorView;
         popupWindowCreateNewGame(view);
 
@@ -62,6 +63,9 @@ public class EditorActivity extends AppCompatActivity {
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         popupWindow1(view);
         this.currentPage = editorView.currentPage;
+        System.out.println("shit");
+        System.out.println(currentPage.getName());
+        pageMap.put(currentPage.getName(), currentPage);
     }
 
     public void changePage(View view) {
@@ -956,6 +960,8 @@ public class EditorActivity extends AppCompatActivity {
     // Each record stores a game,not a page
     // Game name, all the information, id
     private void setupDatabase(){
+        // update the pagemap
+
         String dropStr = "DROP TABLE IF EXISTS BunnyGames;";
         db.execSQL(dropStr);
         String setupStr = "CREATE TABLE BunnyGames ("
@@ -966,12 +972,18 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveInformation(){
+        //System.out.print(editorView.pageMap.size());
+        for (String s : editorView.pageMap.keySet()) {
+            if (!this.pageMap.containsKey(s)) {
+                this.pageMap.put(s, editorView.pageMap.get(s));
+            }
+        }
         String string = bunnyPageToJson(); // all the information in bunny pages
         String dataString = "INSERT INTO BunnyGames VALUES " +
                 "('game1'" + ",'" +
                 string + "',NULL);";
         System.out.println(dataString);
-        Log.i(dataString,dataString);
+        //Log.i(dataString,dataString);
         db.execSQL(dataString);
 
     }
@@ -979,6 +991,7 @@ public class EditorActivity extends AppCompatActivity {
     // change a list of pages to json
     private String bunnyPageToJson() {
         String bunnyPageStr = "";
+        System.out.println(pageMap.keySet().size());
         JSONObject object = new JSONObject();          //创建一个总的对象，这个对象对整个json串
         try {
             JSONArray jsonarray = new JSONArray();     //json数组，里面包含的内容为bunnyPage的所有对象
@@ -991,12 +1004,12 @@ public class EditorActivity extends AppCompatActivity {
 
                 jsonarray.put(bunnyPageObj);              //向json数组里面添加bunnyPage对象
             }
-            object.put("bunnyPage", jsonarray);       //向总对象里面添加包含bunnyPage的数组
+            object.put("bunnyPages", jsonarray);       //向总对象里面添加包含bunnyPage的数组
             bunnyPageStr = object.toString();         //生成返回字符串
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("生成的json串为:"+bunnyPageStr,"");
+        //Log.i("生成的json串为:"+bunnyPageStr,"");
         return bunnyPageStr;
     }
 
@@ -1027,7 +1040,8 @@ public class EditorActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("生成的json串为:"+bunnyShapeStr,"");
+        //
+        // Log.i("生成的json串为:"+bunnyShapeStr,"");
         return bunnyShapeStr;
     }
 
