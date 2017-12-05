@@ -12,14 +12,10 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Editor"
-            android:onClick="goEditor"/>
+            android:text="Start Game"
+            android:onClick="pop"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Game"
-            android:onClick="goGame"/>
+
     </android.support.v7.widget.FitWindowsLinearLayout>
 
 </android.support.constraint.ConstraintLayout>
