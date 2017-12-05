@@ -37,13 +37,17 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text = "Clear Current Page"
+                android:text = "Clear Current"
                 android:onClick="clearCurrentPage"/>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "Save Design"
+                android:onClick="saveDesign"/>
         </LinearLayout>
 
     </RelativeLayout>
-
 
 
 

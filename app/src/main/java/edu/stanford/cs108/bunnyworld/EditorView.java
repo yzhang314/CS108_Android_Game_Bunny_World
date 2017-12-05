@@ -168,11 +168,10 @@ public class EditorView extends View {
 
         TextPaint paint;
         paint = new TextPaint();
-        Random random = new Random();
-        int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
-        paint.setColor(ranColor);
+       // int ranColor = 0xff000000;
         paint.setTextSize(50);
-
+        paint.setColor(0xff000000);
+/*
         Paint shapePaint;
         shapePaint = new Paint();
 //        Random random1 = new Random();
@@ -180,27 +179,29 @@ public class EditorView extends View {
         int color = 0xff000000;
         shapePaint.setColor(color);
         shapePaint.setStyle(Paint.Style.FILL);
+        */
 
         //canvas.drawRect(boundaryRectangle, shapePaint);
 
-//        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
-//
-//        canvas.save();
-//        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
-//        sl.draw(canvas);
-//        canvas.restore();
+        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
 
+        canvas.save();
+        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+        sl.draw(canvas);
+        canvas.restore();
+/*
         String textString = shape.getTextString();
         float centerX = (shape.getRight() + shape.getLeft()) / 2;
         float centerY = (shape.getTop() + shape.getBottom()) / 2;
         canvas.drawText(textString,shape.getLeft(), (shape.getTop() + shape.getBottom())/2 , paint);
+        */
 
     }
 
     private static int[] positionArray = new int[]{0, 200, 400, 600, 800};
     private static final int inventoryTop = 430;
-    private BitmapDrawable carrotDrawable, duckDrawable, carrot2Drawble, deathDrawble, fireDrawble;
-    private Bitmap resizedCarrot, resizedDuck, resizedCarrot2, resizedDeath, resizedFire;
+    private BitmapDrawable carrotDrawable, duckDrawable, carrot2Drawble, deathDrawble, fireDrawble, mysticDrawble, uparrowDrawble,textDrawble;
+    private Bitmap resizedCarrot, resizedDuck, resizedCarrot2, resizedDeath, resizedFire, resizedMystic, resizedUparrow,resizedText;
 
 
     public void loadTheDrawables() {
@@ -210,6 +211,9 @@ public class EditorView extends View {
         this.carrot2Drawble = (BitmapDrawable) getResources().getDrawable(R.drawable.carrot2);
         this.deathDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.death);
         this.fireDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.fire);
+        this.mysticDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.mystic);
+        this.uparrowDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow);
+        this.textDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.text);
 
         Bitmap carrotBitMap = carrotDrawable.getBitmap();
         this.resizedCarrot =  Bitmap.createScaledBitmap(carrotBitMap, 200, 200, true);
@@ -226,12 +230,27 @@ public class EditorView extends View {
         Bitmap fireMap = fireDrawble.getBitmap();
         this.resizedFire = Bitmap.createScaledBitmap(fireMap, 200, 200, true);
 
+        Bitmap mysticMap = mysticDrawble.getBitmap();
+        this.resizedMystic = Bitmap.createScaledBitmap(mysticMap, 200, 200, true);
+
+        Bitmap uparrowMap = uparrowDrawble.getBitmap();
+        this.resizedUparrow = Bitmap.createScaledBitmap(uparrowMap, 200, 200, true);
+
+        Bitmap textMap = textDrawble.getBitmap();
+        this.resizedText = Bitmap.createScaledBitmap(textMap, 200, 200, true);
+
+
+
+
 
         resourceMap.put("carrot", R.drawable.carrot);
         resourceMap.put("duck", R.drawable.duck);
         resourceMap.put("carrot2", R.drawable.carrot2);
         resourceMap.put("death", R.drawable.death);
         resourceMap.put("fire", R.drawable.fire);
+        resourceMap.put("mystic", R.drawable.mystic);
+        resourceMap.put("uparrow", R.drawable.uparrow);
+        resourceMap.put("text", R.drawable.text);
 
     }
 
@@ -256,15 +275,17 @@ public class EditorView extends View {
                 canvas.drawBitmap(resizedFire, positionArray[4] + 120, inventoryTop, null);
                 break;
             case 2: inventoryNextPage.draw(canvas);
+                /*
                 canvas.drawBitmap(resizedCarrot, positionArray[4] + 120, inventoryTop, null);
 
                 canvas.drawBitmap(resizedDuck, positionArray[3] + 90, inventoryTop, null);
+                */
 
-                canvas.drawBitmap(resizedCarrot2, positionArray[2] + 60, inventoryTop, null);
+                canvas.drawBitmap(resizedText, positionArray[2] + 60, inventoryTop, null);
 
-                canvas.drawBitmap(resizedDeath, positionArray[1] + 30, inventoryTop, null);
+                canvas.drawBitmap(resizedUparrow, positionArray[1] + 30, inventoryTop, null);
 
-                canvas.drawBitmap(resizedFire, positionArray[0], inventoryTop, null);
+                canvas.drawBitmap(resizedMystic, positionArray[0], inventoryTop, null);
                 break;
         }
 
@@ -322,9 +343,12 @@ public class EditorView extends View {
                     } else if (downX > 690 && downX <= 890) {
                         BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeDeath;
+
                     } else if (downX > 910 && downX <= 1100) {
+
                         BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeFire;
+
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
                         inventoryControl = 1;
                         invalidate();
@@ -332,58 +356,33 @@ public class EditorView extends View {
                         inventoryControl = 2;
                         invalidate();
                     }
+
                     if (selectedShape != null) {
                         currentPage.addShape(selectedShape);
                         currentPage.selectedShape = selectedShape;
                     }
+
                     break;
                 case 2 :
-//                    if (downX > 910 && downX <= 1100) {
-//                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true);
-//                        selectedShape = prototypeCarrot2;
-//                    } else if (downX > 690 && downX <= 890) {
-//                        BunnyShape prototypeDuck2 = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-//                        selectedShape = prototypeDuck2;
-//                    } else if (downX > 460 && downX <= 660) {
-//                        BunnyShape prototypeCarrot22 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-//                        selectedShape = prototypeCarrot22;
-//                    } else if (downX > 230 && downX <= 430) {
-//                        BunnyShape prototypeDeath2 = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-//                        selectedShape = prototypeDeath2;
-//                    } else if (downX <= 200) {
-////                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true);
-////                        selectedShape = prototypeFire;
-//                        BunnyShape textShape = new BunnyShape("text", 2, 0, 200, inventoryTop,inventoryTop + 200, "", true);
-//                        selectedShape = textShape;
-//                    } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
-//                        inventoryControl = 1;
-//                        invalidate();
-//                    } else if (downX >= 1150 && downX <= 1200 && downY >= 500 && downY <= 550) {
-//                        inventoryControl = 2;
-//                        invalidate();
-//                    }
-//                    if (selectedShape != null) {
-//                        currentPage.addShape(selectedShape);
-//                        currentPage.selectedShape = selectedShape;
-//                    }
-//                    break;
                     if (downX <= 200) {
-
-                        BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
-                        selectedShape = prototypeFire;
+                        BunnyShape prototypeMystic = new BunnyShape("mystic", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypeMystic;
                     } else if (downX > 230 && downX <= 430) {
-
-                        BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
-                        selectedShape = prototypeDeath;
+                        BunnyShape prototypeUpArrow = new BunnyShape("uparrow", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypeUpArrow;
                     } else if (downX > 460 && downX <= 660) {
-                        BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
-                        selectedShape = prototypeCarrot2;
+                        BunnyShape prototypetext = new BunnyShape("text", 2, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        selectedShape = prototypetext;
                     } else if (downX > 690 && downX <= 890) {
+                        /*
                         BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
                         selectedShape = prototypeDuck;
+                        */
                     } else if (downX > 910 && downX <= 1100) {
+                        /*
                         BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true, true);
                         selectedShape = prototypeCarrot;
+                        */
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
                         inventoryControl = 1;
                         invalidate();
@@ -418,6 +417,7 @@ public class EditorView extends View {
                 selectedShape.setTop(upY - 100);
                 selectedShape.setBottom(selectedShape.getTop() + 200);
                 selectedShape.setRight(selectedShape.getLeft() + 200);
+
 
                 //currentPage.addShape(selectedShape);
 //                for (BunnyShape curtShape : currentPage.getShapes()) {
@@ -461,6 +461,7 @@ public class EditorView extends View {
                 selectedShape.setBottom(selectedShape.getTop() + 200);
                 selectedShape.setRight(selectedShape.getLeft() + 200);
 
+
                 //currentPage.addShape(selectedShape);
                 //currentPage.selectedShape = selectedShape;
                 invalidate();
@@ -489,10 +490,9 @@ public class EditorView extends View {
             currentPage.removeShape(current);
             hidden = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
             currentPage.addShape(hidden);
-            selectedShape = hidden  ;
+            selectedShape = hidden;
             currentPage.selectedShape = selectedShape;
             backupMap.put(hidden, original);
-
 
         }
 
@@ -503,10 +503,9 @@ public class EditorView extends View {
         hidden = current;
         currentPage.removeShape(current);
         original = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
-
         backupMap.put(hidden, original);
-
         currentPage.addShape(original);
+        shapeList.add(original);
         selectedShape = original;
         currentPage.selectedShape = selectedShape;
 

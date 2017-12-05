@@ -153,6 +153,13 @@ public class EditorActivity extends AppCompatActivity {
                     popupWindowResize(view);
                 }
                 return true;
+            case R.id.deleteShape:
+                if (selected != null) {
+                    currentPage.removeShape(selected);
+                    editorView.openPage(currentPage.getName());
+
+                }
+                return true;
 
             case R.id.onClickGoTo:
                 if (selected == null) {
@@ -741,6 +748,7 @@ public class EditorActivity extends AppCompatActivity {
                     if (selected != null) {
                         selected.setMoveable(movableSwitch.isChecked());
                         selected.setHidden(hiddenSwitch.isChecked());
+
 
                         if (hiddenSwitch.isChecked()) {
                             editorView.drawHidden(selected);
