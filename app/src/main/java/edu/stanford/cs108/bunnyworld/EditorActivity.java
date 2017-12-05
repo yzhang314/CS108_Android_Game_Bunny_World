@@ -1,6 +1,8 @@
 package edu.stanford.cs108.bunnyworld;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +25,12 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditorActivity extends AppCompatActivity {
@@ -885,6 +892,125 @@ public class EditorActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    SQLiteDatabase db;
+    private void saveToDatabase(){
+        db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
+        String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyPages';";
+        Cursor cursor = db.rawQuery(ifExist,null);
+        if (cursor.getCount() == 0){
+            setupDatabase();
+        }
+        saveInformation();
+    }
+
+    private void setupDatabase(){
+        String dropStr = "DROP TABLE IF EXISTS BunnyPages;";
+        db.execSQL(dropStr);
+        String setupStr = "CREATE TABLE BunnyPages ("
+                + "name TEXT, shapes TEXT,"
+                + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
+                + ");";
+        db.execSQL(setupStr);
+    }
+
+    private void saveInformation(){
+        bunnyPageToJson();
+    }
+
+    // change a list of pages to json
+    private String bunnyPageToJson() {
+        String bunnyPageStr = "";
+        JSONObject object = new JSONObject();          //创建一个总的对象，这个对象对整个json串
+        try {
+            JSONArray jsonarray = new JSONArray();     //json数组，里面包含的内容为bunnyPage的所有对象
+            for (String key : pageMap.keySet()){
+                BunnyPage bunnyPage = pageMap.get(key);
+                JSONObject bunnyPageObj = new JSONObject();//bunnyPage对象，json形式
+
+                bunnyPageObj.put("pageName", bunnyPage.getName());
+                bunnyPageObj.put("shapes", bunnyShapeToJson(bunnyPage.getShapes()));
+
+                jsonarray.put(bunnyPageObj);              //向json数组里面添加bunnyPage对象
+            }
+            object.put("bunnyPage", jsonarray);       //向总对象里面添加包含bunnyPage的数组
+            bunnyPageStr = object.toString();         //生成返回字符串
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("生成的json串为:"+bunnyPageStr,"");
+        return bunnyPageStr;
+    }
+
+    // change a list of bunnyShapes to json
+    private String bunnyShapeToJson(List<BunnyShape> shapes){
+        String bunnyShapeStr = "";//定义返回字符串
+        JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
+        try {
+            JSONArray jsonarray = new JSONArray();//json数组，里面包含的内容为bunnyPage的所有对象
+
+            for (BunnyShape bunnyShape : shapes){
+                JSONObject bunnyShapeObj = new JSONObject();//bunnyPage对象，json形式
+
+                bunnyShapeObj.put("shapeName", bunnyShape.getType());
+                bunnyShapeObj.put("type", bunnyShape.getType());
+                bunnyShapeObj.put("left", bunnyShape.getLeft());
+                bunnyShapeObj.put("right", bunnyShape.getRight());
+                bunnyShapeObj.put("top", bunnyShape.getTop());
+                bunnyShapeObj.put("bottom", bunnyShape.getBottom());
+                bunnyShapeObj.put("selectScript", bunnyShape.getSelectScript());
+                bunnyShapeObj.put("moveable", bunnyShape.getMoveable());   //
+                bunnyShapeObj.put("visible", bunnyShape.isHidden());         //
+
+                jsonarray.put(bunnyShapeObj);      //向json数组里面添加bunnyPage对象
+            }
+            object.put("bunnyPage", jsonarray);//向总对象里面添加包含bunnyPage的数组
+            bunnyShapeStr = object.toString(); //生成返回字符串
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("生成的json串为:"+bunnyShapeStr,"");
+        return bunnyShapeStr;
+    }
+
+    public BunnyShape jsonToBunnyShape(String json){
+        if(json.startsWith("error")){//这里可以做一下检测，如果不是json格式的就直接返回
+            return null;
+        }
+        BunnyShape bunnyShape = new BunnyShape();//准备返回的pet对象  /*这里需要一个空构造函数*/
+        try {
+            JSONObject jsonObject=new JSONObject(json);//我们需要把json串看成一个大的对象
+            JSONArray jsonArray=jsonObject.getJSONArray("bunnyShape");//这里获取的是装载有所有bunnyShape对象的数组
+            JSONObject jsonbunnyShape = jsonArray.getJSONObject(0);//获取这个数组中第一个bunnyShape对象
+
+            String shapeName = jsonbunnyShape.getString("shapeName");//获取pet对象的参数
+            String type = jsonbunnyShape.getString("type");
+            String right = jsonbunnyShape.getString("right");
+            String top = jsonbunnyShape.getString("top");
+            String bottom = jsonbunnyShape.getString("bottom");
+            String left = jsonbunnyShape.getString("left");
+            String selectScript = jsonbunnyShape.getString("selectScript");
+            String moveable = jsonbunnyShape.getString("moveable");
+            String visible = jsonbunnyShape.getString("visible");
+
+            // This part can be used to set a bunnyShape object or return a String array to construct a object
+            bunnyShape.setName(shapeName);
+            bunnyShape.setTop(Integer.parseInt(type));
+            bunnyShape.setLeft(Float.parseFloat(left));
+            bunnyShape.setRight(Float.parseFloat(right));
+            bunnyShape.setTop(Float.parseFloat(top));
+            bunnyShape.setBottom(Float.parseFloat(bottom));
+            bunnyShape.setSelectScript(selectScript);
+            bunnyShape.setMoveable(Boolean.parseBoolean(moveable));
+            bunnyShape.setVisiable(Boolean.parseBoolean(visible));   // Here the visiable is a spell mistake
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("json To BunnyShape:"+ bunnyShape.toString());//打印出pet对象参数。
+        return bunnyShape;
     }
 
 

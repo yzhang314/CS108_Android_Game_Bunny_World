@@ -220,6 +220,10 @@ public class BunnyShape {
         shapePaint.setStyle(Paint.Style.FILL);
     }
 
+    BunnyShape(){
+
+    }
+
     public void draw(Canvas canvas) {
         this.canvas = canvas;
         if(visiable) {
