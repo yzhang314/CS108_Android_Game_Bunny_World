@@ -31,6 +31,10 @@ public class BunnyPage {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void draw(Canvas canvas) {
         for(BunnyShape shape: shapes) {
             shape.draw(canvas);
