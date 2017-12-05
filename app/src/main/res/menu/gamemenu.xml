@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gamemenu">
+    <item android:id="@+id/loaddb"
+        android:title="Load previoud settings from DB">
+    </item>
+
+
+
+
+</menu>
+
