@@ -20,6 +20,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View v = (View) findViewById(R.id.startbutton);
+        popupWindow(v);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View v = (View) findViewById(R.id.startbutton);
+        popupWindow(v);
     }
 
     public void pop(View view){
@@ -68,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     pw.dismiss();
                 }
             });
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.view.View;
 
@@ -67,6 +69,8 @@ public class GameView extends View {
         pageMap.put("next", nextPage);
         currentPage = pageMap.get("start");
     }
+
+
 
     private void loadRes() {
         resMap.put("carrotcarrotcarrot", R.raw.carrotcarrotcarrot);

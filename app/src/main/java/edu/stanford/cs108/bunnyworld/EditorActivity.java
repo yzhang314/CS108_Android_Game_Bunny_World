@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,11 @@ public class EditorActivity extends AppCompatActivity {
         editorView.loadInialPage();
         this.currentPage = editorView.currentPage;
         this.view = editorView;
+        popupWindowCreateNewGame(view);
+
     }
+
+
 
 
 
@@ -266,6 +271,9 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
+                return true;
+            case R.id.savetodb:
+                saveToDatabase();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -894,10 +902,50 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+    // This is the function to create a new game
+    private void popupWindowCreateNewGame(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_creategame,null);
+            final EditText editText = (EditText) layout.findViewById(R.id.gamename_text);
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.gamename_enter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.gamename_cancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (selected != null) {
+                        String updatedScript = editText.getText().toString();
+                        editorView.gameName = updatedScript;
+                    }
+                    pw.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyPages';";
+        String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
             setupDatabase();
@@ -905,10 +953,12 @@ public class EditorActivity extends AppCompatActivity {
         saveInformation();
     }
 
+    // Each record stores a game,not a page
+    // Game name, all the information, id
     private void setupDatabase(){
-        String dropStr = "DROP TABLE IF EXISTS BunnyPages;";
+        String dropStr = "DROP TABLE IF EXISTS BunnyGames;";
         db.execSQL(dropStr);
-        String setupStr = "CREATE TABLE BunnyPages ("
+        String setupStr = "CREATE TABLE BunnyGames ("
                 + "name TEXT, shapes TEXT,"
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
                 + ");";
@@ -916,7 +966,14 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void saveInformation(){
-        bunnyPageToJson();
+        String string = bunnyPageToJson(); // all the information in bunny pages
+        String dataString = "INSERT INTO BunnyGames VALUES " +
+                "('game1'" + ",'" +
+                string + "',NULL);";
+        System.out.println(dataString);
+        Log.i(dataString,dataString);
+        db.execSQL(dataString);
+
     }
 
     // change a list of pages to json
@@ -974,44 +1031,7 @@ public class EditorActivity extends AppCompatActivity {
         return bunnyShapeStr;
     }
 
-    public BunnyShape jsonToBunnyShape(String json){
-        if(json.startsWith("error")){//这里可以做一下检测，如果不是json格式的就直接返回
-            return null;
-        }
-        BunnyShape bunnyShape = new BunnyShape();//准备返回的pet对象  /*这里需要一个空构造函数*/
-        try {
-            JSONObject jsonObject=new JSONObject(json);//我们需要把json串看成一个大的对象
-            JSONArray jsonArray=jsonObject.getJSONArray("bunnyShape");//这里获取的是装载有所有bunnyShape对象的数组
-            JSONObject jsonbunnyShape = jsonArray.getJSONObject(0);//获取这个数组中第一个bunnyShape对象
 
-            String shapeName = jsonbunnyShape.getString("shapeName");//获取pet对象的参数
-            String type = jsonbunnyShape.getString("type");
-            String right = jsonbunnyShape.getString("right");
-            String top = jsonbunnyShape.getString("top");
-            String bottom = jsonbunnyShape.getString("bottom");
-            String left = jsonbunnyShape.getString("left");
-            String selectScript = jsonbunnyShape.getString("selectScript");
-            String moveable = jsonbunnyShape.getString("moveable");
-            String visible = jsonbunnyShape.getString("visible");
-
-            // This part can be used to set a bunnyShape object or return a String array to construct a object
-            bunnyShape.setName(shapeName);
-            bunnyShape.setTop(Integer.parseInt(type));
-            bunnyShape.setLeft(Float.parseFloat(left));
-            bunnyShape.setRight(Float.parseFloat(right));
-            bunnyShape.setTop(Float.parseFloat(top));
-            bunnyShape.setBottom(Float.parseFloat(bottom));
-            bunnyShape.setSelectScript(selectScript);
-            bunnyShape.setMoveable(Boolean.parseBoolean(moveable));
-            bunnyShape.setVisiable(Boolean.parseBoolean(visible));   // Here the visiable is a spell mistake
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("json To BunnyShape:"+ bunnyShape.toString());//打印出pet对象参数。
-        return bunnyShape;
-    }
 
 
 

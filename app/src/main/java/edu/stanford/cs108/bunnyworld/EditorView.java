@@ -37,6 +37,7 @@ public class EditorView extends View {
     BunnyPage currentPage;
     int pageIndex = 1;
     BunnyShape selectedShape;
+    String gameName = "";
 
     public EditorView(Context context, AttributeSet attrs) {
         super(context, attrs);
