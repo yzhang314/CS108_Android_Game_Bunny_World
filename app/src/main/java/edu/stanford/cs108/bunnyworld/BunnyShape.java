@@ -40,7 +40,6 @@ public class BunnyShape {
     //boolean hidden;
 
 
-
     public String getTextString() {
         return textString;
     }
