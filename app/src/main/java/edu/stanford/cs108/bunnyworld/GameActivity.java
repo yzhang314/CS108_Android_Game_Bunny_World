@@ -171,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public BunnyShape jsonToBunnyShape(JSONObject jsonbunnyShape){
-        BunnyShape bunnyShape = new BunnyShape();//准备返回的pet对象  /*这里需要一个空构造函数*/
+        //BunnyShape bunnyShape = new BunnyShape();//准备返回的pet对象  /*这里需要一个空构造函数*/
         try {
             String shapeName = jsonbunnyShape.getString("shapeName");//获取pet对象的参数
             String type = jsonbunnyShape.getString("type");
@@ -182,23 +182,32 @@ public class GameActivity extends AppCompatActivity {
             String selectScript = jsonbunnyShape.getString("selectScript");
             String moveable = jsonbunnyShape.getString("moveable");
             String visible = jsonbunnyShape.getString("visible");
+            String textString = jsonbunnyShape.getString("textString");
+            String imageString = jsonbunnyShape.getString("imageString");
+            BunnyShape bunnyShape = new BunnyShape(shapeName, Integer.parseInt(type), Float.parseFloat(left)
+            , Float.parseFloat(right), Float.parseFloat(top), Float.parseFloat(bottom), selectScript,
+            Boolean.parseBoolean(moveable), Boolean.parseBoolean(visible));//准备返回的pet对象  /*这里需要一个空构造函数*/
+            bunnyShape.setTextString(textString);
+            bunnyShape.setImageString(imageString);
 
             // This part can be used to set a bunnyShape object or return a String array to construct a object
-            bunnyShape.setName(shapeName);
-            bunnyShape.setTop(Integer.parseInt(type));
-            bunnyShape.setLeft(Float.parseFloat(left));
-            bunnyShape.setRight(Float.parseFloat(right));
-            bunnyShape.setTop(Float.parseFloat(top));
-            bunnyShape.setBottom(Float.parseFloat(bottom));
-            bunnyShape.setSelectScript(selectScript);
-            bunnyShape.setMoveable(Boolean.parseBoolean(moveable));
-            bunnyShape.setVisiable(Boolean.parseBoolean(visible));   // Here the visiable is a spell mistake
+//            bunnyShape.setName(shapeName);
+//            bunnyShape.setTop(Integer.parseInt(type));
+//            bunnyShape.setLeft(Float.parseFloat(left));
+//            bunnyShape.setRight(Float.parseFloat(right));
+//            bunnyShape.setTop(Float.parseFloat(top));
+//            bunnyShape.setBottom(Float.parseFloat(bottom));
+//            bunnyShape.setSelectScript(selectScript);
+//            bunnyShape.setMoveable(Boolean.parseBoolean(moveable));
+//            bunnyShape.setVisiable(Boolean.parseBoolean(visible));   // Here the visiable is a spell mistake
+//            bunnyShape.setTextString(textString);
+//            bunnyShape.setImageString(imageString);
             return bunnyShape;
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("json To BunnyShape:"+ bunnyShape.toString());//打印出pet对象参数。
+        System.out.println("json To BunnyShape:");//打印出pet对象参数。
         return null;
     }
 }
