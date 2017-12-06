@@ -214,7 +214,8 @@ public class EditorView extends View {
         this.fireDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.fire);
         this.mysticDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.mystic);
         this.uparrowDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow);
-        this.textDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.text);
+        this.textDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow);
+        // insert a text png
 
         Bitmap carrotBitMap = carrotDrawable.getBitmap();
         this.resizedCarrot =  Bitmap.createScaledBitmap(carrotBitMap, 200, 200, true);
@@ -251,7 +252,8 @@ public class EditorView extends View {
         resourceMap.put("fire", R.drawable.fire);
         resourceMap.put("mystic", R.drawable.mystic);
         resourceMap.put("uparrow", R.drawable.uparrow);
-        resourceMap.put("text", R.drawable.text);
+        resourceMap.put("text", R.drawable.uparrow);
+        // insert text png
 
     }
 

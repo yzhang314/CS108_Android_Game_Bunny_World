@@ -49,14 +49,14 @@ public class GameView extends View {
         dbHandler = new DbHandler();
         pageMap = new HashMap<>();
         resMap = new HashMap<>();
-        loadPages();
+        loadPages2();
         loadRes();
         inventory = new Inventory(0, 1500, 430, 630);
         onEnterActions();
     }
 
     //just for test
-    private void loadPages() {
+    public void loadPages2() {
         BunnyPage startPage = new BunnyPage("start");
         startPage.addShape(new BunnyShape("test", 0, 10, 50, 10, 50, "onClick goto next", false, true));
         BunnyShape temp = new BunnyShape("gonext", 0, 10, 50, 200, 250, "onDrop test3 play hooray,onDrop test3 hide test3", true, true);
@@ -68,8 +68,23 @@ public class GameView extends View {
         nextPage.addShape(new BunnyShape("goback", 0, 110, 150, 200, 250, "onEnter play munch,onClick goto start", false, true));
         pageMap.put("next", nextPage);
         currentPage = pageMap.get("start");
+        //invalidate();
+
     }
 
+    public void loadPages(List<BunnyPage>pages){
+        if (pages != null){
+            for (BunnyPage page : pages) {
+                pageMap.put(page.getName(), page);
+                if (page.getName().equals("Page1")) {
+                    currentPage = page;
+                }
+            }
+        }
+
+        //loadPages();
+        invalidate();
+    }
 
 
     private void loadRes() {

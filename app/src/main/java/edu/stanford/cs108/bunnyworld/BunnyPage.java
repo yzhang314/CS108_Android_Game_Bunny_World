@@ -10,9 +10,10 @@ import java.util.*;
 public class BunnyPage {
     private String name;
     public BunnyShape selectedShape;
+    private List<BunnyShape> shapes;
 
     public BunnyPage() {
-
+        this.shapes = new ArrayList<>();
     }
 
     // This is the getter function to return the shapeList
@@ -20,7 +21,7 @@ public class BunnyPage {
         return shapes;
     }
 
-    private List<BunnyShape> shapes;
+
 
     BunnyPage(String name) {
         this.name = name;

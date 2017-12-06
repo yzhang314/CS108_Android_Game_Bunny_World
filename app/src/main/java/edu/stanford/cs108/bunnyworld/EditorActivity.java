@@ -957,6 +957,7 @@ public class EditorActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
+//        setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
@@ -1031,7 +1032,7 @@ public class EditorActivity extends AppCompatActivity {
             for (BunnyShape bunnyShape : shapes){
                 JSONObject bunnyShapeObj = new JSONObject();//bunnyPage对象，json形式
 
-                bunnyShapeObj.put("shapeName", bunnyShape.getType());
+                bunnyShapeObj.put("shapeName", bunnyShape.getName());
                 bunnyShapeObj.put("type", bunnyShape.getType());
                 bunnyShapeObj.put("left", bunnyShape.getLeft());
                 bunnyShapeObj.put("right", bunnyShape.getRight());
