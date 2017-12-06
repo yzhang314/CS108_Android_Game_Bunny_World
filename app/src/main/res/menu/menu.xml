@@ -55,6 +55,10 @@
         android:title="Set Property">
     </item>
 
+    <item android:id="@+id/setShapeName"
+        android:title="Set Shape Name">
+    </item>
+
     <item android:id="@+id/resize"
         android:title="Resize the Shape">
     </item>

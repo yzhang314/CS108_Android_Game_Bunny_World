@@ -90,7 +90,7 @@ public class EditorView extends View {
 
         initInventory();
         drawPageName();
-        /*
+
         Paint p = new Paint();
         Random random1 = new Random();
         int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
@@ -103,7 +103,7 @@ public class EditorView extends View {
         Bitmap downarrowMap = Bitmap.createScaledBitmap(downarrow.getBitmap(), 50, 50, true);
         canvas.drawBitmap(uparrowMap, 1150f, 430f, null);
         canvas.drawBitmap(downarrowMap, 1150f, 500f, null);
-        */
+
 
 //Bitmap fireMap = fireDrawble.getBitmap();
                 //this.resizedFire = Bitmap.createScaledBitmap(fireMap, 200, 200, true);
@@ -158,7 +158,7 @@ public class EditorView extends View {
     public void drawImage(BunnyShape shape) {
         if (backupMap.containsKey(shape)) {
             RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
-            BitmapDrawable bd = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getName()));
+            BitmapDrawable bd = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getImageString()));
             Bitmap bm = bd.getBitmap();
             Paint paint = new Paint();
             paint.setAlpha(60);
@@ -166,7 +166,7 @@ public class EditorView extends View {
 
         } else {
             RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
-            BitmapDrawable test = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getName()));
+            BitmapDrawable test = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getImageString()));
             Bitmap testPicture = test.getBitmap();
             canvas.drawBitmap(testPicture, null, boundaryRectangle, null);
 
@@ -346,20 +346,25 @@ public class EditorView extends View {
                 case 1:
                     if (downX <= 200) {
                         BunnyShape prototypeCarrot = new BunnyShape("carrot", 1, 0, 200, inventoryTop - 100, inventoryTop + 100, "", true, true);
+                        prototypeCarrot.setImageString("carrot");
                         selectedShape = prototypeCarrot;
                     } else if (downX > 230 && downX <= 430) {
                         BunnyShape prototypeDuck = new BunnyShape("duck", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeDuck.setImageString("duck");
                         selectedShape = prototypeDuck;
                     } else if (downX > 460 && downX <= 660) {
                         BunnyShape prototypeCarrot2 = new BunnyShape("carrot2", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeCarrot2.setImageString("carrot2");
                         selectedShape = prototypeCarrot2;
                     } else if (downX > 690 && downX <= 890) {
                         BunnyShape prototypeDeath = new BunnyShape("death", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeDeath.setImageString("death");
                         selectedShape = prototypeDeath;
 
                     } else if (downX > 910 && downX <= 1100) {
 
                         BunnyShape prototypeFire = new BunnyShape("fire", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeFire.setImageString("fire");
                         selectedShape = prototypeFire;
 
                     } else if (downX >= 1150 && downX <= 1200 && downY >= 440 && downY <= 490) {
@@ -371,6 +376,8 @@ public class EditorView extends View {
                     }
 
                     if (selectedShape != null) {
+                        int index = currentPage.getShapes().size() + 1;
+                        selectedShape.setName("Shape" + index);
                         currentPage.addShape(selectedShape);
                         currentPage.selectedShape = selectedShape;
                     }
@@ -379,12 +386,15 @@ public class EditorView extends View {
                 case 2 :
                     if (downX <= 200) {
                         BunnyShape prototypeMystic = new BunnyShape("mystic", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeMystic.setImageString("mystic");
                         selectedShape = prototypeMystic;
                     } else if (downX > 230 && downX <= 430) {
                         BunnyShape prototypeUpArrow = new BunnyShape("uparrow", 1, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypeUpArrow.setImageString("uparrow");
                         selectedShape = prototypeUpArrow;
                     } else if (downX > 460 && downX <= 660) {
                         BunnyShape prototypetext = new BunnyShape("text", 2, 0, 200, inventoryTop, inventoryTop + 200, "", true, true);
+                        prototypetext.setTextString("Enter you Text");
                         selectedShape = prototypetext;
                     } else if (downX > 690 && downX <= 890) {
                         /*
@@ -404,6 +414,8 @@ public class EditorView extends View {
                         invalidate();
                     }
                     if (selectedShape != null) {
+                        int index = currentPage.getShapes().size() + 1;
+                        selectedShape.setName("Shape" + index);
                         currentPage.addShape(selectedShape);
                         currentPage.selectedShape = selectedShape;
                     }

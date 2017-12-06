@@ -170,6 +170,12 @@ public class EditorActivity extends AppCompatActivity {
                 }
 
                 return true;
+            case R.id.setShapeName: {
+                if (selected != null) {
+                    popupWindowSetShapeName(view);
+                }
+            }
+            return true;
 
             case R.id.changeText:
                 if (selected.type == 2) {
@@ -1231,6 +1237,80 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+    public void popupWindowSetShapeName(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window7,null);
+
+            if (selected == null) {
+                return;
+            }
+
+            String previousName = selected.getName();
+
+
+            EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
+
+            name.setText(previousName);
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changePageName_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.cancelPageName_button);
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text) ;
+                    String currentName = name.getText().toString();
+                    selected.setName(currentName);
+
+                    /*
+                    String previousName = currentPage.getName();
+                    EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text) ;
+                    String currentName = name.getText().toString();
+                    currentPage.setName(currentName);
+
+                    for(String s: pageMap.keySet()) {
+                        if (s.equals(previousName)) {
+                            pageMap.remove(s);
+                            break;
+                        }
+                    }
+                    pageMap.put(currentPage.getName(),currentPage);
+                    editorView.openPage(currentName);
+                    */
+
+                    pw.dismiss();
+
+                }
+            });
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     SQLiteDatabase db;
     private void saveToDatabase(){
