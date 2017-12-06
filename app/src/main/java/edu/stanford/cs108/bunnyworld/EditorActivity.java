@@ -27,14 +27,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static edu.stanford.cs108.bunnyworld.R.raw.carrotcarrotcarrot;
 import static java.security.AccessController.getContext;
@@ -409,18 +412,24 @@ public class EditorActivity extends AppCompatActivity {
                 {
                     EditText editText = (EditText) layout.findViewById(R.id.goToPage_text);
                     String goToPage = editText.getText().toString();
-                    selected.setSelectScript(selected.getSelectScript() + goToPage + "|");
-                    editText.setText("");
-                    Log.i(selected.getName(), selected.getSelectScript());
-                    //This is used to change page which can be used during game
+
+                        if (pageMap.keySet().contains(goToPage)) {
+                            selected.setSelectScript(selected.getSelectScript() + goToPage + "|");
+                            editText.setText("");
+                            Log.i(selected.getName(), selected.getSelectScript());
+                            //This is used to change page which can be used during game
                     /*
                     EditorView editorView = (EditorView) findViewById(R.id.editorView);
                     editorView.openPage(goToPage);
                     */
-                    pw.dismiss();
-
-
+                            pw.dismiss();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Page does not exist", Toast.LENGTH_LONG).show();
+                            pw.dismiss();
+                        }
                 }
+
+
             });
 
         } catch (Exception e) {
