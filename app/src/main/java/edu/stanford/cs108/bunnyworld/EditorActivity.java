@@ -1362,7 +1362,7 @@ public class EditorActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-//        setupDatabase();
+        setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
@@ -1446,6 +1446,8 @@ public class EditorActivity extends AppCompatActivity {
                 bunnyShapeObj.put("selectScript", bunnyShape.getSelectScript());
                 bunnyShapeObj.put("moveable", bunnyShape.getMoveable());   //
                 bunnyShapeObj.put("visible", bunnyShape.isVisiable());         //
+                bunnyShapeObj.put("textString",bunnyShape.getTextString());
+                bunnyShapeObj.put("imageString",bunnyShape.getImageString());
 
                 jsonarray.put(bunnyShapeObj);      //向json数组里面添加bunnyPage对象
             }

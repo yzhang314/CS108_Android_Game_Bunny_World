@@ -1,6 +1,8 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.Context;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,6 +200,9 @@ public class BunnyShape {
         onDropPaintFalse.setColor(Color.RED);
         onDropPaintFalse.setStyle(Paint.Style.STROKE);
         onDropPaintFalse.setStrokeWidth(15.0f);
+
+
+
     }
 
 

@@ -81,7 +81,7 @@ public class GameView extends View {
                 }
             }
         }
-
+        System.out.println("Print out if pages are loaded correctly");
         //loadPages();
         invalidate();
     }
