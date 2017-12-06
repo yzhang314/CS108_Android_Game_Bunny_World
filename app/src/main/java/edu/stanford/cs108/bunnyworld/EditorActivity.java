@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static edu.stanford.cs108.bunnyworld.R.raw.carrotcarrotcarrot;
+import static java.security.AccessController.getContext;
 
 public class EditorActivity extends AppCompatActivity {
     BunnyShape selected;
@@ -435,32 +439,41 @@ public class EditorActivity extends AppCompatActivity {
             final RadioGroup soundgroup = (RadioGroup) layout.findViewById(R.id.soundRadioGroup);
             RadioButton radioButton = (RadioButton)layout.findViewById(R.id.sound1);
             int i = 0;
-            switch(i) {
-                case 0: radioButton = (RadioButton) layout.findViewById(R.id.sound1);
+            while (i <= 5) {
+                switch(i) {
+                    case 0: radioButton = (RadioButton) layout.findViewById(R.id.sound1);
+                        radioButton.setText("carrotcarrotcarrot");
 
-                    break;
-                case 1: radioButton = (RadioButton) layout.findViewById(R.id.sound2);
-
-
-                    break;
-                case 2: radioButton = (RadioButton) layout.findViewById(R.id.sound3);
-                    break;
-                case 3: radioButton = (RadioButton) layout.findViewById(R.id.sound4);
-                    break;
-                case 4: radioButton = (RadioButton) layout.findViewById(R.id.sound5);
-                    break;
-                case 5: radioButton = (RadioButton) layout.findViewById(R.id.sound6);
-                    break;
-                default:
+                        break;
+                    case 1: radioButton = (RadioButton) layout.findViewById(R.id.sound2);
+                        radioButton.setText("evillaugh");
+                        break;
+                    case 2: radioButton = (RadioButton) layout.findViewById(R.id.sound3);
+                        radioButton.setText("hooray");
+                        break;
+                    case 3: radioButton = (RadioButton) layout.findViewById(R.id.sound4);
+                        radioButton.setText("munch");
+                        break;
+                    case 4: radioButton = (RadioButton) layout.findViewById(R.id.sound5);
+                        radioButton.setText("munching");
+                        break;
+                    case 5: radioButton = (RadioButton) layout.findViewById(R.id.sound6);
+                        radioButton.setText("woof");
+                        break;
+                    default:
+                }
+                i++;
             }
 
 
-            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+
+            final PopupWindow pw = new PopupWindow(layout, 600, 600, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
             Button enterBtn = (Button) layout.findViewById(R.id.playSoundEnter_button);
             Button cancelBtn = (Button) layout.findViewById(R.id.playSoundCancel_button);
+            Button playBtn = (Button) layout.findViewById(R.id.playSound_button);
 
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -469,23 +482,99 @@ public class EditorActivity extends AppCompatActivity {
                 }
             });
 
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int currentCheck = soundgroup.getCheckedRadioButtonId();
+                    String soundString = "";
 
-            enterBtn.setOnClickListener(new View.OnClickListener()
+                    switch(currentCheck) {
+                        case R.id.sound1:
+                            soundString = "carrotcarrotcarrot";
+                            break;
+                        case R.id.sound2:
+                            soundString = "evillaugh";
+                            break;
+                        case R.id.sound3:
+                            soundString = "hooray";
+                            break;
+                        case R.id.sound4:
+                            soundString = "munch";
+                            break;
+                        case R.id.sound5:
+                            soundString = "munching";
+                            break;
+                        case R.id.sound6:
+                            soundString = "woof";
+                            break;
+                        default:
+
+                    }
+                    selected.setSelectScript(selected.getSelectScript() + soundString + "|");
+                    pw.dismiss();
+                }
+            });
+
+
+            playBtn.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
+                    int currentCheck = soundgroup.getCheckedRadioButtonId();
+                    MediaPlayer mp = MediaPlayer.create(EditorActivity.this , R.raw.carrotcarrotcarrot);
+                    String soundString = "";
+
+                    switch(currentCheck) {
+                        case R.id.sound1:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.carrotcarrotcarrot);
+                            soundString = "carrotcarrotcarrot";
+                            mp.start();
+                            break;
+                        case R.id.sound2:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.evillaugh);
+                            soundString = "evillaugh";
+                            mp.start();
+                            break;
+                        case R.id.sound3:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.hooray);
+                            soundString = "hooray";
+                            mp.start();
+                            break;
+                        case R.id.sound4:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.munch);
+                            soundString = "munch";
+                            mp.start();
+                            break;
+                        case R.id.sound5:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.munching);
+                            soundString = "munching";
+                            mp.start();
+                            break;
+                        case R.id.sound6:
+                            mp = MediaPlayer.create(EditorActivity.this , R.raw.woof);
+                            soundString = "woof";
+                            mp.start();
+                            break;
+                        default:
+
+                    }
+
+
+
+
+                    /*
                     EditText editText = (EditText) layout.findViewById(R.id.sound_text);
                     String soundString = editText.getText().toString();
                     selected.setSelectScript(selected.getSelectScript() + soundString + "|");
                     editText.setText("");
                     Log.i(selected.getName(), selected.getSelectScript());
+                    */
                     //This is used to change page which can be used during game
                     /*
                     EditorView editorView = (EditorView) findViewById(R.id.editorView);
                     editorView.openPage(goToPage);
                     */
-                    pw.dismiss();
 
 
                 }
@@ -778,7 +867,7 @@ public class EditorActivity extends AppCompatActivity {
 
 
             movableSwitch.setChecked(selected.getMoveable());
-            hiddenSwitch.setChecked(selected.isHidden());
+            hiddenSwitch.setChecked(!selected.isVisiable());
 
             final PopupWindow pw = new PopupWindow(layout, 600, 350, true);
             // display the popup in the center
@@ -804,7 +893,7 @@ public class EditorActivity extends AppCompatActivity {
                 {
                     if (selected != null) {
                         selected.setMoveable(movableSwitch.isChecked());
-                        selected.setHidden(hiddenSwitch.isChecked());
+                        selected.setVisiable(!hiddenSwitch.isChecked());
 
 
                         if (hiddenSwitch.isChecked()) {
@@ -820,7 +909,7 @@ public class EditorActivity extends AppCompatActivity {
 
 
                         selected.setMoveable(movableSwitch.isChecked());
-                        selected.setHidden(hiddenSwitch.isChecked());
+                        selected.setVisiable(!hiddenSwitch.isChecked());
 
 
                     }
@@ -840,25 +929,62 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     //This is for renaming the current page
-    private void popupWindow7(View v) {
+    public void popupWindow7(View v) {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.popup_window7,null);
-            final EditText showName = (EditText) layout.findViewById(R.id.showCurrentPageName_text);
 
-            if (currentPage != null) {
-                String pageName = currentPage.getName();
-
-                showName.setText(pageName);
+            if (currentPage == null) {
+              return;
             }
+
+            String previousName = currentPage.getName();
+
+
+            if (previousName == "Page1") {
+                popupWindow8(view);
+                return;
+            }
+
+
+            EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
+
+            name.setText(previousName);
+
+
 
             final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
 
+
+
             Button enterBtn = (Button) layout.findViewById(R.id.changePageName_button);
             Button cancelBtn = (Button) layout.findViewById(R.id.cancelPageName_button);
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String previousName = currentPage.getName();
+                    EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text) ;
+                    String currentName = name.getText().toString();
+                    currentPage.setName(currentName);
+
+                    for(String s: pageMap.keySet()) {
+                        if (s.equals(previousName)) {
+                            pageMap.remove(s);
+                            break;
+                        }
+                    }
+                    pageMap.put(currentPage.getName(),currentPage);
+                    editorView.openPage(currentName);
+
+                    pw.dismiss();
+
+                }
+            });
 
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -868,51 +994,15 @@ public class EditorActivity extends AppCompatActivity {
                 }
             });
 
-            enterBtn.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-
-                    if (currentPage != null) {
-                        String updatedName = showName.getText().toString();
-/*
-                        for(String s: pageMap.keySet()) {
-                            if (s.equals(currentPage.getName())) {
-                                pageMap.remove(s);
-                                break;
-                            }
-
-                        }
-                        */
-                        //currentPage.setName(updatedName);
-                        //pageMap.put(currentPage.getName(),currentPage);
-
-                        //editorView.openPage(currentPage.getName());
-
-/*
-
-                        String selectedName = selected.getName();
-                        //currentPage.removeShape(selected);
-                        selected.setSelectScript(updatedScript);
-                        //currentPage.addShape(selected);
-
-                        Log.i(selected.getName(),selected.getSelectScript());
-                        */
-
-                    }
-
-                    pw.dismiss();
-
-                }
-            });
 
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
+
 
 
 
@@ -1228,7 +1318,7 @@ public class EditorActivity extends AppCompatActivity {
                 bunnyShapeObj.put("bottom", bunnyShape.getBottom());
                 bunnyShapeObj.put("selectScript", bunnyShape.getSelectScript());
                 bunnyShapeObj.put("moveable", bunnyShape.getMoveable());   //
-                bunnyShapeObj.put("visible", bunnyShape.isHidden());         //
+                bunnyShapeObj.put("visible", bunnyShape.isVisiable());         //
 
                 jsonarray.put(bunnyShapeObj);      //向json数组里面添加bunnyPage对象
             }

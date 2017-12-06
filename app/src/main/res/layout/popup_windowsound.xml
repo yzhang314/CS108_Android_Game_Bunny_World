@@ -6,12 +6,10 @@
     android:background="#FFFFFF"
     >
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter the sound to play:"
+        android:text="Choose the sound to play:"
         android:textSize="22dp"
         android:padding="5pt"
         android:textColor="#000000"
@@ -56,18 +54,18 @@
 
     </RadioGroup>
 
-
-
-    <EditText
-        android:id="@+id/sound_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Choose the sound to play: "
-        />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/playSound_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="right"/>
+
         <Button
             android:id="@+id/playSoundEnter_button"
             android:layout_width="wrap_content"

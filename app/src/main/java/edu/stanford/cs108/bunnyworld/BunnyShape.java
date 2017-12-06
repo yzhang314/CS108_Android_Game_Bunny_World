@@ -35,7 +35,7 @@ public class BunnyShape {
     boolean visiable;
     boolean isOnDrop;
     boolean isOnDropValid;
-    boolean hidden;
+    //boolean hidden;
 
 
 
@@ -147,13 +147,14 @@ public class BunnyShape {
         this.type = type;
     }
 
-    public boolean isHidden() {
+   /* public boolean isHidden() {
         return hidden;
     }
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
+    */
 
     public String getName() {
         return name;
@@ -211,7 +212,8 @@ public class BunnyShape {
         this.selectScript = selectScript;
         this.moveable = moveable;
         this.isInsideInventory = false;
-        this.hidden = false;
+       // this.hidden = false;
+        this.visiable = true;
 
         shapePaint = new Paint();
         Random random = new Random();
