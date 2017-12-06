@@ -35,6 +35,7 @@ public class EditorView extends View {
     Map<String, BunnyPage> pageMap = new HashMap<>();
     BunnyPage page1;
     BunnyPage currentPage;
+    BunnyShape copyShape;
     int pageIndex = 1;
     BunnyShape selectedShape;
     String gameName = "";
@@ -129,6 +130,25 @@ public class EditorView extends View {
 
     }
 
+    public void copyShape() {
+        if (selectedShape != null) {
+            copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
+            copyShape.setImageString(selectedShape.getImageString());
+            copyShape.setTextString(selectedShape.getTextString());
+        }
+    }
+
+    public void pasteShape() {
+        BunnyShape current = new BunnyShape(copyShape.getName(), copyShape.getType(), copyShape.getLeft() + 50, copyShape.getRight() + 50, copyShape.getTop(), copyShape.getBottom(), "", true);
+        current.setImageString(copyShape.getImageString());
+        current.setTextString(copyShape.getTextString());
+        currentPage.addShape(current);
+        selectedShape = current;
+        //copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
+        invalidate();
+
+    }
+
 
     public void createNewPage(String pageName) {
         BunnyPage newPage = new BunnyPage(pageName);
@@ -174,13 +194,14 @@ public class EditorView extends View {
     }
 
     public void mydrawText(BunnyShape shape) {
-        RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
 
-        TextPaint paint;
-        paint = new TextPaint();
-       // int ranColor = 0xff000000;
-        paint.setTextSize(50);
-        paint.setColor(0xff000000);
+        if (backupMap.containsKey(shape)) {
+            RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+            TextPaint paint;
+            paint = new TextPaint();
+            // int ranColor = 0xff000000;
+            paint.setTextSize(50);
+            paint.setColor(0xff000000);
 /*
         Paint shapePaint;
         shapePaint = new Paint();
@@ -191,20 +212,49 @@ public class EditorView extends View {
         shapePaint.setStyle(Paint.Style.FILL);
         */
 
-        //canvas.drawRect(boundaryRectangle, shapePaint);
+            //canvas.drawRect(boundaryRectangle, shapePaint);
 
-        StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+            StaticLayout sl = new StaticLayout("", paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
 
-        canvas.save();
-        canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
-        sl.draw(canvas);
-        canvas.restore();
+            canvas.save();
+            canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+            sl.draw(canvas);
+            canvas.restore();
+
+        } else {
+            RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
+            TextPaint paint;
+            paint = new TextPaint();
+            // int ranColor = 0xff000000;
+            paint.setTextSize(50);
+            paint.setColor(0xff000000);
+/*
+        Paint shapePaint;
+        shapePaint = new Paint();
+//        Random random1 = new Random();
+//        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
+        int color = 0xff000000;
+        shapePaint.setColor(color);
+        shapePaint.setStyle(Paint.Style.FILL);
+        */
+
+            //canvas.drawRect(boundaryRectangle, shapePaint);
+
+            StaticLayout sl = new StaticLayout(shape.getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+
+            canvas.save();
+            canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+            sl.draw(canvas);
+            canvas.restore();
 /*
         String textString = shape.getTextString();
         float centerX = (shape.getRight() + shape.getLeft()) / 2;
         float centerY = (shape.getTop() + shape.getBottom()) / 2;
         canvas.drawText(textString,shape.getLeft(), (shape.getTop() + shape.getBottom())/2 , paint);
         */
+
+
+        }
 
     }
 
@@ -513,8 +563,9 @@ public class EditorView extends View {
 
         if (current != null) {
             original = current;
-            hidden = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+            hidden = new BunnyShape(current.getName(), current.getType(), current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
             hidden.setImageString(current.getImageString());
+            hidden.setTextString(current.getTextString());
             currentPage.addShape(hidden);
             selectedShape = hidden;
             currentPage.removeShape(current);
@@ -529,8 +580,9 @@ public class EditorView extends View {
     public void eraseHidden(BunnyShape current) {
         hidden = current;
         currentPage.removeShape(current);
-        original = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+        original = new BunnyShape(current.getName(), current.getType(), current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
         original.setImageString(current.getImageString());
+        original.setTextString(current.getTextString());
         backupMap.put(hidden, original);
         currentPage.addShape(original);
         selectedShape = original;
