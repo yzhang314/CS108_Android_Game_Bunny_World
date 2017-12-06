@@ -58,7 +58,7 @@ public class EditorActivity extends AppCompatActivity {
         this.currentPage = editorView.currentPage;
         pageMap.put(currentPage.getName(), currentPage);
         this.view = editorView;
-        popupWindowCreateNewGame(view);
+//        popupWindowCreateNewGame(view);
 
     }
 
@@ -300,6 +300,7 @@ public class EditorActivity extends AppCompatActivity {
 
                 return true;
             case R.id.savetodb:
+                popupWindowCreateNewGame(view);
                 saveToDatabase();
                 return true;
             default:
