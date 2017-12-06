@@ -436,11 +436,17 @@ public class EditorView extends View {
 
         if(judge == true) {
             if (selectedShape != null) {
+                float width = selectedShape.getRight() - selectedShape.getLeft();
+                float height = selectedShape.getTop() - selectedShape.getBottom();
 
-                selectedShape.setLeft(upX - 100);
-                selectedShape.setTop(upY - 100);
-                selectedShape.setBottom(selectedShape.getTop() + 200);
-                selectedShape.setRight(selectedShape.getLeft() + 200);
+                selectedShape.setLeft(upX - width/2);
+                selectedShape.setTop(upY + height/2);
+                selectedShape.setBottom(selectedShape.getTop() - height);
+                selectedShape.setRight(selectedShape.getLeft() + width);
+
+
+                //currentPage.addShape(selectedShape);
+                //currentPage.selectedShape = selectedShape;
 
 
                 //currentPage.addShape(selectedShape);
@@ -479,11 +485,13 @@ public class EditorView extends View {
 
         if (judge == false) {
             if (selectedShape != null) {
+                float width = selectedShape.getRight() - selectedShape.getLeft();
+                float height = selectedShape.getTop() - selectedShape.getBottom();
 
-                selectedShape.setLeft(upX - 100);
-                selectedShape.setTop(upY - 100);
-                selectedShape.setBottom(selectedShape.getTop() + 200);
-                selectedShape.setRight(selectedShape.getLeft() + 200);
+                selectedShape.setLeft(upX - width/2);
+                selectedShape.setTop(upY + height/2);
+                selectedShape.setBottom(selectedShape.getTop() - height);
+                selectedShape.setRight(selectedShape.getLeft() + width);
 
 
                 //currentPage.addShape(selectedShape);
