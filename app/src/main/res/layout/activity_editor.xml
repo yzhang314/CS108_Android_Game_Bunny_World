@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <LinearLayout
+            android:id="@+id/grid"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -23,34 +24,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text = "Create Page"
-                android:onClick="onCreateNewPage"/>
+                android:onClick="onCreateNewPage" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text = "Change Page"
-                android:onClick="changePage"/>
+                android:onClick="changePage" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text = "Delete Page"
-                android:onClick="deletePage"/>
+                android:onClick="deletePage"
+                android:layout_column="2"
+                android:layout_row="0" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text = "Clear Current"
-                android:onClick="clearCurrentPage"/>
+                android:onClick="clearCurrentPage" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text = "Create new game"
-                android:onClick="popupWindowCreateNewGame"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text = "Save Design"
-                android:onClick="saveDesign"/>
+                android:text = "Rename page"
+                android:onClick="changePageName" />
         </LinearLayout>
+        <Button
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/grid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Create new game"
+            android:onClick="popupWindowCreateNewGame"
+            />
 
     </RelativeLayout>
 

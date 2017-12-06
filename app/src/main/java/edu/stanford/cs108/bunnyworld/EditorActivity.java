@@ -1,5 +1,6 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,15 +58,21 @@ public class EditorActivity extends AppCompatActivity {
 
 
 
-
     public void onCreateNewPage(View view) {
         //this.view = view;
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
+        this.pageMap = editorView.pageMap;
         popupWindow1(view);
         this.currentPage = editorView.currentPage;
-        System.out.println("shit");
-        System.out.println(currentPage.getName());
+        //System.out.println("shit");
+        //System.out.println(currentPage.getName());
         pageMap.put(currentPage.getName(), currentPage);
+    }
+
+    public void changePageName(View view) {
+        this.pageMap = editorView.pageMap;
+        this.currentPage = editorView.currentPage;
+        popupWindow7(view);
     }
 
     public void changePage(View view) {
@@ -85,9 +92,11 @@ public class EditorActivity extends AppCompatActivity {
 
     public void clearCurrentPage(View view) {
        // EditorView editorView = (EditorView) findViewById(R.id.editorView);
-        pageMap.remove(currentPage.getName());
+        this.pageMap = editorView.pageMap;
+        this.currentPage = editorView.currentPage;
+        //pageMap.remove(currentPage.getName());
         currentPage.removeAllShapes();
-        pageMap.put(currentPage.getName(),currentPage);
+        //pageMap.put(currentPage.getName(),currentPage);
         editorView.openPage(currentPage.getName());
     }
 
@@ -322,6 +331,12 @@ public class EditorActivity extends AppCompatActivity {
             //We need to get the instance of the LayoutInflater, use the context of this activity
 
             //Inflate the view from a predefined XML layout
+            final EditText editText = (EditText) layout.findViewById(R.id.createPageName_text);
+
+            int currentIndex = pageMap.size() + 1;
+
+            String defaultName = "Page" + currentIndex;
+            editText.setText(defaultName);
 
             final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
             // display the popup in the center
@@ -343,12 +358,13 @@ public class EditorActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    EditText editText = (EditText) layout.findViewById(R.id.createPageName_text);
+
                     String newPageName = editText.getText().toString();
                     EditorView editorView = (EditorView) findViewById(R.id.editorView);
                     editorView.createNewPage(newPageName);
                     editText.setText("");
                     pw.dismiss();
+
 
                 }
             });
@@ -416,6 +432,28 @@ public class EditorActivity extends AppCompatActivity {
             //We need to get the instance of the LayoutInflater, use the context of this activity
 
             //Inflate the view from a predefined XML layout
+            final RadioGroup soundgroup = (RadioGroup) layout.findViewById(R.id.soundRadioGroup);
+            RadioButton radioButton = (RadioButton)layout.findViewById(R.id.sound1);
+            int i = 0;
+            switch(i) {
+                case 0: radioButton = (RadioButton) layout.findViewById(R.id.sound1);
+
+                    break;
+                case 1: radioButton = (RadioButton) layout.findViewById(R.id.sound2);
+
+
+                    break;
+                case 2: radioButton = (RadioButton) layout.findViewById(R.id.sound3);
+                    break;
+                case 3: radioButton = (RadioButton) layout.findViewById(R.id.sound4);
+                    break;
+                case 4: radioButton = (RadioButton) layout.findViewById(R.id.sound5);
+                    break;
+                case 5: radioButton = (RadioButton) layout.findViewById(R.id.sound6);
+                    break;
+                default:
+            }
+
 
             final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
             // display the popup in the center
@@ -539,7 +577,6 @@ public class EditorActivity extends AppCompatActivity {
                     editorView.openPage(currentName);
 
 
-
                     pw.dismiss();
 
                 }
@@ -637,6 +674,7 @@ public class EditorActivity extends AppCompatActivity {
                     }
 
                     if (currentName == "Page1") {
+                        popupWindow9(view);
                         return;
                     }
 
@@ -775,11 +813,15 @@ public class EditorActivity extends AppCompatActivity {
                         } else {
                             editorView.eraseHidden(selected);
                         }
-
+/*
+                        currentPage = editorView.currentPage;
+ */
                         selected = currentPage.selectedShape;
+
 
                         selected.setMoveable(movableSwitch.isChecked());
                         selected.setHidden(hiddenSwitch.isChecked());
+
 
                     }
 
@@ -796,6 +838,152 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    //This is for renaming the current page
+    private void popupWindow7(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window7,null);
+            final EditText showName = (EditText) layout.findViewById(R.id.showCurrentPageName_text);
+
+            if (currentPage != null) {
+                String pageName = currentPage.getName();
+
+                showName.setText(pageName);
+            }
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.changePageName_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.cancelPageName_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    if (currentPage != null) {
+                        String updatedName = showName.getText().toString();
+/*
+                        for(String s: pageMap.keySet()) {
+                            if (s.equals(currentPage.getName())) {
+                                pageMap.remove(s);
+                                break;
+                            }
+
+                        }
+                        */
+                        //currentPage.setName(updatedName);
+                        //pageMap.put(currentPage.getName(),currentPage);
+
+                        //editorView.openPage(currentPage.getName());
+
+/*
+
+                        String selectedName = selected.getName();
+                        //currentPage.removeShape(selected);
+                        selected.setSelectScript(updatedScript);
+                        //currentPage.addShape(selected);
+
+                        Log.i(selected.getName(),selected.getSelectScript());
+                        */
+
+                    }
+
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // This is a reminder for we can't change name of Page1
+    public void popupWindow8(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window8,null);
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 220, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.OKforNoChange_button);
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    // This is a reminder for we can't delete Page1
+    public void popupWindow9(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window9,null);
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 220, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+
+
+            Button enterBtn = (Button) layout.findViewById(R.id.OKforNoChange_button);
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+
+                }
+            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     //This is for change the text of a shape of text
     private void popupWindowChangeText(View v) {

@@ -89,6 +89,8 @@ public class EditorView extends View {
 
 
         initInventory();
+        drawPageName();
+        /*
         Paint p = new Paint();
         Random random1 = new Random();
         int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
@@ -101,6 +103,7 @@ public class EditorView extends View {
         Bitmap downarrowMap = Bitmap.createScaledBitmap(downarrow.getBitmap(), 50, 50, true);
         canvas.drawBitmap(uparrowMap, 1150f, 430f, null);
         canvas.drawBitmap(downarrowMap, 1150f, 500f, null);
+        */
 
 //Bitmap fireMap = fireDrawble.getBitmap();
                 //this.resizedFire = Bitmap.createScaledBitmap(fireMap, 200, 200, true);
@@ -113,6 +116,17 @@ public class EditorView extends View {
         page1 = new BunnyPage("Page1");
         currentPage = page1;
         pageMap.put("Page1", page1);
+    }
+
+    public void drawPageName() {
+        TextPaint paint;
+        paint = new TextPaint();
+        // int ranColor = 0xff000000;
+        paint.setTextSize(50);
+        paint.setColor(0xff000000);
+        String pageName = currentPage.getName();
+        canvas.drawText(pageName, 0, 400 , paint);
+
     }
 
 
@@ -129,10 +143,6 @@ public class EditorView extends View {
             currentPage = pageMap.get(pageName);
             invalidate();
         }
-
-    }
-
-    public void deletePage() {
 
     }
 
@@ -214,7 +224,7 @@ public class EditorView extends View {
         this.fireDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.fire);
         this.mysticDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.mystic);
         this.uparrowDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow);
-        this.textDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow);
+        this.textDrawble = (BitmapDrawable) getResources().getDrawable(R.drawable.text);
         // insert a text png
 
         Bitmap carrotBitMap = carrotDrawable.getBitmap();
@@ -481,20 +491,14 @@ public class EditorView extends View {
     private BunnyShape original, hidden;
 
     public void drawHidden(BunnyShape current) {
-        Paint shapePaint;
-        shapePaint = new Paint();
-        Random random1 = new Random();
-        int ranColor1 = 0xff000000 | random1.nextInt(0x00ffffff);
-        shapePaint.setColor(ranColor1);
-        shapePaint.setStyle(Paint.Style.FILL);
 
         if (current != null) {
             original = current;
-            currentPage.removeShape(current);
             hidden = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
             currentPage.addShape(hidden);
             selectedShape = hidden;
-            currentPage.selectedShape = selectedShape;
+            currentPage.removeShape(current);
+            currentPage.selectedShape = hidden;
             backupMap.put(hidden, original);
 
         }
@@ -508,9 +512,8 @@ public class EditorView extends View {
         original = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
         backupMap.put(hidden, original);
         currentPage.addShape(original);
-        shapeList.add(original);
         selectedShape = original;
-        currentPage.selectedShape = selectedShape;
+        //currentPage.selectedShape = selectedShape;
 
 
 
