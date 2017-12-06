@@ -163,7 +163,6 @@ public class EditorView extends View {
             Paint paint = new Paint();
             paint.setAlpha(60);
             canvas.drawBitmap(bm, null, boundaryRectangle, paint);
-
         } else {
             RectF boundaryRectangle = new RectF(shape.getLeft(), shape.getTop(), shape.getRight(), shape.getBottom());
             BitmapDrawable test = (BitmapDrawable) getResources().getDrawable(resourceMap.get(shape.getImageString()));
@@ -507,6 +506,7 @@ public class EditorView extends View {
         if (current != null) {
             original = current;
             hidden = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+            hidden.setImageString(current.getImageString());
             currentPage.addShape(hidden);
             selectedShape = hidden;
             currentPage.removeShape(current);
@@ -522,11 +522,11 @@ public class EditorView extends View {
         hidden = current;
         currentPage.removeShape(current);
         original = new BunnyShape(current.getName(), 1, current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
+        original.setImageString(current.getImageString());
         backupMap.put(hidden, original);
         currentPage.addShape(original);
         selectedShape = original;
         //currentPage.selectedShape = selectedShape;
-
 
 
         invalidate();

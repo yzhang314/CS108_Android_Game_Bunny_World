@@ -170,12 +170,6 @@ public class EditorActivity extends AppCompatActivity {
                 }
 
                 return true;
-            case R.id.setShapeName: {
-                if (selected != null) {
-                    popupWindowSetShapeName(view);
-                }
-            }
-            return true;
 
             case R.id.changeText:
                 if (selected.type == 2) {
@@ -870,12 +864,32 @@ public class EditorActivity extends AppCompatActivity {
 
             final Switch movableSwitch = (Switch) layout.findViewById(R.id.movable_switch);
             final Switch hiddenSwitch = (Switch) layout.findViewById(R.id.hidden_switch);
+            if (selected == null) {
+                return;
+            }
+
+            String previousName = selected.getName();
+
+
+            EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
+
+            name.setText(previousName);
+
+            EditText x1Text = (EditText)layout.findViewById(R.id.showX1_text);
+            EditText x2Text = (EditText)layout.findViewById(R.id.showX2_text);
+            EditText y1Text = (EditText)layout.findViewById(R.id.showY1_text);
+            EditText y2Text = (EditText)layout.findViewById(R.id.showY2_text);
+
+            y1Text.setText(selected.getTop() + "");
+            y2Text.setText(selected.getBottom() + "");
+            x1Text.setText(selected.getLeft() + "");
+            x2Text.setText(selected.getRight() + "");
 
 
             movableSwitch.setChecked(selected.getMoveable());
             hiddenSwitch.setChecked(!selected.isVisiable());
 
-            final PopupWindow pw = new PopupWindow(layout, 600, 350, true);
+            final PopupWindow pw = new PopupWindow(layout, 600, 900, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
@@ -898,6 +912,29 @@ public class EditorActivity extends AppCompatActivity {
                 public void onClick(View v)
                 {
                     if (selected != null) {
+                        EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
+                        String currentName = name.getText().toString();
+                        selected.setName(currentName);
+
+
+                        EditText x1Text = (EditText)layout.findViewById(R.id.showX1_text);
+                        EditText x2Text = (EditText)layout.findViewById(R.id.showX2_text);
+                        EditText y1Text = (EditText)layout.findViewById(R.id.showY1_text);
+                        EditText y2Text = (EditText)layout.findViewById(R.id.showY2_text);
+
+                        float x1 = Float.parseFloat(x1Text.getText().toString());
+                        selected.setLeft(x1);
+
+                        float x2 = Float.parseFloat(x2Text.getText().toString());
+                        selected.setRight(x2);
+
+                        float y1 = Float.parseFloat(y1Text.getText().toString());
+                        selected.setTop(y1);
+
+                        float y2 = Float.parseFloat(y2Text.getText().toString());
+                        selected.setBottom(y2);
+
+
                         selected.setMoveable(movableSwitch.isChecked());
                         selected.setVisiable(!hiddenSwitch.isChecked());
 
@@ -908,6 +945,7 @@ public class EditorActivity extends AppCompatActivity {
                         } else {
                             editorView.eraseHidden(selected);
                         }
+
 /*
                         currentPage = editorView.currentPage;
  */
