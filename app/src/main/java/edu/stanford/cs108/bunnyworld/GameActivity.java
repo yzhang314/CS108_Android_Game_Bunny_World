@@ -1,12 +1,22 @@
 package edu.stanford.cs108.bunnyworld;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +51,9 @@ public class GameActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.loaddb:
-                loadDatabase();
+
+                loadNames();
+                popupWindowLoadGame(gameView);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -100,22 +112,31 @@ public class GameActivity extends AppCompatActivity {
 //        return bunnyShape;
 //    }
     SQLiteDatabase db;
-    private void loadDatabase(){
+    List<String>gameNames = new ArrayList<>();
+
+    // to get the names
+    private void loadNames() {
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
         // There still need some changes on hard code game1;
         //String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shapes
         String query = "SELECT * FROM BunnyGames";
         Cursor cursor = db.rawQuery(query,null);
-        List<String>gameNames = new ArrayList<>();
+
         while (cursor.moveToNext()){
             String name = cursor.getString(0);
             gameNames.add(name);           // This list contains all the game names;
         }
         System.out.println(gameNames);
+    }
 
-        String selectedName = "game1";      // The player chooses the game name to play, "game1"should be replaced
-        query = "SELECT shapes FROM BunnyGames WHERE name = '" + selectedName + "'";
-        cursor = db.rawQuery(query,null);
+    private void loadDatabase(){
+        db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
+        // There still need some changes on hard code game1;
+        //String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shapes
+
+        String selectedName = nameofGametoLoad;      // The player chooses the game name to play, "game1"should be replaced
+        String query = "SELECT shapes FROM BunnyGames WHERE name = '" + selectedName + "'";
+        Cursor cursor = db.rawQuery(query,null);
         while (cursor.moveToNext()){
             String msg = cursor.getString(0);
             List<BunnyPage>list = jsonToPageList(msg);
@@ -222,5 +243,108 @@ public class GameActivity extends AppCompatActivity {
         }
         System.out.println("json To BunnyShape:");//打印出pet对象参数。
         return null;
+    }
+
+    String nameofGametoLoad = "";
+
+    // popup window to load the game
+    private void popupWindowLoadGame(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_loadgame,null);
+
+            final RadioGroup pageloadGroup = (RadioGroup) layout.findViewById(R.id.pageRadioGroup1);
+            RadioButton radioButton = (RadioButton)layout.findViewById(R.id.game1);
+            int i = 0;
+            while (i <= 5) {
+                switch(i) {
+                    case 0: radioButton = (RadioButton) layout.findViewById(R.id.game1);
+                        if (gameNames.size() > i)
+                        radioButton.setText(gameNames.get(i));
+
+                        break;
+                    case 1: radioButton = (RadioButton) layout.findViewById(R.id.game2);
+                        if (gameNames.size() > i) {
+                            radioButton.setText(gameNames.get(i));
+                        }
+                        break;
+                    case 2: radioButton = (RadioButton) layout.findViewById(R.id.game3);
+                        if (gameNames.size() > i) {
+                            radioButton.setText(gameNames.get(i));
+                        }
+                        break;
+                    case 3: radioButton = (RadioButton) layout.findViewById(R.id.game4);
+                        if (gameNames.size() > i) {
+                            radioButton.setText(gameNames.get(i));
+                        }
+                        break;
+                    case 4: radioButton = (RadioButton) layout.findViewById(R.id.game5);
+                        if (gameNames.size() > i) {
+                            radioButton.setText(gameNames.get(i));
+                        }
+                        break;
+                    case 5: radioButton = (RadioButton) layout.findViewById(R.id.game6);
+                        if (gameNames.size() > i) {
+                            radioButton.setText(gameNames.get(i));
+                        }
+                        break;
+                    default:
+                }
+                i++;
+            }
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 600, 600, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.loadgame_enter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.loadgame_cancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+            enterBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int currentCheck = pageloadGroup.getCheckedRadioButtonId();
+                    String soundString = "";
+
+                    switch(currentCheck) {
+                        case R.id.game1:
+                            nameofGametoLoad = gameNames.get(0);
+                            break;
+                        case R.id.game2:
+                            nameofGametoLoad = gameNames.get(1);
+                            break;
+                        case R.id.game3:
+                            nameofGametoLoad = gameNames.get(2);
+                            break;
+                        case R.id.game4:
+                            nameofGametoLoad = gameNames.get(3);
+                            break;
+                        case R.id.game5:
+                            nameofGametoLoad = gameNames.get(4);
+                            break;
+                        case R.id.game6:
+                            nameofGametoLoad = gameNames.get(5);
+                            break;
+                        default:
+
+                    }
+                    pw.dismiss();
+                    loadDatabase();
+                }
+            });
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
