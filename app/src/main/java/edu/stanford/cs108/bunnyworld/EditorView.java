@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static edu.stanford.cs108.bunnyworld.R.color.colorAccent;
+
 /**
  * Created by yuwenzhang on 11/27/17.
  */
@@ -123,10 +125,10 @@ public class EditorView extends View {
         TextPaint paint;
         paint = new TextPaint();
         // int ranColor = 0xff000000;
-        paint.setTextSize(50);
-        paint.setColor(0xff000000);
+        paint.setTextSize(40);
+        paint.setColor(Color.DKGRAY);
         String pageName = currentPage.getName();
-        canvas.drawText(pageName, 0, 400 , paint);
+        canvas.drawText(pageName, 10, 410 , paint);
 
     }
 
@@ -135,6 +137,7 @@ public class EditorView extends View {
             copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
             copyShape.setImageString(selectedShape.getImageString());
             copyShape.setTextString(selectedShape.getTextString());
+            copyShape.setSelectScript(selectedShape.getSelectScript());
         }
     }
 
@@ -142,6 +145,7 @@ public class EditorView extends View {
         BunnyShape current = new BunnyShape(copyShape.getName(), copyShape.getType(), copyShape.getLeft() + 50, copyShape.getRight() + 50, copyShape.getTop(), copyShape.getBottom(), "", true);
         current.setImageString(copyShape.getImageString());
         current.setTextString(copyShape.getTextString());
+        current.setSelectScript(copyShape.getSelectScript());
         int index = currentPage.getShapes().size() + 1;
         current.setName("Shape" + index);
         currentPage.addShape(current);
@@ -568,6 +572,7 @@ public class EditorView extends View {
             hidden = new BunnyShape(current.getName(), current.getType(), current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
             hidden.setImageString(current.getImageString());
             hidden.setTextString(current.getTextString());
+            hidden.setSelectScript(current.getSelectScript());
             currentPage.addShape(hidden);
             selectedShape = hidden;
             currentPage.removeShape(current);
@@ -585,10 +590,11 @@ public class EditorView extends View {
         original = new BunnyShape(current.getName(), current.getType(), current.getLeft(), current.getRight(), current.getTop(), current.getBottom(), "", true);
         original.setImageString(current.getImageString());
         original.setTextString(current.getTextString());
+        original.setSelectScript(current.getSelectScript());
         backupMap.put(hidden, original);
         currentPage.addShape(original);
         selectedShape = original;
-        //currentPage.selectedShape = selectedShape;
+        currentPage.selectedShape = selectedShape;
 
 
         invalidate();
