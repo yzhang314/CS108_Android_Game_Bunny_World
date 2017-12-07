@@ -48,14 +48,7 @@
                 android:text = "Rename page"
                 android:onClick="changePageName" />
         </LinearLayout>
-        <Button
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/grid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text = "Create new game"
-            android:onClick="popupWindowCreateNewGame"
-            />
+
 
     </RelativeLayout>
 

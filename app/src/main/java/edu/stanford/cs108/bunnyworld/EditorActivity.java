@@ -312,7 +312,7 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
             case R.id.savetodb:
                 popupWindowCreateNewGame(view);
-                saveToDatabase();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1244,6 +1244,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    String newgamename = "";
 
     // This is the function to create a new game
     private void popupWindowCreateNewGame(View v) {
@@ -1274,7 +1275,9 @@ public class EditorActivity extends AppCompatActivity {
                 {
                     if (selected != null) {
                         String updatedScript = editText.getText().toString();
+                        newgamename = updatedScript;
                         editorView.gameName = updatedScript;
+                        saveToDatabase();
                     }
                     pw.dismiss();
                 }
@@ -1362,7 +1365,7 @@ public class EditorActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        setupDatabase();
+        //setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
@@ -1393,12 +1396,17 @@ public class EditorActivity extends AppCompatActivity {
             }
         }
         String string = bunnyPageToJson(); // all the information in bunny pages
-        String dataString = "INSERT INTO BunnyGames VALUES " +
-                "('game1'" + ",'" +
-                string + "',NULL);";
-        System.out.println(dataString);
+
+        String newDataString = "UPDATE BunnyGames SET name =" + "'" + newgamename + "',shapes = '" + string +"';";
+        System.out.println(newDataString);
+        System.out.println(newgamename);
+
+//        String dataString = "INSERT INTO BunnyGames VALUES " +
+//                "('" + newgamename+ "'" + ",'" +
+//                string + "',NULL);";
+//        System.out.println(dataString);
         //Log.i(dataString,dataString);
-        db.execSQL(dataString);
+        db.execSQL(newDataString);
 
     }
 

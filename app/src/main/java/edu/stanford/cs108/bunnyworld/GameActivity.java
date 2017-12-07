@@ -102,7 +102,8 @@ public class GameActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void loadDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        String query = "SELECT shapes FROM BunnyGames WHERE name = 'game1'"; // search all the information on shpaes
+        // There still need some changes on hard code game1;
+        String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shpaes
         Cursor cursor = db.rawQuery(query,null);
         while (cursor.moveToNext()){
             String msg = cursor.getString(0);
