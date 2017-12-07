@@ -210,7 +210,6 @@ public class EditorActivity extends AppCompatActivity {
                 } else {
                     //currentPage.removeShape(selected);
 
-                    selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
                     //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
@@ -345,7 +344,7 @@ public class EditorActivity extends AppCompatActivity {
             String defaultName = "Page" + currentIndex;
             editText.setText(defaultName);
 
-            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            final PopupWindow pw = new PopupWindow(layout, 800, 300, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
@@ -414,6 +413,7 @@ public class EditorActivity extends AppCompatActivity {
                     String goToPage = editText.getText().toString();
 
                         if (pageMap.keySet().contains(goToPage)) {
+                            selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
                             selected.setSelectScript(selected.getSelectScript() + goToPage + "|");
                             editText.setText("");
                             Log.i(selected.getName(), selected.getSelectScript());
@@ -644,7 +644,7 @@ public class EditorActivity extends AppCompatActivity {
                 i++;
             }
 
-            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
+            final PopupWindow pw = new PopupWindow(layout, 400, 650, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
@@ -738,7 +738,7 @@ public class EditorActivity extends AppCompatActivity {
             }
 
 
-            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
+            final PopupWindow pw = new PopupWindow(layout, 400, 650, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
@@ -812,13 +812,17 @@ public class EditorActivity extends AppCompatActivity {
         try {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View layout = inflater.inflate(R.layout.popup_window5,null);
-            final EditText showScript = (EditText) layout.findViewById(R.id.showCurrentScript_text);
+            EditText showScript = (EditText) layout.findViewById(R.id.showCurrentScript_text);
 
-            if (selected != null) {
-                String script = selected.getSelectedScript();
+            if (selected == null) {
+                return;
 
-                showScript.setText(script);
             }
+            String script = selected.getSelectedScript();
+            showScript.setText(script);
+
+
+
 
 
             final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
@@ -844,6 +848,7 @@ public class EditorActivity extends AppCompatActivity {
                 public void onClick(View v)
                 {
                     if (selected != null) {
+                        EditText showScript = (EditText) layout.findViewById(R.id.showCurrentScript_text);
                         String updatedScript = showScript.getText().toString();
                         String selectedName = selected.getName();
                         //currentPage.removeShape(selected);
