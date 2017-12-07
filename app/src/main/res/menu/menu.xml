@@ -63,6 +63,14 @@
         android:title="Change Text (only for text)">
     </item>
 
+    <item android:id="@+id/copyShape"
+        android:title="Copy Shape">
+    </item>
+
+    <item android:id="@+id/pasteShape"
+        android:title="Paste Shape">
+    </item>
+
     <item android:id="@+id/deleteShape"
         android:title="Delete Shape">
     </item>>

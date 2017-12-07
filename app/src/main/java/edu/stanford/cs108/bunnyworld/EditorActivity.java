@@ -180,6 +180,17 @@ public class EditorActivity extends AppCompatActivity {
                 }
                 return true;
 
+            case R.id.copyShape:
+                if (selected != null) {
+                    editorView.copyShape();
+                }
+                return true;
+            case R.id.pasteShape:
+
+                    editorView.pasteShape();
+
+                return true;
+
             case R.id.resize:
                 if (selected != null) {
                     popupWindowResize(view);
@@ -309,18 +320,6 @@ public class EditorActivity extends AppCompatActivity {
     }
 
 
-    public void setString() {
-
-
-    }
-
-    protected void creatNewGame() {
-
-    }
-
-    protected void deletePage() {
-
-    }
 
     protected void addShape (BunnyShape shape) {
         switch(shape.getType()) {
@@ -899,7 +898,7 @@ public class EditorActivity extends AppCompatActivity {
             movableSwitch.setChecked(selected.getMoveable());
             hiddenSwitch.setChecked(!selected.isVisiable());
 
-            final PopupWindow pw = new PopupWindow(layout, 600, 900, true);
+            final PopupWindow pw = new PopupWindow(layout, 700, 900, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 

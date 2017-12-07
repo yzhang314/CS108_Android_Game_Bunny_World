@@ -19,7 +19,7 @@ android:background="#FFFFFF">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="x1: "
+        android:text="Left:"
         android:padding="5pt"
         android:textColor="#000000"
         />
@@ -34,7 +34,7 @@ android:background="#FFFFFF">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="x2: "
+        android:text="Right:"
         android:padding="5pt"
         android:textColor="#000000"
         />
@@ -53,7 +53,7 @@ android:background="#FFFFFF">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="y1: "
+        android:text="Bottom:"
         android:padding="5pt"
         android:textColor="#000000"
         />
@@ -67,7 +67,7 @@ android:background="#FFFFFF">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="y2: "
+        android:text="Top:"
         android:padding="5pt"
         android:textColor="#000000"
         />
@@ -135,7 +135,7 @@ android:background="#FFFFFF">
         android:layout_height="wrap_content"
         android:text="CHANGE"
         android:textColor="@color/colorAccent"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/cancelProperty_button"
@@ -143,7 +143,7 @@ android:background="#FFFFFF">
         android:layout_height="wrap_content"
         android:text="CANCEL"
         android:textColor="@color/colorAccent"
-        android:layout_gravity="right"/>
+        android:layout_gravity="center"/>
 
 </LinearLayout>
 
