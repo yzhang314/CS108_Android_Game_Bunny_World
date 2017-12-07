@@ -112,10 +112,11 @@ public class GameActivity extends AppCompatActivity {
 //        return bunnyShape;
 //    }
     SQLiteDatabase db;
-    List<String>gameNames = new ArrayList<>();
+    List<String>gameNames;
 
     // to get the names
     private void loadNames() {
+        gameNames = new ArrayList<>();
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
         // There still need some changes on hard code game1;
         //String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shapes
@@ -126,6 +127,7 @@ public class GameActivity extends AppCompatActivity {
             String name = cursor.getString(0);
             gameNames.add(name);           // This list contains all the game names;
         }
+
         System.out.println(gameNames);
     }
 
