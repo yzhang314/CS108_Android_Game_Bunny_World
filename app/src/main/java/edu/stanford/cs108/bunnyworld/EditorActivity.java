@@ -301,7 +301,7 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
             case R.id.savetodb:
                 popupWindowCreateNewGame(view);
-                saveToDatabase();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1245,6 +1245,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    String newgamename = "";
 
     // This is the function to create a new game
     private void popupWindowCreateNewGame(View v) {
@@ -1275,7 +1276,9 @@ public class EditorActivity extends AppCompatActivity {
                 {
                     if (selected != null) {
                         String updatedScript = editText.getText().toString();
+                        newgamename = updatedScript;
                         editorView.gameName = updatedScript;
+                        saveToDatabase();
                     }
                     pw.dismiss();
                 }
@@ -1395,7 +1398,7 @@ public class EditorActivity extends AppCompatActivity {
         }
         String string = bunnyPageToJson(); // all the information in bunny pages
         String dataString = "INSERT INTO BunnyGames VALUES " +
-                "('game1'" + ",'" +
+                "('" + newgamename+ "'" + ",'" +
                 string + "',NULL);";
         System.out.println(dataString);
         //Log.i(dataString,dataString);
