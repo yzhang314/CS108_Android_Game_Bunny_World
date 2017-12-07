@@ -239,7 +239,7 @@ public class BunnyShape {
     public void draw(Canvas canvas) {
         this.canvas = canvas;
         if(visiable) {
-            //canvas.drawRect(left, top, right, bottom, shapePaint);
+            canvas.drawRect(left, top, right, bottom, shapePaint);
             if(shapeDrawable != null) {
                 canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
             }
