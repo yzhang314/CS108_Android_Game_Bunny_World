@@ -1396,17 +1396,26 @@ public class EditorActivity extends AppCompatActivity {
             }
         }
         String string = bunnyPageToJson(); // all the information in bunny pages
-
-        String newDataString = "UPDATE BunnyGames SET name =" + "'" + newgamename + "',shapes = '" + string +"';";
-        System.out.println(newDataString);
-        System.out.println(newgamename);
-
-//        String dataString = "INSERT INTO BunnyGames VALUES " +
+        String query = "SELECT * FROM BunnyGames WHERE name = '" + newgamename + "'";
+        Cursor cursor = db.rawQuery(query,null);
+        String dataString;
+        if (cursor.moveToNext()){
+            dataString = "UPDATE BunnyGames SET shapes = '" + string +"' WHERE name = '" + newgamename +"';";
+        } else {
+            dataString = "REPLACE INTO BunnyGames VALUES " + "('" + newgamename+ "'" + ",'" + string + "',NULL);";
+        }
+//        UPDATE COMPANY SET ADDRESS = 'Texas' WHERE ID = 6;
+//        INSERT OR REPLACE INTO Employee (id, name, role)
+//        VALUES (1, 'John Foo', 'CEO');
+//        String newDataString = "UPDATE BunnyGames SET shapes = '" + string +"' WHERE name = '" + newgamename +"';";
+//        System.out.println(newDataString);
+//        System.out.println(newgamename);
+//        String finalDataStr = "INSERT OR REPLACE INTO BunnyGames (name, shapes) VALUES ('" + newgamename + "', '" + string + "');";
+//        String dataString = "REPLACE INTO BunnyGames VALUES " +
 //                "('" + newgamename+ "'" + ",'" +
 //                string + "',NULL);";
 //        System.out.println(dataString);
-        //Log.i(dataString,dataString);
-        db.execSQL(newDataString);
+        db.execSQL(dataString);
 
     }
 

@@ -103,15 +103,27 @@ public class GameActivity extends AppCompatActivity {
     private void loadDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
         // There still need some changes on hard code game1;
-        String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shpaes
+        //String query = "SELECT shapes FROM BunnyGames WHERE name = 'game2'"; // search all the information on shapes
+        String query = "SELECT * FROM BunnyGames";
         Cursor cursor = db.rawQuery(query,null);
+        List<String>gameNames = new ArrayList<>();
+        while (cursor.moveToNext()){
+            String name = cursor.getString(0);
+            gameNames.add(name);           // This list contains all the game names;
+        }
+        System.out.println(gameNames);
+
+        String selectedName = "game1";      // The player chooses the game name to play, "game1"should be replaced
+        query = "SELECT shapes FROM BunnyGames WHERE name = '" + selectedName + "'";
+        cursor = db.rawQuery(query,null);
         while (cursor.moveToNext()){
             String msg = cursor.getString(0);
             List<BunnyPage>list = jsonToPageList(msg);
-            System.out.println(list.size() + "!!!");
+            //System.out.println(list.size() + "!!!");
             gameView.loadPages(list);
             System.out.println(msg);
         }
+
     }
 
     public List<BunnyPage> jsonToPageList(String json){
