@@ -414,7 +414,7 @@ public class EditorActivity extends AppCompatActivity {
 
                         if (pageMap.keySet().contains(goToPage)) {
                             selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
-                            selected.setSelectScript(selected.getSelectScript() + goToPage + "|");
+                            selected.setSelectScript(selected.getSelectScript() + goToPage + ",");
                             editText.setText("");
                             Log.i(selected.getName(), selected.getSelectScript());
                             //This is used to change page which can be used during game
@@ -519,7 +519,7 @@ public class EditorActivity extends AppCompatActivity {
                         default:
 
                     }
-                    selected.setSelectScript(selected.getSelectScript() + soundString + "|");
+                    selected.setSelectScript(selected.getSelectScript() + soundString + ",");
                     pw.dismiss();
                 }
             });
@@ -575,7 +575,7 @@ public class EditorActivity extends AppCompatActivity {
                     /*
                     EditText editText = (EditText) layout.findViewById(R.id.sound_text);
                     String soundString = editText.getText().toString();
-                    selected.setSelectScript(selected.getSelectScript() + soundString + "|");
+                    selected.setSelectScript(selected.getSelectScript() + soundString + ",");
                     editText.setText("");
                     Log.i(selected.getName(), selected.getSelectScript());
                     */
