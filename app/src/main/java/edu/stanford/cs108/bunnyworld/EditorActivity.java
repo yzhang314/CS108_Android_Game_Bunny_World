@@ -69,8 +69,8 @@ public class EditorActivity extends AppCompatActivity {
         //this.view = view;
         //EditorView editorView = (EditorView) findViewById(R.id.editorView);
         this.pageMap = editorView.pageMap;
-        popupWindow1(view);
         this.currentPage = editorView.currentPage;
+        popupWindow1(view);
         //System.out.println("shit");
         //System.out.println(currentPage.getName());
         pageMap.put(currentPage.getName(), currentPage);

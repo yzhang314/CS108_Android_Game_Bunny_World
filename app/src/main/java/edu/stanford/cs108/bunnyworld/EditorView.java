@@ -142,6 +142,8 @@ public class EditorView extends View {
         BunnyShape current = new BunnyShape(copyShape.getName(), copyShape.getType(), copyShape.getLeft() + 50, copyShape.getRight() + 50, copyShape.getTop(), copyShape.getBottom(), "", true);
         current.setImageString(copyShape.getImageString());
         current.setTextString(copyShape.getTextString());
+        int index = currentPage.getShapes().size() + 1;
+        current.setName("Shape" + index);
         currentPage.addShape(current);
         selectedShape = current;
         //copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
