@@ -26,6 +26,7 @@ public class BunnyShape {
     private String textString = "";
     private String imageString = "";
     private Paint shapePaint;
+    private BitmapDrawable shapeDrawable;
     private Paint onDropPaintTrue;
     private Paint onDropPaintFalse;
     private float left, right, bottom, top;
@@ -60,13 +61,17 @@ public class BunnyShape {
         this.name = name;
     }
 
-    public Paint getShapePaint() {
-        return shapePaint;
-    }
+    //public Paint getShapePaint() {
+    //    return shapePaint;
+    //}
 
-    public void setShapePaint(Paint shapePaint) {
-        this.shapePaint = shapePaint;
-    }
+    //public void setShapePaint(Paint shapePaint) {
+    //    this.shapePaint = shapePaint;
+    //}
+
+    public BitmapDrawable getShapeDrawable () { return this.shapeDrawable; }
+
+    public void setShapeDrawable(BitmapDrawable shapeDrawable) { this.shapeDrawable = shapeDrawable; }
 
     public float getLeft() {
         return left;
@@ -234,7 +239,10 @@ public class BunnyShape {
     public void draw(Canvas canvas) {
         this.canvas = canvas;
         if(visiable) {
-            canvas.drawRect(left, top, right, bottom, shapePaint);
+            //canvas.drawRect(left, top, right, bottom, shapePaint);
+            if(shapeDrawable != null) {
+                canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
+            }
             if(isOnDrop) {
                 if(isOnDropValid) {
                     canvas.drawRect(left, top, right, bottom, onDropPaintTrue);

@@ -2,6 +2,7 @@ package edu.stanford.cs108.bunnyworld;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.view.View;
 
@@ -37,6 +38,7 @@ public class GameView extends View {
     BunnyShape ondropShape;
     BunnyShape preOndropShape;
     Map<String, BunnyPage> pageMap;
+    Map<String, BitmapDrawable> drawableMap;
     Inventory inventory;
 
     Map<String, Integer> resMap;
@@ -49,8 +51,10 @@ public class GameView extends View {
         dbHandler = new DbHandler();
         pageMap = new HashMap<>();
         resMap = new HashMap<>();
+        drawableMap = new HashMap<>();
         loadPages2();
         loadRes();
+        loadDrawable();
         inventory = new Inventory(0, 1500, 430, 630);
         onEnterActions();
     }
@@ -79,6 +83,12 @@ public class GameView extends View {
                 if (page.getName().equals("Page1")) {
                     currentPage = page;
                 }
+                for(BunnyShape shape: page.getShapes()) {
+                    String imageString = shape.getImageString();
+                    if(drawableMap.containsKey(imageString)) {
+                        shape.setShapeDrawable(drawableMap.get(imageString));
+                    }
+                }
             }
         }
         System.out.println("Print out if pages are loaded correctly");
@@ -94,6 +104,17 @@ public class GameView extends View {
         resMap.put("munch", R.raw.munch);
         resMap.put("munching", R.raw.munching);
         resMap.put("woof", R.raw.woof);
+    }
+
+    private void loadDrawable () {
+        drawableMap.put("carrot", (BitmapDrawable) getResources().getDrawable(R.drawable.carrot));
+        drawableMap.put("duck", (BitmapDrawable) getResources().getDrawable(R.drawable.duck));
+        drawableMap.put("carrot2", (BitmapDrawable) getResources().getDrawable(R.drawable.carrot2));
+        drawableMap.put("death", (BitmapDrawable) getResources().getDrawable(R.drawable.death));
+        drawableMap.put("fire", (BitmapDrawable) getResources().getDrawable(R.drawable.fire));
+        drawableMap.put("mystic", (BitmapDrawable) getResources().getDrawable(R.drawable.mystic));
+        drawableMap.put("uparrow", (BitmapDrawable) getResources().getDrawable(R.drawable.uparrow));
+        drawableMap.put("text", (BitmapDrawable) getResources().getDrawable(R.drawable.text));
     }
 
     @Override
