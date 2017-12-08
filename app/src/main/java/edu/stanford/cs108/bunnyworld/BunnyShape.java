@@ -244,7 +244,10 @@ public class BunnyShape {
         this.canvas = canvas;
         if(visiable) {
             String textString = getTextString();
-            if (textString != "") {
+            if(shapeDrawable != null) {
+                canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
+            }
+            else if (textString != "") {
                 RectF boundaryRectangle = new RectF(getLeft(), getTop(), getRight(), getBottom());
                 TextPaint paint;
                 paint = new TextPaint();
@@ -257,9 +260,6 @@ public class BunnyShape {
                 canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
                 sl.draw(canvas);
                 canvas.restore();
-            }
-            if(shapeDrawable != null) {
-                canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
             }
             else {
                 canvas.drawRect(left, top, right, bottom, shapePaint);

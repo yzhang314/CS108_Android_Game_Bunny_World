@@ -25,6 +25,7 @@ public class Inventory {
         inventoryPaint = new Paint();
         inventoryPaint.setColor(Color.WHITE);
         inventoryPaint.setStyle(Paint.Style.FILL);
+        // better to set a picture
     }
 
     public void addShape(BunnyShape shape) {

@@ -1067,10 +1067,11 @@ public class EditorActivity extends AppCompatActivity {
 
             EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
 
-            name.setText(previousName);
+            //name.setText(previousName);
+            name.setHint(previousName);
 
 
-            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            final PopupWindow pw = new PopupWindow(layout, 800, 300, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 
@@ -1087,6 +1088,10 @@ public class EditorActivity extends AppCompatActivity {
                     String previousName = currentPage.getName();
                     EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text) ;
                     String currentName = name.getText().toString();
+                    if (currentName.equals("")) {
+                        pw.dismiss();
+                        return;
+                    }
                     currentPage.setName(currentName);
 
                     for(String s: pageMap.keySet()) {
@@ -1734,7 +1739,7 @@ public class EditorActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        setupDatabase();
+        //setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
