@@ -3,6 +3,9 @@ package edu.stanford.cs108.bunnyworld;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -240,10 +243,28 @@ public class BunnyShape {
     public void draw(Canvas canvas) {
         this.canvas = canvas;
         if(visiable) {
-            canvas.drawRect(left, top, right, bottom, shapePaint);
-            if(shapeDrawable != null) {
+            String textString = getTextString();
+            if (textString != "") {
+                RectF boundaryRectangle = new RectF(getLeft(), getTop(), getRight(), getBottom());
+                TextPaint paint;
+                paint = new TextPaint();
+                paint.setTextSize(50);
+                paint.setColor(0xff000000);
+
+                StaticLayout sl = new StaticLayout(getTextString(), paint, (int) boundaryRectangle.width(), Layout.Alignment.ALIGN_CENTER, 1, 1, false);
+
+                canvas.save();
+                canvas.translate(boundaryRectangle.left, boundaryRectangle.top);
+                sl.draw(canvas);
+                canvas.restore();
+            }
+            else if(shapeDrawable != null) {
                 canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
             }
+            else {
+                canvas.drawRect(left, top, right, bottom, shapePaint);
+            }
+
             if(isOnDrop) {
                 if(isOnDropValid) {
                     canvas.drawRect(left, top, right, bottom, onDropPaintTrue);
@@ -254,6 +275,7 @@ public class BunnyShape {
             }
         }
     }
+
 
     public void move(float x, float y) {
         this.left += x;
