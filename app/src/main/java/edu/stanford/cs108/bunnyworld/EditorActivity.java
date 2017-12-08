@@ -47,6 +47,7 @@ public class EditorActivity extends AppCompatActivity {
     BunnyPage currentPage;
     Map<String, BunnyPage> pageMap = new HashMap<>();
     EditorView editorView;
+    DbHandler dbHandler = new DbHandler();
 
     View view;
     @Override
@@ -61,8 +62,6 @@ public class EditorActivity extends AppCompatActivity {
 //        popupWindowCreateNewGame(view);
 
     }
-
-
 
 
     public void onCreateNewPage(View view) {
@@ -137,6 +136,18 @@ public class EditorActivity extends AppCompatActivity {
         return true;
     }
     */
+
+    public void undo(View view) {
+        this.pageMap = editorView.pageMap;
+        this.currentPage = editorView.currentPage;
+        loadUndoDatabase();
+//        BunnyShape bunnyShape = this.currentPage.getShapes().get(0);
+//        System.out.println("this.currentPage.getShapes" + this.currentPage.getShapes().size() + bunnyShape.getLeft());
+        pageMap.put(currentPage.getName(),currentPage);
+        editorView.pageMap = pageMap;
+        //System.out.println("this.currentPage.getName()" + this.currentPage.getName());
+        editorView.openPage(this.currentPage.getName());
+    }
 
 
     @Override
@@ -996,19 +1007,20 @@ public class EditorActivity extends AppCompatActivity {
               return;
             }
 
-            String previousName = currentPage.getName();
 
 
-            if (previousName == "Page1") {
+            if (currentPage.getName().equals("Page1")) {
                 popupWindow8(view);
                 return;
             }
 
 
+            String previousName = currentPage.getName();
+
+
             EditText name = (EditText)layout.findViewById(R.id.showCurrentPageName_text);
 
             name.setText(previousName);
-
 
 
             final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
@@ -1485,7 +1497,113 @@ public class EditorActivity extends AppCompatActivity {
 
 
 
+    /**This part is for undo!*/
+    void saveToUndo(){
+        db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
+        String ifExist = "select * from sqlite_master where type='table' and name = 'Undo';";
+        Cursor cursor = db.rawQuery(ifExist,null);
+        if (cursor.getCount() == 0){
+            setupUndoDatabase();
+        }
+        saveUndoInformation();
+    }
+
+    private void setupUndoDatabase(){
+        String dropStr = "DROP TABLE IF EXISTS Undo;";
+        db.execSQL(dropStr);
+        String setupStr = "CREATE TABLE Undo ("
+                + "name TEXT, shapes TEXT,"
+                + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
+                + ");";
+        db.execSQL(setupStr);
+    }
+
+    private void saveUndoInformation(){
+        String current = currentBunnyPageToJson();          // all the information in bunny pages
+        String query = "SELECT shapes FROM Undo WHERE name = 'current'";   // actually only one record in db!
+        //String query2 = "SELECT * FROM Undo WHERE name = 'past'";
+        Cursor cursor = db.rawQuery(query,null);
+        //Cursor cursor2 = db.rawQuery(query2,null);
+        System.out.println("string: " + current);
+
+        String past = "";
+        String dataString;
+        String dataString2;
+        if (cursor.moveToNext()){   // exist current
+            past = cursor.getString(0);  // get current
+            System.out.println("past:" + past);
+            dataString = "UPDATE Undo SET shapes = '" + past +"' WHERE name = 'past';"; // set current to past
+            dataString2 = "UPDATE Undo SET shapes = '" + current +"' WHERE name = 'current';";   // update current
+        } else {
+            dataString = "INSERT INTO Undo VALUES " + "('past'" + ",'" + current + "',NULL);";
+            dataString2 = "INSERT INTO Undo VALUES " + "('current'" + ",'" + current + "',NULL);";
+        }
+//        System.out.println("dataString: " + dataString);
+//        System.out.println("dataString2: " + dataString2);
+        db.execSQL(dataString);
+        db.execSQL(dataString2);
+    }
 
 
+    private String currentBunnyPageToJson(){
+        String bunnyPageStr = "";
+        try {
+            BunnyPage bunnyPage = currentPage;
+            List<BunnyShape>shapes = currentPage.getShapes();
+            if (shapes.size() != 0){
+                BunnyShape shape = shapes.get(0);
+                System.out.println("Shape position:" + shape.getLeft());
+            }
 
+            JSONObject bunnyPageObj = new JSONObject();     //bunnyPage对象，json形式
+
+            bunnyPageObj.put("pageName", bunnyPage.getName());
+            bunnyPageObj.put("shapes", bunnyShapeToJson(bunnyPage.getShapes()));
+
+            bunnyPageStr = bunnyPageObj.toString();         //生成返回字符串
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bunnyPageStr;
+    }
+
+    /** This part is for to undo*/
+    private void loadUndoDatabase(){
+        db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
+        String query = "SELECT shapes FROM Undo WHERE name = 'current'";
+        Cursor cursor = db.rawQuery(query,null);
+        if (cursor.moveToNext()){
+            String msg = cursor.getString(0);
+            System.out.println(msg);
+            this.currentPage = jsonToBunnyPage(msg);
+        }
+        saveUndoInformation();
+    }
+
+    public BunnyPage jsonToBunnyPage(String json){
+        if (json.startsWith("error")){        //这里可以做一下检测，如果不是json格式的就直接返回
+            return null;
+        }
+        BunnyPage bunnyPage = new BunnyPage();     //准备返回的bunnyPage对象  /*这里需要一个空构造函数*/
+        try {
+            JSONObject shapeList = new JSONObject(json); // shapes store a list of shape
+            String name = shapeList.getString("pageName");
+            String shapes = shapeList.getString("shapes");
+            //System.out.println("shapes: " + shapes);
+            JSONObject shape = new JSONObject(shapes);
+
+            JSONArray shapeArray = shape.getJSONArray("bunnyPage");
+            for (int j = 0; j < shapeArray.length(); j++){
+                bunnyPage.addShape(dbHandler.jsonToBunnyShape(shapeArray.getJSONObject(j)));
+            }
+            bunnyPage.setName(name);
+            //System.out.println("name: " + name);
+            return bunnyPage;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("json To BunnyShape:"+ bunnyPage.toString());
+        return null;
+    }
 }
+
