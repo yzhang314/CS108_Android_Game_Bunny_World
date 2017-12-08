@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             final View layout = inflater.inflate(R.layout.welcomepage,null);
 
 
-            final PopupWindow pw = new PopupWindow(layout, 500, 800, true);
+            final PopupWindow pw = new PopupWindow(layout, 520, 800, true);
             // display the popup in the center
             pw.showAtLocation(v, Gravity.CENTER, 0, 0);
 

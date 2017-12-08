@@ -23,7 +23,7 @@ public class Inventory {
         this.bottom = bottom;
         list = new ArrayList<>();
         inventoryPaint = new Paint();
-        inventoryPaint.setColor(Color.GRAY);
+        inventoryPaint.setColor(Color.WHITE);
         inventoryPaint.setStyle(Paint.Style.FILL);
     }
 

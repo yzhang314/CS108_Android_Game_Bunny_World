@@ -55,10 +55,6 @@
         android:title="Set Property">
     </item>
 
-    <item android:id="@+id/resize"
-        android:title="Resize the Shape">
-    </item>
-
     <item android:id="@+id/changeText"
         android:title="Change Text (only for text)">
     </item>

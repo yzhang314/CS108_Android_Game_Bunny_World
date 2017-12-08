@@ -102,6 +102,7 @@ public class EditorActivity extends AppCompatActivity {
         this.pageMap = editorView.pageMap;
         this.currentPage = editorView.currentPage;
         //pageMap.remove(currentPage.getName());
+        saveToUndo();
         currentPage.removeAllShapes();
         //pageMap.put(currentPage.getName(),currentPage);
         editorView.openPage(currentPage.getName());
@@ -215,11 +216,6 @@ public class EditorActivity extends AppCompatActivity {
 
                 return true;
 
-            case R.id.resize:
-                if (selected != null) {
-                    popupWindowResize(view);
-                }
-                return true;
             case R.id.deleteShape:
                 if (selected != null) {
                     currentPage.removeShape(selected);
