@@ -48,13 +48,13 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text = "Clear"
+                android:text = "Clear Current"
                 android:onClick="clearCurrentPage"
                 android:textSize="12dp"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text = "Undo Clear"
+                android:text = "Undo"
                 android:onClick="undo"
                 android:textSize="12dp"/>
         </LinearLayout>
