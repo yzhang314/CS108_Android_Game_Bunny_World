@@ -230,13 +230,13 @@ public class GameView extends View {
                     if(ondropShape != null) {
                         if (ondrop) {
                             String selectedScript = selectedShape.getSelectedScript();
+                            currentPage.addShape(selectedShape);
                             for (String script : selectedScript.split(",")) {
                                 if (script.split(" ")[0].equals("onDrop") && script.split(" ")[1].equals(ondropShape.getName())) {
                                     doAction(script.substring(script.indexOf(" ", script.indexOf(" ") + 1) + 1));
                                 }
                             }
                             selectedShape.setInsideInventory(false);
-                            currentPage.addShape(selectedShape);
                         }
                         else {
                             if(selectedShape.isInsideInventory) {

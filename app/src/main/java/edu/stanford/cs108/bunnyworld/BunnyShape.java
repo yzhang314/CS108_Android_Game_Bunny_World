@@ -258,7 +258,7 @@ public class BunnyShape {
                 sl.draw(canvas);
                 canvas.restore();
             }
-            else if(shapeDrawable != null) {
+            if(shapeDrawable != null) {
                 canvas.drawBitmap(shapeDrawable.getBitmap(), null, new RectF(left, top, right, bottom), null);
             }
             else {
