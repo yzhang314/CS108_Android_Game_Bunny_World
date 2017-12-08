@@ -1739,7 +1739,7 @@ public class EditorActivity extends AppCompatActivity {
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        setupDatabase();
+        //setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
