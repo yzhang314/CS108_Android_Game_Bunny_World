@@ -549,7 +549,7 @@ public class EditorView extends View {
     private void actionUp(MotionEvent event) {
         float upX = event.getX();
         float upY = event.getY();
-        ((EditorActivity)getContext()).saveToUndo();
+        //((EditorActivity)getContext()).saveToUndo();
 
         if (judge == false) {
             //((EditorActivity)getContext()).saveToUndo();
