@@ -310,7 +310,7 @@ public class GameView extends View {
             case "show":
                 shape = currentPage.getShape(target);
                 if (shape != null) {
-                    shape.setVisiable(false);
+                    shape.setVisiable(true);
                     invalidate();
                 }
                 break;

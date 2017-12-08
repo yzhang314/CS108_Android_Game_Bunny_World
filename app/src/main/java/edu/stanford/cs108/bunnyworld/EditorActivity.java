@@ -32,6 +32,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -161,14 +162,21 @@ public class EditorActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+//            case R.id.createScript:
+//                if (selected != null) {
+//                    selected.setSelectScript(selected.tempScript);
+//                }
+//                return true;
             case R.id.showScript:
                 getScript();
+                //selected.setSelectScript(selected.tempScript);
                 return true;
 
             case R.id.setProperty:
                 if(selected == null) {
 
                 } else {
+                    //selected.setSelectScript(selected.tempScript);
                     popupWindow6(view);
                 }
 
@@ -209,7 +217,7 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-
+                    selected.setSelectScript(selected.getSelectedScript() + "onClick goto ");
                     //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
@@ -222,7 +230,7 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onClickPlaySound");
+                    selected.setSelectScript(selected.getSelectedScript() + "onClick play ");
                     //currentPage.addShape(selected);
                     popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
@@ -234,9 +242,15 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onClickShow");
+                    selected.setSelectScript(selected.getSelectedScript() + "onClick show ");
                     //currentPage.addShape(selected);
-                    Log.i(selected.getName(), selected.getSelectScript());
+                    popupWindowGetonlyObj(view);
+                }
+                return true;
+            case R.id.onClickHide:
+                if (selected != null) {
+                    selected.setSelectScript(selected.getSelectedScript() + "onClick hide ");
+                    popupWindowGetonlyObj(view);
                 }
                 return true;
             case R.id.onEnterGoTo:
@@ -244,7 +258,7 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onEnterGoTo");
+                    selected.setSelectScript(selected.getSelectedScript() + "onEnter goto");
                     //currentPage.addShape(selected);
                     popupWindow2(view);
                     Log.i(selected.getName(), selected.getSelectScript());
@@ -256,7 +270,7 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onEnterPlaySound");
+                    selected.setSelectScript(selected.getSelectedScript() + "onEnter play ");
                     currentPage.addShape(selected);
                     popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
@@ -268,20 +282,29 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onEnterShow");
+                    selected.setSelectScript(selected.getSelectedScript() + "onEnter show ");
+                    popupWindowGetonlyObj(view);
                     //currentPage.addShape(selected);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
+                return true;
+            case R.id.onEnterHide:
+                if (selected != null) {
+                    selected.setSelectScript(selected.getSelectedScript() + "onEnter hide ");
+                    popupWindowGetonlyObj(view);
+                }
                 return true;
             case R.id.onDropGoTo:
                 if (selected == null) {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onDropGoTo");
+                    selected.setSelectScript(selected.getSelectedScript() + "onDrop ");
+                    popupWindowGetObj(view);
+
                     //currentPage.addShape(selected);
-                    popupWindow2(view);
+
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
@@ -291,9 +314,10 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onDropPlaySound");
+                    selected.setSelectScript(selected.getSelectedScript() + "onDrop ");
+                    popupWindowGetObj2(view);
                     //currentPage.addShape(selected);
-                    popupWindowSound(view);
+                    //popupWindowSound(view);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
@@ -303,11 +327,19 @@ public class EditorActivity extends AppCompatActivity {
                     Log.i("null", "null");
                 } else {
                     //currentPage.removeShape(selected);
-                    selected.setSelectScript(selected.getSelectedScript() + "onDropShow");
+                    selected.setSelectScript(selected.getSelectedScript() + "onDrop ");
+                    popupWindowGetObj3(view);
                     //currentPage.addShape(selected);
                     Log.i(selected.getName(), selected.getSelectScript());
                 }
 
+                return true;
+            case R.id.onDropHide:
+                if (selected != null) {
+                    selected.setSelectScript(selected.getSelectedScript() + "onDrop ");
+                    popupWindowGetObjhide1(view);
+
+                }
                 return true;
             case R.id.savetodb:
                 popupWindowCreateNewGame(view);
@@ -315,6 +347,12 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void errorCheck() {
+        if (selected != null) {
+
         }
     }
 
@@ -413,8 +451,9 @@ public class EditorActivity extends AppCompatActivity {
                     String goToPage = editText.getText().toString();
 
                         if (pageMap.keySet().contains(goToPage)) {
-                            selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
+                            //selected.setSelectScript(selected.getSelectScript() + "onClickGoTo");
                             selected.setSelectScript(selected.getSelectScript() + goToPage + ",");
+                            //selected.tempScript = selected.tempScript + selected.getSelectScript();
                             editText.setText("");
                             Log.i(selected.getName(), selected.getSelectScript());
                             //This is used to change page which can be used during game
@@ -425,6 +464,13 @@ public class EditorActivity extends AppCompatActivity {
                             pw.dismiss();
                         } else {
                             Toast.makeText(getApplicationContext(), "Page does not exist", Toast.LENGTH_LONG).show();
+
+                            selected.setSelectScript(selected.getSelectedScript().substring(0, selected.getSelectScript().length() - 13));
+//                            if (selected.getSelectScript().length() != 0) {
+//                            if (selected.getSelectedScript().charAt(selected.getSelectedScript().length() - 1) == '|') {
+//                                selected.setSelectScript(selected.getSelectedScript().substring(0, selected.getSelectScript().length() - 1));
+//                            }
+//                            }
                             pw.dismiss();
                         }
                 }
@@ -1367,10 +1413,315 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
+    String objname;
+
+
+    //This is for create a new Page
+    private void popupWindowGetObj(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+            TextView textView = (TextView) layout.findViewById(R.id.objtext_textview);
+            textView.setText("Please Enter the name of the shape to drop on");
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ");
+                    selected.setSelectScript(selected.getSelectedScript() + "goto ");
+                    popupWindow2(view);
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //This is to select the object of motion to hide the other object
+    private void popupWindowGetObjhide1(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML
+
+            TextView textView = (TextView) layout.findViewById(R.id.objtext_textview);
+            textView.setText("Please Enter the name of the shape to drop on");
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ");
+                    selected.setSelectScript(selected.getSelectedScript() + "hide ");
+                    popupWindowGetonlyObj(view);
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // this is the popup window to get the shape name for the object to be operated to playsound
+    private void popupWindowGetObj2(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+            TextView textView = (TextView) layout.findViewById(R.id.objtext_textview);
+            textView.setText("Please Enter the name of the shape to drop on");
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ");
+                    selected.setSelectScript(selected.getSelectedScript() + "play ");
+                    popupWindowSound(view);
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // this is the popup window to get the name of the shape that to be shown
+    private void popupWindowGetObj3(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+            TextView textView = (TextView) layout.findViewById(R.id.objtext_textview);
+            textView.setText("Please Enter the name of the shape to drop on");
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ");
+                    selected.setSelectScript(selected.getSelectedScript() + "show ");
+                    popupWindowGetonlyObj(view);
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // this is the popup window to get the name of the object to operate
+    private void popupWindowGetonlyObj(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ,");
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //This is for drop on
+    private void popupWindowGetonlyObj1(View v) {
+        try {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View layout = inflater.inflate(R.layout.popup_window_getobjname,null);
+
+            //We need to get the instance of the LayoutInflater, use the context of this activity
+
+            //Inflate the view from a predefined XML layout
+            final EditText editText = (EditText) layout.findViewById(R.id.getobjname_text);
+            TextView textView = (TextView) layout.findViewById(R.id.objtext_textview);
+            textView.setText("Please Enter the name of the shape to drop on");
+
+
+
+            final PopupWindow pw = new PopupWindow(layout, 800, 350, true);
+            // display the popup in the center
+            pw.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+            Button enterBtn = (Button) layout.findViewById(R.id.getobjEnter_button);
+            Button cancelBtn = (Button) layout.findViewById(R.id.getobjCancel_button);
+
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pw.dismiss();
+                }
+            });
+
+
+            enterBtn.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+
+                    objname = editText.getText().toString();
+                    //editText.setText("");
+                    pw.dismiss();
+                    selected.setSelectScript(selected.getSelectedScript() + objname + " ");
+
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
-        //setupDatabase();
+        setupDatabase();
         String ifExist = "select * from sqlite_master where type='table' and name = 'BunnyGames';";
         Cursor cursor = db.rawQuery(ifExist,null);
         if (cursor.getCount() == 0){
