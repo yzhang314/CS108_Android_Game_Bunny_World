@@ -38,6 +38,7 @@ public class BunnyShape {
     boolean visiable;
     boolean isOnDrop;
     boolean isOnDropValid;
+    public String tempScript = "";
     //boolean hidden;
 
 
