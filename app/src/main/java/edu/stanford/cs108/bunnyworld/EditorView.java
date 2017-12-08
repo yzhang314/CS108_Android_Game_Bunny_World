@@ -142,16 +142,20 @@ public class EditorView extends View {
     }
 
     public void pasteShape() {
-        BunnyShape current = new BunnyShape(copyShape.getName(), copyShape.getType(), copyShape.getLeft() + 50, copyShape.getRight() + 50, copyShape.getTop(), copyShape.getBottom(), "", true);
-        current.setImageString(copyShape.getImageString());
-        current.setTextString(copyShape.getTextString());
-        current.setSelectScript(copyShape.getSelectScript());
-        int index = currentPage.getShapes().size() + 1;
-        current.setName("Shape" + index);
-        currentPage.addShape(current);
-        selectedShape = current;
-        //copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
-        invalidate();
+
+        if (copyShape != null) {
+            BunnyShape current = new BunnyShape(copyShape.getName(), copyShape.getType(), copyShape.getLeft() + 50, copyShape.getRight() + 50, copyShape.getTop(), copyShape.getBottom(), "", true);
+            current.setImageString(copyShape.getImageString());
+            current.setTextString(copyShape.getTextString());
+            current.setSelectScript(copyShape.getSelectScript());
+            int index = currentPage.getShapes().size() + 1;
+            current.setName("Shape" + index);
+            currentPage.addShape(current);
+            selectedShape = current;
+            //copyShape = new BunnyShape(selectedShape.getName(), selectedShape.getType(), selectedShape.getLeft() + 50, selectedShape.getRight() + 50, selectedShape.getTop(), selectedShape.getBottom(), "", true);
+            invalidate();
+        }
+
 
     }
 
@@ -392,6 +396,7 @@ public class EditorView extends View {
      boolean judge;
 
     private void actionDown(MotionEvent event) {
+        ((EditorActivity)getContext()).saveToUndo();
         judge = false;
         selectedShape = null;
         float downX = event.getX();
@@ -480,6 +485,7 @@ public class EditorView extends View {
             selectedShape = currentPage.selectShape(downX, downY);
             currentPage.selectedShape = selectedShape;
             judge = true;
+            //((EditorActivity)getContext()).saveToUndo();
             invalidate();
         }
 
@@ -492,6 +498,8 @@ public class EditorView extends View {
 
         if(judge == true) {
             if (selectedShape != null) {
+               // ((EditorActivity)getContext()).saveToUndo();
+
                 float width = selectedShape.getRight() - selectedShape.getLeft();
                 float height = selectedShape.getTop() - selectedShape.getBottom();
 
@@ -499,6 +507,9 @@ public class EditorView extends View {
                 selectedShape.setTop(upY + height/2);
                 selectedShape.setBottom(selectedShape.getTop() - height);
                 selectedShape.setRight(selectedShape.getLeft() + width);
+
+                currentPage.selectedShape = selectedShape;
+
 
 
                 //currentPage.addShape(selectedShape);
@@ -538,8 +549,10 @@ public class EditorView extends View {
     private void actionUp(MotionEvent event) {
         float upX = event.getX();
         float upY = event.getY();
+        ((EditorActivity)getContext()).saveToUndo();
 
         if (judge == false) {
+            //((EditorActivity)getContext()).saveToUndo();
             if (selectedShape != null) {
                 float width = selectedShape.getRight() - selectedShape.getLeft();
                 float height = selectedShape.getTop() - selectedShape.getBottom();
@@ -549,6 +562,8 @@ public class EditorView extends View {
                 selectedShape.setBottom(selectedShape.getTop() - height);
                 selectedShape.setRight(selectedShape.getLeft() + width);
 
+                currentPage.selectedShape = selectedShape;
+
 
                 //currentPage.addShape(selectedShape);
                 //currentPage.selectedShape = selectedShape;
@@ -557,7 +572,10 @@ public class EditorView extends View {
 
         } else {
             return;
+
+
         }
+
 
     }
 
@@ -578,10 +596,11 @@ public class EditorView extends View {
             currentPage.removeShape(current);
             currentPage.selectedShape = hidden;
             backupMap.put(hidden, original);
+            invalidate();
 
         }
 
-        invalidate();
+
     }
 
     public void eraseHidden(BunnyShape current) {
@@ -595,7 +614,6 @@ public class EditorView extends View {
         currentPage.addShape(original);
         selectedShape = original;
         currentPage.selectedShape = selectedShape;
-
 
         invalidate();
 
