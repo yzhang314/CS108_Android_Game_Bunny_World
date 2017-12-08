@@ -244,7 +244,7 @@ public class BunnyShape {
         this.canvas = canvas;
         if(visiable) {
             String textString = getTextString();
-            if (textString != null) {
+            if (textString != "") {
                 RectF boundaryRectangle = new RectF(getLeft(), getTop(), getRight(), getBottom());
                 TextPaint paint;
                 paint = new TextPaint();
