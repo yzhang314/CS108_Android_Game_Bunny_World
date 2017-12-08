@@ -167,6 +167,11 @@ public class EditorActivity extends AppCompatActivity {
 //                    selected.setSelectScript(selected.tempScript);
 //                }
 //                return true;
+            case R.id.createScript:
+                if(selected != null) {
+                    selected.setSelectScript(selected.getSelectedScript() + ",");
+                }
+                return true;
             case R.id.showScript:
                 getScript();
                 //selected.setSelectScript(selected.tempScript);
