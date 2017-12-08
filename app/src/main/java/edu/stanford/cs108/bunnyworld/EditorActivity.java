@@ -1735,7 +1735,7 @@ public class EditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+// database
     SQLiteDatabase db;
     private void saveToDatabase(){
         db = openOrCreateDatabase("BunnyWorld", MODE_PRIVATE, null);
